@@ -1,0 +1,12 @@
+﻿  Source.cpp
+c:\users\ed\documents\visual studio 2017\projects\obj editor\source.cpp(195): warning C4101: 'triangle': unreferenced local variable
+c:\users\ed\documents\visual studio 2017\projects\obj editor\source.cpp(1152): warning C4018: '<': signed/unsigned mismatch
+c:\users\ed\documents\visual studio 2017\projects\obj editor\source.cpp(1391): warning C4129: 'I': unrecognized character escape sequence
+c:\users\ed\documents\visual studio 2017\projects\obj editor\source.cpp(1536): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\ed\documents\visual studio 2017\projects\obj editor\source.cpp(1533): warning C4101: 'normal': unreferenced local variable
+  Generating code
+  7 of 1199 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  OBJ Editor.vcxproj -> C:\Users\Ed\Documents\Visual Studio 2017\Projects\Release\OBJ Editor.exe

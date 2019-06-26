@@ -1,0 +1,3 @@
+﻿  Source.cpp
+c:\users\ed\documents\visual studio 2017\projects\obj editor\source.cpp(3173): warning C4101: 'vert': unreferenced local variable
+  OBJ Editor.vcxproj -> C:\Users\Ed\Documents\Visual Studio 2017\Projects\x64\Debug\OBJ Editor.exe
