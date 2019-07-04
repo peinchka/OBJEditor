@@ -44,69 +44,69 @@ int GetNumOfFiles(string dir) {
 }
 
 void writeIndividualFile() {
-//	string item = "g 1499_Furn_Chair_Auditorium:LT3 Lecture Seat:";
+	//	string item = "g 1499_Furn_Chair_Auditorium:LT3 Lecture Seat:";
 
-//	string item = "g 1499_Furn_Chair_Meeting:Standard Meeting";
+	//	string item = "g 1499_Furn_Chair_Meeting:Standard Meeting";
 
-//	string item = "g System Panel:Glass Rainscreen Bronze:3084796";
+	//	string item = "g System Panel:Glass Rainscreen Bronze:3084796";
 
-//	string item = "g System Panel:Glazed";
-	
-//	string item = "g Rectangular Mullion:Cladding Joint 20mm";
+	//	string item = "g System Panel:Glazed";
 
-//	string item = "g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:3";
+	//	string item = "g Rectangular Mullion:Cladding Joint 20mm";
 
-//	string item = "g System Panel:Glass Rainscreen Bronze:3093964";
+	//	string item = "g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:3";
 
-//	string item = "g SG Panel:SG Panel South East Facade:3091804";
+	//	string item = "g System Panel:Glass Rainscreen Bronze:3093964";
 
-//	string item = "g Rectangular Mullion:Schuco FW60+ Mullion Extended Cap:3835598";
+	//	string item = "g SG Panel:SG Panel South East Facade:3091804";
 
-//	string item = "g Basic Roof:40-45-45-175_Semi-intensive_Green_Roof_System:2894773";
+	//	string item = "g Rectangular Mullion:Schuco FW60+ Mullion Extended Cap:3835598";
 
-//	string item = "g System Panel:Glass Rainscreen Bronze:3089685";
+	//	string item = "g Basic Roof:40-45-45-175_Semi-intensive_Green_Roof_System:2894773";
 
-//	string item = "g Metal Rainscreen:Metal Panel Rainscreen:3086628";
+	//	string item = "g System Panel:Glass Rainscreen Bronze:3089685";
 
-//	string item = "g SG Panel:SG Panel 2450mm wide:";
+	//	string item = "g Metal Rainscreen:Metal Panel Rainscreen:3086628";
 
-//	string item = "g AWS114 SG Manual:AWS114 SG Manual:";
+	//	string item = "g SG Panel:SG Panel 2450mm wide:";
 
-//	string item = "g System Panel:SG Panel Sloped:5523369";
+	//	string item = "g AWS114 SG Manual:AWS114 SG Manual:";
 
-//	string item = "g Rectangular Mullion:Schuco FW60+ Mullion Extended Cap:6069041";
+	//	string item = "g System Panel:SG Panel Sloped:5523369";
 
-//	string item = "g Basic Wall:RB-07b-25-85-45-150 ExtWall IWL 92mm Stud 2 boards + ins:11078769";
+	//	string item = "g Rectangular Mullion:Schuco FW60+ Mullion Extended Cap:6069041";
 
-//	string item = "g NGB_Valve_OventropCoconQTZFlowControlValve-Male-Male:DN 15 (90-450):8360640";
+	//	string item = "g Basic Wall:RB-07b-25-85-45-150 ExtWall IWL 92mm Stud 2 boards + ins:11078769";
 
-//	string item = "g NGB_Valve_PipeworkTempSensor:NGB-Pipework Temp Sensor:";
+	//	string item = "g NGB_Valve_OventropCoconQTZFlowControlValve-Male-Male:DN 15 (90-450):8360640";
 
-//	string item = "g Glazed Internal Single Doors:";
-//	string item = "g Glazed Internal Sliding Door:";
-//	string item = "g HB_Door_Concept_Int_Dbl_Solid";
-//	string item = "g HB_Door_Concept_Int_Sgl_Solid";
-//	string item = "g Glazed Internal Double Doors:";
-//	string item = "g HB_WC_Cubicle_FrontOnly:3888 Width 900 Door:";
+	//	string item = "g NGB_Valve_PipeworkTempSensor:NGB-Pipework Temp Sensor:";
 
-	//string item = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486507";
-//	string item = "g 1499_Furn_Bench_AtriumCanopy_Placeholder:Circle Bench 1000dia x 2000H:8447898";
-//	string item = "g 1499_Furn_CoffeeCart:1499_Furn_CoffeeCart:7432262";
-//	string item = "g Basic Roof:HKB_Roof__Entrance Canopy:19043512";
-//	string item = "g Sliding_Stacking_Panel_Partition:DT-17:8292025";
+	//	string item = "g Glazed Internal Single Doors:";
+	//	string item = "g Glazed Internal Sliding Door:";
+	//	string item = "g HB_Door_Concept_Int_Dbl_Solid";
+	//	string item = "g HB_Door_Concept_Int_Sgl_Solid";
+	//	string item = "g Glazed Internal Double Doors:";
+	//	string item = "g HB_WC_Cubicle_FrontOnly:3888 Width 900 Door:";
 
-//	string item = "g External signage2:External signage:4747993";
+		//string item = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486507";
+	//	string item = "g 1499_Furn_Bench_AtriumCanopy_Placeholder:Circle Bench 1000dia x 2000H:8447898";
+	//	string item = "g 1499_Furn_CoffeeCart:1499_Furn_CoffeeCart:7432262";
+	//	string item = "g Basic Roof:HKB_Roof__Entrance Canopy:19043512";
+	string item = "g Sliding_Stacking_Panel_Partition:DT-17:8292025";
 
-	string item = "g Basic Roof:20-50-30-180_Reinforced_Bitumen_Membrane_Inverted_Roof_Covering_System (500 x 200mm  Paving):2324097:1";
+	//	string item = "g External signage2:External signage:4747993";
+
+	//	string item = "g Basic Roof:20-50-30-180_Reinforced_Bitumen_Membrane_Inverted_Roof_Covering_System (500 x 200mm  Paving):2324097:1";
 
 	int length = (int)item.length();
-	
-	string objfile = "Z:\\USB Data\\OutsideUltra.obj";
-	string datafile = "Z:\\USB Data\\OutsideDivided\\Missing1.obj";
-//	string objfile = "Z:\\USB Data\\InsideCompleteRotatedTranslated2.obj";
-//	string datafile = "Z:\\USB Data\\Inside\\Deleted Objects\\Sliding_Stacking_Panel_Partition.obj";
-	
-	ifstream obj(objfile);	
+
+	string objfile = "Z:\\IFC Data\\InsideURTUV.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Deleted\\Sliding_Stacking_Panel_Partition.obj";
+	//	string objfile = "Z:\\USB Data\\InsideCompleteRotatedTranslated2.obj";
+	//	string datafile = "Z:\\USB Data\\Inside\\Deleted Objects\\Sliding_Stacking_Panel_Partition.obj";
+
+	ifstream obj(objfile);
 	ofstream data(datafile);
 
 	string line;
@@ -137,7 +137,7 @@ void writeIndividualFile() {
 		sub = line.substr(0, length);
 		if (sub == item) {
 			lines.push_back(line);
-			valid = true;			
+			valid = true;
 		}
 
 		if (valid) {
@@ -188,14 +188,14 @@ void writeIndividualFile() {
 						temp = "";
 					}
 					data << "f " << triangle[0] << '/' << triangle[1] << '/' << triangle[2] << ' '
-						 << triangle[3] << '/' << triangle[4] << '/' << triangle[5] << ' '
-						 << triangle[6] << '/' << triangle[7] << '/' << triangle[8] << endl;
+						<< triangle[3] << '/' << triangle[4] << '/' << triangle[5] << ' '
+						<< triangle[6] << '/' << triangle[7] << '/' << triangle[8] << endl;
 				}
 				else {
 					data << i << endl;
 				}
 			}
-		//	break; //Comment this out to create obj containing all instances of target object
+			//	break; //Comment this out to create obj containing all instances of target object
 		}
 		else {
 			while (!obj.eof()) {
@@ -207,21 +207,21 @@ void writeIndividualFile() {
 				if (test == "vt") {
 					texcoord++;
 				}
-				if (test == "g ") {				
+				if (test == "g ") {
 					break;
 				}
 			}
 			validVertex += vertex;
 			validTexcoord += texcoord;
 			validNormal += normal;
-		}		
+		}
 	}
 	data.close();
 	obj.close();
 }
 
 void ImproveEfficiency() {
-//	string chair = "g System Panel:Glass Rainscreen Bronze";
+	//	string chair = "g System Panel:Glass Rainscreen Bronze";
 	string window = "g System Panel:Glazed";
 	string mcladding = "g Rectangular Mullion:Cladding Joint 20mm";
 	string mainwindow = "g SG Panel:SG Panel South East Facade:";
@@ -248,7 +248,7 @@ void ImproveEfficiency() {
 	string objfile;
 	string line;
 
-//	objfile = "Z:\\IFC Data\\Outside.obj";
+	//	objfile = "Z:\\IFC Data\\Outside.obj";
 	objfile = "Z:\\IFC Data\\Outside1\\7a.obj";
 	string datafile = "Z:\\IFC Data\\Outside1\\Efficient2.obj";
 
@@ -291,20 +291,20 @@ void ImproveEfficiency() {
 		bool rainscr = false;
 		bool altpanel1 = false;
 		bool frame = false;
-		sub = line.substr(0, blength);		
+		sub = line.substr(0, blength);
 		if (sub == bronzerainscreen) {
 			if (previousSub != sub) {
-			//	lines.push_back(line);
+				//	lines.push_back(line);
 			}
 			testpanel = line;
 			lines.push_back(line);
 			valid = true;
 			string altpanel = line.substr(39, 7);
-			if (altpanel == "3089685" || altpanel == "5320407" || altpanel == "3093565" || altpanel == "3093566" || altpanel == "3093571" || altpanel == "3093572" || altpanel == "3093573" || altpanel == "3093574" 
-				|| altpanel == "3093710" || altpanel == "3093681" || altpanel == "3093766" || altpanel == "3093767" || altpanel == "3093768" || altpanel == "3093769" || altpanel == "3093770"			
+			if (altpanel == "3089685" || altpanel == "5320407" || altpanel == "3093565" || altpanel == "3093566" || altpanel == "3093571" || altpanel == "3093572" || altpanel == "3093573" || altpanel == "3093574"
+				|| altpanel == "3093710" || altpanel == "3093681" || altpanel == "3093766" || altpanel == "3093767" || altpanel == "3093768" || altpanel == "3093769" || altpanel == "3093770"
 				|| altpanel == "3096782" || altpanel == "5468323") {
 				rainscr = true;
-			}		
+			}
 		}
 		sub = line.substr(0, mrlength);
 		if (sub == metalrainscreen) {
@@ -330,7 +330,7 @@ void ImproveEfficiency() {
 		sub = line.substr(0, wflength);
 		if (sub == windowframe) {
 			if (previousSub != sub) {
-			//	lines.push_back(line);
+				//	lines.push_back(line);
 			}
 			frame = true;
 			lines.push_back(line);
@@ -345,9 +345,9 @@ void ImproveEfficiency() {
 			string altpanel = line.substr(31, 7);
 			if (altpanel == "5523369" || altpanel == "5523371" || altpanel == "5523373" || altpanel == "5523375" || altpanel == "5523363" || altpanel == "5523365" || altpanel == "5523367" || altpanel == "5536279"
 				/*|| altpanel == "5523372" || altpanel == "5534676" || altpanel == "5523377" || altpanel == "5523359" || altpanel == "5523361" || altpanel == "5523356" || altpanel == "5523234" || altpanel == "5523232"
-				|| altpanel == "5523230" || altpanel == "5523225" || altpanel == "5523223" || altpanel == "5523221" || altpanel == "5523220" || altpanel == "5523218" || altpanel == "5523217" || altpanel == "5523213" 
+				|| altpanel == "5523230" || altpanel == "5523225" || altpanel == "5523223" || altpanel == "5523221" || altpanel == "5523220" || altpanel == "5523218" || altpanel == "5523217" || altpanel == "5523213"
 				|| altpanel == "5523211" || altpanel == "5523208" || altpanel == "3799727" || altpanel == "3799726" || altpanel == "5523353" || altpanel == "3799695" || altpanel == "3799694" || altpanel == "5691030"
-				|| altpanel == "5523346" || altpanel == "5523345" || altpanel == "5523344" || altpanel == "5523378" || altpanel == "6777673" || altpanel == "6777674" || altpanel == "6828364" || altpanel == "3833315" 
+				|| altpanel == "5523346" || altpanel == "5523345" || altpanel == "5523344" || altpanel == "5523378" || altpanel == "6777673" || altpanel == "6777674" || altpanel == "6828364" || altpanel == "3833315"
 				|| altpanel == "6777677" || altpanel == "3833317" || altpanel == "7064206" || altpanel == "7064207" || altpanel == "6777681" || altpanel == "7064138" || altpanel == "7064139" || altpanel == "6777684"*/) {
 				altpanel1 = true;
 			}
@@ -393,11 +393,11 @@ void ImproveEfficiency() {
 						vnum++;
 						if (rainscr) {
 							if (vnum == 37 || vnum == 41 || vnum == 42 || vnum == 45 || vnum == 46 || vnum == 50 || vnum == 51 || vnum == 54) {
-							/*	if (vnum == 54) {
-									panels << testpanel << endl;
-								}*/							
-				/*				cout << vnum << " " <<  line << endl;
-								system("pause");*/
+								/*	if (vnum == 54) {
+										panels << testpanel << endl;
+									}*/
+									/*				cout << vnum << " " <<  line << endl;
+													system("pause");*/
 								sub = line.substr(2);
 								float found;
 								int i = 0;
@@ -465,7 +465,7 @@ void ImproveEfficiency() {
 								}
 							}
 							else if (frame) {
-							//	if (vnum <= 4 || (vnum >= 19 && vnum <= 22) || (vnum >= 37 && vnum <= 42) || (vnum >= 67 && vnum <= 78) || (vnum >= 93 && vnum <= 96) || (vnum >= 111 && vnum <= 122)) {
+								//	if (vnum <= 4 || (vnum >= 19 && vnum <= 22) || (vnum >= 37 && vnum <= 42) || (vnum >= 67 && vnum <= 78) || (vnum >= 93 && vnum <= 96) || (vnum >= 111 && vnum <= 122)) {
 								if (vnum <= 2 || (vnum >= 27 && vnum <= 38) || (vnum >= 53 && vnum <= 56) || (vnum >= 71 && vnum <= 82) || (vnum >= 107 && vnum <= 112) || (vnum >= 127 && vnum <= 130) || (vnum >= 145 && vnum <= 148)) {
 									sub = line.substr(2);
 									float found;
@@ -498,7 +498,7 @@ void ImproveEfficiency() {
 
 									lines.push_back(line);
 								}
-							}						
+							}
 							else {
 								if ((vnum < 5) || (vnum > 6 && vnum < 11 && !alt) || ((vnum == 7 || vnum == 8 || vnum == 11 || vnum == 12) && alt) || (mainwin == true && (vnum < 5 || vnum == 7 || vnum == 8 || vnum == 11 || vnum == 12
 									|| (vnum > 48 && vnum < 54) || vnum == 55 || vnum == 56 || vnum == 59 || vnum == 60 || vnum == 106 || vnum == 107 || vnum == 115 || vnum == 123))) {
@@ -559,8 +559,8 @@ void ImproveEfficiency() {
 							/*cout << vnum << " " << line << endl;
 							system("pause");*/
 							lines.push_back(line);
-			/*				cout << line << endl;
-							system("pause");*/
+							/*				cout << line << endl;
+											system("pause");*/
 						}
 					}
 				}
@@ -577,7 +577,7 @@ void ImproveEfficiency() {
 			}
 
 			if (rainscr) {
-			//	data << "usemtl surface-style-4654430-white-pvc" << endl;
+				//	data << "usemtl surface-style-4654430-white-pvc" << endl;
 				data << "usemtl surface-style-3731-spandrelpanel_gold" << endl;
 				data << "f " << to_string(1 + obCount) << "/" << to_string(1 + tcCount) << "/1 " << to_string(4 + obCount) << "/" << to_string(4 + tcCount) << "/1 " << to_string(3 + obCount) << "/" << to_string(3 + tcCount) << "/1" << endl;
 				data << "f " << to_string(1 + obCount) << "/" << to_string(1 + tcCount) << "/1 " << to_string(3 + obCount) << "/" << to_string(3 + tcCount) << "/1 " << to_string(2 + obCount) << "/" << to_string(2 + tcCount) << "/1" << endl;
@@ -716,7 +716,7 @@ void ImproveEfficiency() {
 					}
 					tcCount += 4;
 				}
-			}		
+			}
 		}
 		else {
 			while (!obj.eof()) {
@@ -750,7 +750,7 @@ void GetDimensions() {
 	float vert[3];
 	int loopNum = 0;
 	while (!obj.eof()) {
-		
+
 		getline(obj, line1);
 		string test = line1.substr(0, 2);
 		if (test == "v ") {
@@ -783,7 +783,7 @@ void GetDimensions() {
 				if (vert[2] < minz) {
 					minz = vert[2];
 				}
-			}			
+			}
 		}
 	}
 	cout << "Min x = " << minx << endl;
@@ -837,7 +837,7 @@ void CheckForErrors() {
 					if (i == 0 || i == 3 || i == 6) {
 						if (found > vertex) {
 							out << g << endl;
-							out << "Vertex index " + to_string(found) + " is larger than " + to_string(vertex) << endl << endl;						
+							out << "Vertex index " + to_string(found) + " is larger than " + to_string(vertex) << endl << endl;
 							exit = true;
 							break;
 						}
@@ -856,46 +856,47 @@ void CheckForErrors() {
 }
 
 void DivideGeometry() {
-	float x1 = -40.0f;   //Remember to negate x-coordinates!!!
-	float x2 = 48.0f;
+	vector<float> box;
+	vector<vector<float>> boxes;
 
-	float y1 = -1.0f;
-	float y2 = 40.0f;
+	box = { -40.0f, 0.0f, -1.0f, 20.0f, -40.0f, 0.0f };
+	boxes.push_back(box);
 
-	float z1 = -40.0f;
-	float z2 = 37.0f;
+	box = { -40.0f, 0.0f, -1.0f, 20.0f, 0.0f, 37.0f };
+	boxes.push_back(box);
 
-	//float xStepSize = 45.0f;
-	//float yStepSize = 30.0f;
-	//float zStepSize = 40.0f;
+	box = { -40.0f, 0.0f, 20.0f, 40.0f, -40.0f, 0.0f };
+	boxes.push_back(box);
 
-	float xStepSize = 22.0f;
-	float yStepSize = 11.0f;
-	float zStepSize = 20.0f;
+	box = { -40.0f, 0.0f, 20.0f, 40.0f, 0.0f, 37.0f };
+	boxes.push_back(box);
 
-	int xSteps = (int)ceil((x2 - x1) / xStepSize);
-	int ySteps = (int)ceil((y2 - y1) / yStepSize);
-	int zSteps = (int)ceil((z2 - z1) / zStepSize);
+	box = { 0.0f, 48.0f, -1.0f, 20.0f, -40.0f, 0.0f };
+	boxes.push_back(box);
 
-	/*cout << xSteps << endl;
-	cout << ySteps << endl;
-	cout << zSteps << endl;*/
+	box = { 0.0f, 48.0f, -1.0f, 20.0f, 0.0f, 37.0f };
+	boxes.push_back(box);
 
-	int fileNum = 0;
+	box = { 0.0f, 48.0f, 20.0f, 40.0f, -40.0f, 0.0f };
+	boxes.push_back(box);
+
+	box = { 0.0f, 48.0f, 20.0f, 40.0f, 0.0f, 37.0f };
+	boxes.push_back(box);
+
 
 	float minx = 0, maxx = 0, miny = 0, maxy = 0, minz = 0, maxz = 0;
 	float vert[3];
 	int loopNum = 0;
 	int loopNumf = 0;
 
-	string objfile = "Z:\\USB Data\\InsideUltra.obj";
+	string objfile = "Z:\\IFC Data\\InsideUltra.obj";
 
 	ifstream obj(objfile);
 
-	int numBoxes = xSteps * ySteps * zSteps;
+	int numBoxes = boxes.size();
 
 	vector<string> currentObject;
-	vector<vector<string>> datafiles; 
+	vector<vector<string>> datafiles;
 	vector<int> vertNormUVIndex(3, 0);
 	vector<vector<int>> vertNormUVIndices;
 
@@ -938,7 +939,7 @@ void DivideGeometry() {
 	bool exit = false;
 	int el = 2;
 
-	do {		
+	do {
 		if (!endObject) {
 			el++;
 			line = lines[el];
@@ -1031,7 +1032,285 @@ void DivideGeometry() {
 			}
 
 			currentObject.push_back(line);
-			
+
+			if (el + 1 < lines.size()) {
+				test = lines[el + 1].substr(0, 2);
+				if (test == "g ") {
+					endObject = true;
+				}
+			}
+			else {
+				endObject = true;
+				endFile = true;
+			}
+		}
+		else {
+			int boxNum = 0;
+			for (auto l : boxes) {
+				if (((maxx >= l[0] && maxx < l[1]) || (minx >= l[0] && minx < l[1]) || (minx < l[0] && maxx >= l[1])) &&
+					((maxy >= l[2] && maxy < l[3]) || (miny >= l[2] && miny < l[3]) || (miny < l[2] && maxy >= l[3])) &&
+					((maxz >= l[4] && maxz < l[5]) || (minz >= l[4] && minz < l[5]) || (minz < l[4] && maxz >= l[5]))) {
+					correctBoxes.push_back(boxNum);
+				}
+				boxNum++;
+			}
+			for (int j = 0; j < correctBoxes.size(); j++) {
+				for (auto l : currentObject) {
+					string linex = l;
+					test = l.substr(0, 2);
+					if (test == "f ") {
+						test = linex.substr(2);
+						string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
+						stringstream ss;
+						ss << line1;
+						string temp;
+						int found;
+						int i = 0;
+						while (!ss.eof()) {
+							ss >> temp;
+							if (stringstream(temp) >> found) {
+								if (i == 0 || i == 3 || i == 6) {
+									triangle[i] = found + vertNormUVIndices[correctBoxes[j]][0] - vertexIndexMin + 1;
+								}
+								if (i == 1 || i == 4 || i == 7) {
+									triangle[i] = found + vertNormUVIndices[correctBoxes[j]][1] - UVIndexMin + 1;
+								}
+								if (i == 2 || i == 5 || i == 8) {
+									triangle[i] = found + vertNormUVIndices[correctBoxes[j]][2] - normalIndexMin + 1;
+								}
+								i++;
+							}
+							temp = "";
+						}
+						linex = "f " + to_string(triangle[0]) + '/' + to_string(triangle[1]) + '/' + to_string(triangle[2]) + ' ' + to_string(triangle[3]) + '/' + to_string(triangle[4]) + '/' + to_string(triangle[5]) + ' '
+							+ to_string(triangle[6]) + '/' + to_string(triangle[7]) + '/' + to_string(triangle[8]);
+
+					}
+					datafiles[correctBoxes[j]].push_back(linex);
+				}
+				vertNormUVIndices[correctBoxes[j]][0] += vertex;
+				vertNormUVIndices[correctBoxes[j]][1] += texcoord;
+				vertNormUVIndices[correctBoxes[j]][2] += normal;
+			}
+			currentObject.clear();
+			correctBoxes.clear();
+			vertex = 0;
+			texcoord = 0;
+			normal = 0;
+			loopNum = 0;
+			loopNumf = 0;
+			endObject = false;
+			progress = (float)el * invSize;
+			if (progress >= prevProgress + 0.05f) {
+				cout << "Progress processing file = " + to_string(progress * 100) + "%" << endl;
+				prevProgress = progress;
+			}
+			if (endFile)
+				exit = true;
+		}
+	} while (!exit);
+
+	string line1 = lines[0];
+	string line2 = lines[1];
+
+	lines.clear();
+	vertNormUVIndices.clear();
+
+	for (int j = 0; j < numBoxes; j++) {
+		if (datafiles.size() != 0) {
+			string datafile = "Z:\\IFC Data\\InsideRooms\\" + to_string(j + 1) + ".obj";
+			ofstream data(datafile);
+			data << line1 << endl;
+			data << line2 << endl;
+			for (auto i : datafiles[j]) {
+				data << i << endl;
+			}
+			data.close();
+		}
+	}
+
+	datafiles.clear(); //TODO Make sure all vectors are cleared at the end of all other functions!
+}
+
+void DivideGeometrySteps() {
+	float x1 = -40.0f;   //Remember to negate x-coordinates!!!
+	float x2 = 48.0f;
+
+	float y1 = -1.0f;
+	float y2 = 40.0f;
+
+	float z1 = -40.0f;
+	float z2 = 37.0f;
+
+	//float xStepSize = 45.0f;
+	//float yStepSize = 30.0f;
+	//float zStepSize = 40.0f;
+
+	float xStepSize = 22.0f;
+	float yStepSize = 11.0f;
+	float zStepSize = 20.0f;
+
+	int xSteps = (int)ceil((x2 - x1) / xStepSize);
+	int ySteps = (int)ceil((y2 - y1) / yStepSize);
+	int zSteps = (int)ceil((z2 - z1) / zStepSize);
+
+	/*cout << xSteps << endl;
+	cout << ySteps << endl;
+	cout << zSteps << endl;*/
+
+	int fileNum = 0;
+
+	float minx = 0, maxx = 0, miny = 0, maxy = 0, minz = 0, maxz = 0;
+	float vert[3];
+	int loopNum = 0;
+	int loopNumf = 0;
+
+	string objfile = "Z:\\USB Data\\InsideUltra.obj";
+
+	ifstream obj(objfile);
+
+	int numBoxes = xSteps * ySteps * zSteps;
+
+	vector<string> currentObject;
+	vector<vector<string>> datafiles;
+	vector<int> vertNormUVIndex(3, 0);
+	vector<vector<int>> vertNormUVIndices;
+
+	for (int i = 0; i < numBoxes; i++) {
+		datafiles.push_back(currentObject);
+		vertNormUVIndices.push_back(vertNormUVIndex);
+	}
+
+	vector<int> correctBoxes;
+
+	string line;
+	string test = line.substr(0, 2);
+
+	bool repeated = false;
+
+	int vertex = 0;
+	int validVertex = 0;
+	int texcoord = 0;
+	int validTexcoord = 0;
+	int normal = 0;
+	int validNormal = 0;
+	int triangle[9];
+	int vertexIndexMin = 0;
+	int normalIndexMin = 0;
+	int UVIndexMin = 0;
+
+	float xMin, xMax, yMin, yMax, zMin, zMax;
+
+	vector<string> lines;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		lines.push_back(line);
+	}
+	obj.close();
+
+	float progress = 0.0f;
+	float prevProgress = 0.0f;
+	float invSize = 1.0f / lines.size();
+	bool endObject = false;
+	bool endFile = false;
+	bool exit = false;
+	int el = 2;
+
+	do {
+		if (!endObject) {
+			el++;
+			line = lines[el];
+			test = line.substr(0, 2);
+			if (test == "v ") {
+				vertex++;
+				loopNum++;
+				string sub = line.substr(2);
+				stringstream ss(sub);
+				ss >> vert[0] >> vert[1] >> vert[2];
+
+				if (loopNum == 1) {
+					minx = vert[0], maxx = vert[0], miny = vert[1], maxy = vert[1], minz = vert[2], maxz = vert[2];
+				}
+				else {
+					if (vert[0] >= maxx) {
+						maxx = vert[0];
+					}
+					if (vert[0] < minx) {
+						minx = vert[0];
+					}
+
+					if (vert[1] >= maxy) {
+						maxy = vert[1];
+					}
+					if (vert[1] < miny) {
+						miny = vert[1];
+					}
+
+					if (vert[2] >= maxz) {
+						maxz = vert[2];
+					}
+					if (vert[2] < minz) {
+						minz = vert[2];
+					}
+				}
+			}
+			if (test == "vt") {
+				texcoord++;
+			}
+			if (test == "vn") {
+				normal++;
+			}
+			if (test == "f ") {
+				test = line.substr(2);
+				string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
+				stringstream ss;
+				ss << line1;
+				string temp;
+				int found;
+				int i = 0;
+				while (!ss.eof()) {
+					loopNumf++;
+					ss >> temp;
+					if (stringstream(temp) >> found) {
+						if (i == 0 || i == 3 || i == 6) {
+							if (loopNumf == 1) {
+								vertexIndexMin = found;
+							}
+							else {
+								if (found < vertexIndexMin) {
+									vertexIndexMin = found;
+								}
+							}
+						}
+						if (i == 1 || i == 4 || i == 7) {
+							if (loopNumf == 2) {
+								UVIndexMin = found;
+							}
+							else {
+								if (found < UVIndexMin) {
+									UVIndexMin = found;
+								}
+							}
+						}
+						if (i == 2 || i == 5 || i == 8) {
+							if (loopNumf == 3) {
+								normalIndexMin = found;
+							}
+							else {
+								if (found < normalIndexMin) {
+									normalIndexMin = found;
+								}
+							}
+						}
+						i++;
+					}
+					temp = "";
+				}
+			}
+
+			currentObject.push_back(line);
+
 			if (el + 1 < lines.size()) {
 				test = lines[el + 1].substr(0, 2);
 				if (test == "g ") {
@@ -1047,9 +1326,18 @@ void DivideGeometry() {
 			for (int i = 0; i < xSteps; i++) {
 				for (int j = 0; j < ySteps; j++) {
 					for (int k = 0; k < zSteps; k++) {
-						if (((maxx >= x1 + (i * xStepSize) && maxx < x1 + ((i + 1) * xStepSize)) || (minx >= x1 + (i * xStepSize) && minx < x1 + ((i + 1) * xStepSize)) || (minx < x1 + (i * xStepSize) && maxx >= x1 + ((i + 1) * xStepSize))) &&
-							((maxy >= y1 + (j * yStepSize) && maxy < y1 + ((j + 1) * yStepSize)) || (miny >= y1 + (j * yStepSize) && miny < y1 + ((j + 1) * yStepSize)) || (miny < y1 + (j * yStepSize) && maxy >= y1 + ((j + 1) * yStepSize))) &&
-							((maxz >= z1 + (k * zStepSize) && maxz < z1 + ((k + 1) * zStepSize)) || (minz >= z1 + (k * zStepSize) && minz < z1 + ((k + 1) * zStepSize)) || (minz < z1 + (k * zStepSize) && maxz >= z1 + ((k + 1) * zStepSize)))) {
+						xMin = x1 + (i * xStepSize);
+						xMax = x1 + ((i + 1) * xStepSize);
+
+						yMin = y1 + (j * yStepSize);
+						yMax = y1 + ((j + 1) * yStepSize);
+
+						zMin = z1 + (k * zStepSize);
+						zMax = z1 + ((k + 1) * zStepSize);
+
+						if (((maxx >= xMin && maxx < xMax) || (minx >= xMin && minx < xMax) || (minx < xMin && maxx >= xMax)) &&
+							((maxy >= yMin && maxy < yMax) || (miny >= yMin && miny < yMax) || (miny < yMin && maxy >= yMax)) &&
+							((maxz >= zMin && maxz < zMax) || (minz >= zMin && minz < zMax) || (minz < zMin && maxz >= zMax))) {
 							correctBoxes.push_back(k + j * zSteps + i * zSteps * ySteps);
 						}
 					}
@@ -1080,7 +1368,7 @@ void DivideGeometry() {
 									triangle[i] = found + vertNormUVIndices[correctBoxes[j]][2] - normalIndexMin + 1;
 								}
 								i++;
-							}						
+							}
 							temp = "";
 						}
 						linex = "f " + to_string(triangle[0]) + '/' + to_string(triangle[1]) + '/' + to_string(triangle[2]) + ' ' + to_string(triangle[3]) + '/' + to_string(triangle[4]) + '/' + to_string(triangle[5]) + ' '
@@ -1105,12 +1393,12 @@ void DivideGeometry() {
 			if (progress >= prevProgress + 0.05f) {
 				cout << "Progress processing file = " + to_string(progress * 100) + "%" << endl;
 				prevProgress = progress;
-			}			
+			}
 			if (endFile)
 				exit = true;
 		}
 	} while (!exit);
-	
+
 	string line1 = lines[0];
 	string line2 = lines[1];
 
@@ -1129,7 +1417,7 @@ void DivideGeometry() {
 			data.close();
 		}
 	}
-	
+
 	datafiles.clear(); //TODO Make sure all vectors are cleared at the end of all other functions!
 }
 
@@ -1179,7 +1467,7 @@ void DivideGeometryOld() { //Uses far less RAM than new function, but slower
 
 	string line;
 	string test = line.substr(0, 2);
-	
+
 	bool repeated = false;
 
 	int vertex = 0;
@@ -1249,7 +1537,7 @@ void DivideGeometryOld() { //Uses far less RAM than new function, but slower
 			if (test == "vn") {
 				normal++;
 			}
-			if (test == "f ") {			
+			if (test == "f ") {
 				test = line.substr(2);
 				string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
 				stringstream ss;
@@ -1269,11 +1557,11 @@ void DivideGeometryOld() { //Uses far less RAM than new function, but slower
 								if (found < vertexIndexMin) {
 									vertexIndexMin = found;
 								}
-							}			
+							}
 						}
 						if (i == 1 || i == 4 || i == 7) {
 							if (loopNumf == 2) {
-								UVIndexMin = found;								
+								UVIndexMin = found;
 							}
 							else {
 								if (found < UVIndexMin) {
@@ -1315,7 +1603,7 @@ void DivideGeometryOld() { //Uses far less RAM than new function, but slower
 			for (int i = 0; i < xSteps; i++) {
 				for (int j = 0; j < ySteps; j++) {
 					for (int k = 0; k < zSteps; k++) {
-						if (((maxx >= x1 + (i * xStepSize) && maxx < x1 + ((i + 1) * xStepSize)) || (minx >= x1 + (i * xStepSize) && minx < x1 + ((i + 1) * xStepSize)) || (minx < x1 + (i * xStepSize) && maxx >= x1 + ((i + 1) * xStepSize))) &&   
+						if (((maxx >= x1 + (i * xStepSize) && maxx < x1 + ((i + 1) * xStepSize)) || (minx >= x1 + (i * xStepSize) && minx < x1 + ((i + 1) * xStepSize)) || (minx < x1 + (i * xStepSize) && maxx >= x1 + ((i + 1) * xStepSize))) &&
 							((maxy >= y1 + (j * yStepSize) && maxy < y1 + ((j + 1) * yStepSize)) || (miny >= y1 + (j * yStepSize) && miny < y1 + ((j + 1) * yStepSize)) || (miny < y1 + (j * yStepSize) && maxy >= y1 + ((j + 1) * yStepSize))) &&
 							((maxz >= z1 + (k * zStepSize) && maxz < z1 + ((k + 1) * zStepSize)) || (minz >= z1 + (k * zStepSize) && minz < z1 + ((k + 1) * zStepSize)) || (minz < z1 + (k * zStepSize) && maxz >= z1 + ((k + 1) * zStepSize)))) {
 							correctBoxes.push_back(k + j * zSteps + i * zSteps * ySteps);
@@ -1323,7 +1611,7 @@ void DivideGeometryOld() { //Uses far less RAM than new function, but slower
 					}
 				}
 			}
-			
+
 			for (int j = 0; j < correctBoxes.size(); j++) {
 				for (auto l : currentObject) {
 					string linex = l;
@@ -1353,19 +1641,19 @@ void DivideGeometryOld() { //Uses far less RAM than new function, but slower
 							temp = "";
 						}
 						linex = "f " + to_string(triangle[0]) + '/' + to_string(triangle[1]) + '/' + to_string(triangle[2]) + ' ' + to_string(triangle[3]) + '/' + to_string(triangle[4]) + '/' + to_string(triangle[5]) + ' '
-							+ to_string(triangle[6]) + '/' + to_string(triangle[7]) + '/' + to_string(triangle[8]);						
+							+ to_string(triangle[6]) + '/' + to_string(triangle[7]) + '/' + to_string(triangle[8]);
 					}
 					datafiles[correctBoxes[j]].push_back(linex);
-				}				
+				}
 				vertNormUVIndices[correctBoxes[j]][0] += vertex;
 				vertNormUVIndices[correctBoxes[j]][1] += texcoord;
 				vertNormUVIndices[correctBoxes[j]][2] += normal;
 			}
 			currentObject.clear();
-			correctBoxes.clear();		
-			vertex = 0;			
+			correctBoxes.clear();
+			vertex = 0;
 			texcoord = 0;
-			normal = 0;		
+			normal = 0;
 			loopNum = 0;
 			loopNumf = 0;
 			g = 0;
@@ -1396,9 +1684,9 @@ void PlaceAtOrigin() {
 	/*string objfile = "Z:\\IFC Data\\Pathways.obj";
 	string datafile = "Z:\\IFC Data\\PathwaysOrigin.obj";*/
 
-	string objfile = "Z:\\USB Data\\InsideCompleteRotated.obj";
-	string datafile = "Z:\\USB Data\\InsideCompleteRotatedOrigin.obj";
-	string transformFile = "Z:\\USB Data\\InsideCompleteRotatedOrigin.txt";
+	string objfile = "Z:\\IFC Data\\InsideUncentred.obj";
+	string datafile = "Z:\\IFC Data\\InsideUncentredOrigin.obj";
+	string transformFile = "Z:\\IFC Data\\InsideUncentredOrigin.txt";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -1407,20 +1695,20 @@ void PlaceAtOrigin() {
 
 	int vertex = 0;
 	int validVertex = 0;
-	float triangle[3];
+	double triangle[3];
 	string a = " ";
 	string test = line.substr(0, 2);
 	string sub;
 	vector<string> lines;
 
-	float x1 = 0.0f;
-	float x2 = 0.0f;
+	double x1 = 0.0f;
+	double x2 = 0.0f;
 
-	float y1 = 0.0f;
-	float y2 = 0.0f;
+	double y1 = 0.0f;
+	double y2 = 0.0f;
 
-	float z1 = 0.0f;
-	float z2 = 0.0f;
+	double z1 = 0.0f;
+	double z2 = 0.0f;
 
 	bool first = true;
 
@@ -1430,7 +1718,7 @@ void PlaceAtOrigin() {
 		test = line.substr(0, 2);
 		if (test == "v ") {
 			sub = line.substr(2);
-			float found;
+			double found;
 			int i = 0;
 			stringstream ss;
 			ss << sub;
@@ -1478,16 +1766,16 @@ void PlaceAtOrigin() {
 			}
 		}
 	}
-		
-	float midx = (x1 + x2) / 2.0f;
-	float midy = (y1 + y2) / 2.0f;
-	float midz = (z1 + z2) / 2.0f;
+
+	double midx = (x1 + x2) / 2.0f;
+	double midy = (y1 + y2) / 2.0f;
+	double midz = (z1 + z2) / 2.0f;
 
 	for (auto i : lines) {
 		string replace = i.substr(0, 2);
 		if (replace == "v ") {
 			sub = i.substr(2);
-			float found;
+			double found;
 			int i = 0;
 			stringstream ss;
 			ss << sub;
@@ -1501,7 +1789,7 @@ void PlaceAtOrigin() {
 				temp = "";
 			}
 			sub = "v " + to_string(triangle[0] - midx) + " " + to_string(triangle[1] - midy) + " " + to_string(triangle[2] - midz);
-			data << sub << endl;		
+			data << sub << endl;
 		}
 		else {
 			data << i << endl;
@@ -1653,8 +1941,8 @@ void CommaDelim() {
 }
 
 void Removeg() {
-	string objfile = "Z:\\USB Data\\InsideDivided\\1.obj";
-	string datafile = "Z:\\USB Data\\InsideDivided\\1Nog.obj";
+	string objfile = "Z:\\IFC Data\\Lighting\\LightingGrouped.obj";
+	string datafile = "Z:\\IFC Data\\Lighting\\LightingGroupedNog.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -1713,8 +2001,8 @@ void RemovegBatchProcess() {
 }
 
 void Removemtl() {
-	string objfile = "Z:\\USB Data\\CombinedTest.obj";
-	string datafile = "Z:\\USB Data\\CombinedTestNoMTL.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedNogNoNormalsNoTCs.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNogNoNormalsNoTCsNoMTL.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -1760,14 +2048,14 @@ void FindParticularObject() {
 		if (test == "g ") {
 			if (line.length() <= 2) {
 				data << line << endl;
-			}		
+			}
 		}
 	}
 }
 
 void Removen() {
-	string objfile = "Z:\\USB Data\\Inside\\InsideOrderedNog.obj";
-	string datafile = "Z:\\USB Data\\Inside\\InsideOrderedNogNoNormals.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedNog.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNogNoNormals.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -1785,8 +2073,8 @@ void Removen() {
 }
 
 void Removetc() {
-	string objfile = "Z:\\USB Data\\Inside\\InsideOrderedNogNoNormals.obj";
-	string datafile = "Z:\\USB Data\\Inside\\InsideOrderedNogNoNormalsNoTCs.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedNogNoNormals.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNogNoNormalsNoTCs.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -1838,7 +2126,7 @@ void Replacegwitho() {
 }
 
 void SplitFiles() {
-	string objfile = "Z:\\USB Data\\PipeworkCompleteRotatedTranslated.obj";
+	string objfile = "Z:\\IFC Data\\InsideUnfurnishedURTUV.obj";
 
 	ifstream obj(objfile);
 
@@ -1903,24 +2191,24 @@ void SplitFiles() {
 					temp = "";
 				}
 				line = "f " + to_string(triangle[0]) + '/' + to_string(triangle[1]) + '/' + to_string(triangle[2]) + ' ' + to_string(triangle[3]) + '/' + to_string(triangle[4]) + '/' + to_string(triangle[5]) + ' '
-					        + to_string(triangle[6]) + '/' + to_string(triangle[7]) + '/' + to_string(triangle[8]);
+					+ to_string(triangle[6]) + '/' + to_string(triangle[7]) + '/' + to_string(triangle[8]);
 			}
-			datafiles[gtype].push_back(line);		
+			datafiles[gtype].push_back(line);
 		}
 		else {
 			validVertex += vertex;
 			vertex = 0;
-			validTexcoord += texcoord;		
+			validTexcoord += texcoord;
 			texcoord = 0;
 			validNormal += normal;
 			normal = 0;
 			gtype = 0;
 			test = line.substr(0, 20);
-			for (auto i : preGs) {			
+			for (auto i : preGs) {
 				if (test == i) {
 					repeated = true;
 					break;
-				}	
+				}
 				gtype++;
 			}
 			if (!repeated) {
@@ -1930,13 +2218,13 @@ void SplitFiles() {
 			else {
 				datafiles[gtype].push_back(line);  //To add back g for every object
 				repeated = false;
-			}			
+			}
 		}
 	}
 
 	for (int j = 0; j < datafiles.size(); j++) {
 		if (datafiles[j].size() != 0) {
-			string datafile = "Z:\\USB Data\\Pipework\\" + to_string(j + 1) + ".obj";
+			string datafile = "Z:\\IFC Data\\InsideUnfurnished\\" + to_string(j + 1) + ".obj";
 			ofstream data(datafile);
 			vertex = 0;
 			validVertex = 0;
@@ -1998,9 +2286,9 @@ void SplitFiles() {
 					validNormal += normal;
 					normal = 0;
 					data << i << endl;
-				}				
+				}
 			}
-		}		
+		}
 	}
 }
 
@@ -2015,7 +2303,7 @@ void CombineOBJs() {
 
 	string line;
 	string test;
-	
+
 	int vertex = 0;
 	int texcoord = 0;
 	int normal = 0;
@@ -2039,7 +2327,7 @@ void CombineOBJs() {
 		}
 		if (line != "") {
 			out << line << endl;
-		}	
+		}
 	}
 	obj1.close();
 
@@ -2049,7 +2337,7 @@ void CombineOBJs() {
 	while (!obj2.eof()) {
 		getline(obj2, line);
 		test = line.substr(0, 2);
-		
+
 		if (test == "f ") {
 			test = line.substr(2);
 			string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
@@ -2081,7 +2369,7 @@ void CombineOBJs() {
 			out << line << endl;
 		}
 	}
-	out.close();	
+	out.close();
 	obj2.close();
 }
 
@@ -2111,7 +2399,7 @@ void DeleteObject2() {
 		if ((*it) == extraneousPart && lineNum < 5) {
 			lineNum++;
 			it = lines.erase(it, it + 13);
-		}		
+		}
 		else
 			++it;
 	}
@@ -2128,22 +2416,22 @@ void Reconciliation() {
 	string line;
 	string test;
 
-//	string objdir = "Z:\IFC Data\\Objects\\";
-//	string objdir = "Z:\IFC Data\\Insideno\\";
-//	string datafile = "Z:\\IFC Data\\Objects\\Reconcile1.obj";
-//	string datafile = "Z:\\IFC Data\\Insideno\\Reconcile.obj";
+	//	string objdir = "Z:\IFC Data\\Objects\\";
+	//	string objdir = "Z:\IFC Data\\Insideno\\";
+	//	string datafile = "Z:\\IFC Data\\Objects\\Reconcile1.obj";
+	//	string datafile = "Z:\\IFC Data\\Insideno\\Reconcile.obj";
 
-//	string objdir = "Z:\\IFC Data\\Pathways\\";
-//	string datafile = "Z:\\IFC Data\\Pathways\\Pathways.obj";
+	//	string objdir = "Z:\\IFC Data\\Pathways\\";
+	//	string datafile = "Z:\\IFC Data\\Pathways\\Pathways.obj";
 
-	//string objdir = "Z:\\USB Data\\Inside\\";
-	//string datafile = "Z:\\USB Data\\Inside\\InsideOrdered.obj";
+		//string objdir = "Z:\\USB Data\\Inside\\";
+		//string datafile = "Z:\\USB Data\\Inside\\InsideOrdered.obj";
 
-	//string objdir = "Z:\\USB Data\\Pipework\\Useful\\";
-	//string datafile = "Z:\\USB Data\\Pipework\\Useful\\PipeworkOrdered.obj";
+		//string objdir = "Z:\\USB Data\\Pipework\\Useful\\";
+		//string datafile = "Z:\\USB Data\\Pipework\\Useful\\PipeworkOrdered.obj";
 
-	string objdir = "Z:\\USB Data\\Outside\\";
-	string datafile = "Z:\\USB Data\\Outside\\OutsideOrderedLogo.obj";
+	string objdir = "Z:\\IFC Data\\Lighting\\";
+	string datafile = "Z:\\IFC Data\\Lighting\\LightingGrouped.obj";
 
 	ofstream data(datafile);
 
@@ -2157,8 +2445,8 @@ void Reconciliation() {
 	int validTexcoord = 0;
 	int normal = 0;
 	int validNormal = 0;
-	
-	for (int i = 1; i <= numFiles; i++) { 
+
+	for (int i = 1; i <= numFiles; i++) {
 		vertex = 0;
 		texcoord = 0;
 		normal = 0;
@@ -2231,8 +2519,8 @@ void ReconciliationGroupg() {
 	string line;
 	string test;
 
-	string objdir = "Z:\\USB Data\\Inside\\";
-	string datafile = "Z:\\USB Data\\Inside\\InsideOrderedGroupedg.obj";
+	string objdir = "Z:\\IFC Data\\InsideUnfurnished\\";
+	string datafile = "Z:\\IFC Data\\InsideUnfurnished\\InsideUnfurnishedReconGroupedg.obj";
 
 	ofstream data(datafile);
 
@@ -2387,7 +2675,7 @@ void Rotate90() {
 			}
 			else {
 				sub = "vn " + to_string(normal[0]) + " " + to_string(normal[2]) + " " + to_string(-normal[1]);
-			}			
+			}
 			data << sub << endl;
 		}
 		else {
@@ -2473,9 +2761,9 @@ void Translate() {
 
 	float vert[3];
 
-//	float Translate[3] = { 0.0f, 15.5f, 0.509811f }; //Outside
-//	float Translate[3] = { -0.227f, 10.02f, -0.883f }; //InsideSupports
-//	float Translate[3] = { -0.38f, 17.74f, 0.519f }; //Outside
+	//	float Translate[3] = { 0.0f, 15.5f, 0.509811f }; //Outside
+	//	float Translate[3] = { -0.227f, 10.02f, -0.883f }; //InsideSupports
+	//	float Translate[3] = { -0.38f, 17.74f, 0.519f }; //Outside
 	float Translate[3] = { 2.255f, 10.516f, -33.755f }; //Pathways
 //	float Translate[3] = { 30.35f / 1.1f, 29.39f / 1.1f, 30.433f / 1.1f }; //Pipework
 //	float Translate[3] = {197.07f / 1.1f, 17.12f / 1.1f, 192.459f / 1.1f }; //Lighting
@@ -2508,10 +2796,13 @@ void Translate() {
 }
 
 void TranslateObject() {
-	string object = "g WAR_NewcastleLitterBin:WAR_NewcastleLitterBin:798431";
+	//	string object = "g WAR_NewcastleLitterBin:WAR_NewcastleLitterBin:798431";
+	//	string object = "g WAR_NewcastleLitterBin:WAR_NewcastleLitterBin:798581";
+	//	string object = "g WAR_NewcastleLitterBin:WAR_NewcastleLitterBin:798523";
+	string object = "g WAR_NewcastleLitterBin:WAR_NewcastleLitterBin:798611";
 
-	string objfile = "Z:\\USB Data\\PathwaysCompleteRotatedTranslated5.obj";
-	string datafile = "Z:\\USB Data\\PathwaysCompleteRotatedTranslated6.obj";
+	string objfile = "Z:\\IFC Data\\PathwaysUltra3.obj";
+	string datafile = "Z:\\IFC Data\\PathwaysUltra4.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -2522,7 +2813,10 @@ void TranslateObject() {
 
 	float vert[3];
 
-	float Translate[3] = { 0.0f, -0.704f, 0.0f };
+	//	float Translate[3] = { 0.0f, -0.748f, 0.0f };
+	//	float Translate[3] = { 0.0f, -0.3278f, 0.0f };
+	//	float Translate[3] = { 0.0f, -0.2035f, 0.0f };
+	float Translate[3] = { 0.0f, -0.099f, 0.0f };
 
 	bool match = false;
 
@@ -2565,8 +2859,8 @@ void RotateScaleTranslate() {
 	/*string objfile = "Z:\\IFC Data\\InsideSupportsAtOrigin.obj";
 	string datafile = "Z:\\IFC Data\\InsideSupportsRotatedTranslated.obj";*/
 
-	string objfile = "Z:\\IFC Data\\PipeworkComplete.obj";
-	string datafile = "Z:\\USB Data\\PipeworkCompleteRotatedTranslated.obj";
+	string objfile = "Z:\\IFC Data\\InsideUnfurnishedUncentred.obj";
+	string datafile = "Z:\\IFC Data\\InsideUnfurnishedURT.obj";
 
 	ofstream data(datafile);
 
@@ -2576,28 +2870,32 @@ void RotateScaleTranslate() {
 
 	ifstream obj(objfile);
 
-	float vert[3];
+	double vert[3];
 	float normal[3];
 
 	/*float Scale[3] = { 100.0f, 100.0f, 100.0f };
 	float Translate[3] = { 134.6f, 12.3f, -1.5f };*/
 
-//	float Scale[3] = { 100.0f, 100.0f, 100.0f };
+	//	float Scale[3] = { 100.0f, 100.0f, 100.0f };
 
 	float Scale[3] = { 1.0f, 1.0f, 1.0f };
 
-	float Translate[3] = { 30.35f / 1.1f, 29.39f / 1.1f, 30.433f / 1.1f }; //Pipework
-//	float Translate[3] = { 0.0f, 16.6f, 0.0f }; //Inside
-//	float Translate[3] = { -0.227f, -5.42f + 16.6f, -1.392f }; //InsideSupports
-//	float Translate[3] = { -0.24f, 2.25f + 16.6f, -0.02f }; //Outside
-//	float Translate[3] = { 2.2f, -13.75f + 16.6f, -34.29f }; //Pathways
+	//	float Translate[3] = { 30.35f / 1.1f, 29.39f / 1.1f, 30.433f / 1.1f }; //Pipework
+	//	float Translate[3] = { 0.0f, 16.6f, 0.0f }; //Inside
+	//	float Translate[3] = { -0.227f, -5.42f + 16.6f, -1.392f }; //InsideSupports
+	//	float Translate[3] = { -0.24f, 2.25f + 16.6f, -0.02f }; //Outside
+	//	float Translate[3] = { 2.2f, -13.75f + 16.6f, -34.29f }; //Pathways
+
+	//	double Translate[3] = { 0.0f, 16.6f, 0.0f }; //Inside
+
+	double Translate[3] = { 424088.812500f, -63.66635f, 564390.500000f }; //Everything else
 
 	while (!obj.eof()) {
 		getline(obj, line);
 		test = line.substr(0, 2);
 		if (test == "v ") {
 			sub = line.substr(2);
-			float found;
+			double found;
 			int i = 0;
 			stringstream ss;
 			ss << fixed << setprecision(6) << sub;
@@ -2611,7 +2909,7 @@ void RotateScaleTranslate() {
 				temp = "";
 			}
 			sub = "v " + to_string(vert[0] - Translate[0]) + " " + to_string(vert[2] + Translate[1]) + " " + to_string(-vert[1] + Translate[2]);
-	//		sub = "v " + to_string(Scale[0] * (vert[0] - midx) + midx - Translate[0]) + " " + to_string(Scale[1] * (vert[2] - midy) + midy + Translate[1]) + " " + to_string(Scale[2] * (-vert[1] - midz) + midz + Translate[2]);
+			//		sub = "v " + to_string(Scale[0] * (vert[0] - midx) + midx - Translate[0]) + " " + to_string(Scale[1] * (vert[2] - midy) + midy + Translate[1]) + " " + to_string(Scale[2] * (-vert[1] - midz) + midz + Translate[2]);
 			data << sub << endl;
 		}
 		else if (test == "vn") {
@@ -2699,8 +2997,8 @@ void TestNormals() {
 }
 
 void FixTexCoords() {
-	string objfile = "Z:\\USB Data\\PathwaysCompleteRotatedTranslated1.obj";
-	string datafile = "Z:\\USB Data\\PathwaysCompleteRotatedTranslated1UV.obj";
+	string objfile = "Z:\\IFC Data\\InsideUnfurnishedURT.obj";
+	string datafile = "Z:\\IFC Data\\InsideUnfurnishedURTUV.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -2959,7 +3257,7 @@ void DeleteObjectsInside() {
 			lines.push_back(line);
 			valid = true;
 		}
-		DeleteObjectsHelperFunction(valid, obj, data, line, validVertex, validTexcoord, validNormal, lines);		
+		DeleteObjectsHelperFunction(valid, obj, data, line, validVertex, validTexcoord, validNormal, lines);
 	}
 	data.close();
 	obj.close();
@@ -2973,8 +3271,8 @@ void DeleteObjectsInsideSupports() {
 
 	int length = (int)deleteThis4.length();
 
-	string objfile = "Z:\\IFC Data\\InsideSupportsRotatedTranslated.obj";
-	string datafile = "Z:\\IFC Data\\InsideSupportsRotatedTranslated1.obj";
+	string objfile = "Z:\\IFC Data\\InsideSupportsURTUV.obj";
+	string datafile = "Z:\\IFC Data\\InsideSupportsUltra.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -3016,18 +3314,18 @@ void DeleteObjectsPathways() {
 	//string deleteThis3 = "g Floor:Pr_25_93_60_58_M_Type_5-Limestone-Carlow-Blue:725919";
 	//string deleteThis4 = "g Floor:Pr_25_93_60_58_M_Type_5-Limestone-Carlow-Blue:726116";
 	//string deleteThis5 = "g Floor:Pr_25_93_60_58_M_Type_6-Limestone-Carlow-Blue:726271";
-	string deleteThis6 = "g AR_Plant_Tree1:WAR_LiquidambarStyraciflua:731878";
-	string deleteThis7 = "g AR_Plant_Tree1:WAR_LiquidambarStyraciflua:732616";
-	string deleteThis8 = "g AR_Plant_Tree1:WAR_LiquidambarStyraciflua:732627";
+	//string deleteThis6 = "g AR_Plant_Tree1:WAR_LiquidambarStyraciflua:731878";
+	//string deleteThis7 = "g AR_Plant_Tree1:WAR_LiquidambarStyraciflua:732616";
+	//string deleteThis8 = "g AR_Plant_Tree1:WAR_LiquidambarStyraciflua:732627";
 	string deleteThis9 = "g Floor:Floor-Existing_Planting-425_Grvl-450_Soil-100_Mlch:728267";
 	string deleteThis10 = "g Floor:Floor-Existing_Planting-425_Grvl-450_Soil-100_Mlch:728237";
 	string deleteThis11 = "g Floor:Floor-Existing_Planting-425_Grvl-450_Soil-100_Mlch:728795";
 
-//	int length = (int)deleteThis.length();
+	//	int length = (int)deleteThis.length();
 
-	string objfile = "Z:\\USB Data\\PathwaysCompleteRotatedTranslated1.obj";
-	string datafile = "Z:\\USB Data\\PathwaysCompleteRotatedTranslated2.obj";
-	
+	string objfile = "Z:\\IFC Data\\PathwaysURTUV.obj";
+	string datafile = "Z:\\IFC Data\\PathwaysUltra.obj";
+
 	ifstream obj(objfile);
 	ofstream data(datafile);
 
@@ -3039,7 +3337,7 @@ void DeleteObjectsPathways() {
 	data << line << endl;
 
 	getline(obj, line);
-	
+
 	string sub1;
 	vector<string> lines;
 
@@ -3050,10 +3348,9 @@ void DeleteObjectsPathways() {
 	while (!obj.eof()) {
 		lines.clear();
 		bool valid = false;
-	//	sub1 = line.substr(0, length);
+		//	sub1 = line.substr(0, length);
 
-		if ( line != deleteThis6 && line != deleteThis7 && line != deleteThis8 && line != deleteThis9
-			&& line != deleteThis10 && line != deleteThis11) {
+		if (line != deleteThis9 && line != deleteThis10 && line != deleteThis11) {
 			lines.push_back(line);
 			valid = true;
 		}
@@ -3066,10 +3363,8 @@ void DeleteObjectsPathways() {
 void DeleteObjectsOutside() {
 	string deleteThis1 = "g Gutter Upstand North:Gutter Upstand North:11249608:1";
 
-//	int length = (int)deleteThis.length();
-
-	string objfile = "Z:\\USB Data\\OutsideCompleteRotatedTranslated1.obj";
-	string datafile = "Z:\\USB Data\\OutsideUltra.obj";
+	string objfile = "Z:\\IFC Data\\OutsideURTUV.obj";
+	string datafile = "Z:\\IFC Data\\OutsideUltra.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -3093,8 +3388,6 @@ void DeleteObjectsOutside() {
 	while (!obj.eof()) {
 		lines.clear();
 		bool valid = false;
-//		sub1 = line.substr(0, length);
-
 		if (line != deleteThis1) {
 			lines.push_back(line);
 			valid = true;
@@ -3146,8 +3439,8 @@ void DeleteObjectsInsideExtra() {
 	int length5 = (int)deleteThis5.length();
 	int length6 = (int)deleteThis6.length();
 
-	string objfile = "Z:\\USB Data\\InsideCompleteRotatedTranslated2.obj";
-	string datafile = "Z:\\USB Data\\InsideUltra.obj";
+	string objfile = "Z:\\IFC Data\\InsideURTUV.obj";
+	string datafile = "Z:\\IFC Data\\InsideUltra.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -3182,7 +3475,7 @@ void DeleteObjectsInsideExtra() {
 		sub4 = line.substr(0, length4);
 		sub5 = line.substr(0, length5);
 		sub6 = line.substr(0, length6);
-//		if (sub1 != deleteThis1 && sub2 != deleteThis2 && sub3 != deleteThis3 && sub4 != deleteThis4 && sub5 != deleteThis5 && sub6 != deleteThis6) {
+		//		if (sub1 != deleteThis1 && sub2 != deleteThis2 && sub3 != deleteThis3 && sub4 != deleteThis4 && sub5 != deleteThis5 && sub6 != deleteThis6) {
 		if (line != deleteThis1 && line != deleteThis2 && line != deleteThis3 && line != deleteThis4 && line != deleteThis5 && line != deleteThis6 &&
 			line != deleteThis7 && line != deleteThis8 && line != deleteThis9 && line != deleteThis10 && line != deleteThis11 && line != deleteThis12) {
 			lines.push_back(line);
@@ -3271,7 +3564,7 @@ int main() {
 		cout << "8. Rotate 90 degrees\n";
 		cout << "9. Scale and translate\n";
 		cout << "10. Rotate, scale and translate\n";
-		cout << "11. Reconciliation\n";		
+		cout << "11. Reconciliation\n";
 		cout << "12. Fix texture coordinates\n";
 		cout << "13. Test normals\n";
 		cout << "14. Replace g with o\n";
@@ -3406,7 +3699,7 @@ int main() {
 			Removen();
 			system("pause");
 			system("cls");
-			break;	
+			break;
 		case 16:
 			system("cls");
 			Removetc();
@@ -3424,7 +3717,7 @@ int main() {
 			FindParticularObject();
 			system("pause");
 			system("cls");
-			break;	
+			break;
 		case 19:
 			system("cls");
 			DeleteSingleObject();
@@ -3442,7 +3735,7 @@ int main() {
 			DeleteObjectsPathways();
 			system("pause");
 			system("cls");
-			break;	
+			break;
 		case 22:
 			system("cls");
 			DeleteObjectsOutside();
@@ -3454,13 +3747,13 @@ int main() {
 			DeleteObjectsInsideExtra();
 			system("pause");
 			system("cls");
-			break;			
+			break;
 		case 24:
 			system("cls");
 			Translate();
 			system("pause");
 			system("cls");
-			break;	
+			break;
 		case 25:
 			system("cls");
 			Listg();
@@ -3498,7 +3791,7 @@ int main() {
 			system("cls");
 			break;
 		case 31:
-			system("cls");		
+			system("cls");
 			CheckForErrors();
 			system("pause");
 			system("cls");
@@ -3508,7 +3801,7 @@ int main() {
 			RemovegBatchProcess();
 			system("pause");
 			system("cls");
-			break;	
+			break;
 		case 33:
 			system("cls");
 			Materialscount();
