@@ -93,18 +93,23 @@ void writeIndividualFile() {
 	//	string item = "g 1499_Furn_Bench_AtriumCanopy_Placeholder:Circle Bench 1000dia x 2000H:8447898";
 	//	string item = "g 1499_Furn_CoffeeCart:1499_Furn_CoffeeCart:7432262";
 	//	string item = "g Basic Roof:HKB_Roof__Entrance Canopy:19043512";
-	string item = "g Sliding_Stacking_Panel_Partition:DT-17:8292025";
+	//	string item = "g Sliding_Stacking_Panel_Partition:DT-17:8292025";
+	//	string item = "g Glazed Internal Double Timber Doors:DT-22:";
+	//	string item = "g Glazed Internal Double Sliding Door:";
+	//	string item = "g Glazed Internal Single Doors:";
+	string item = "g Glazed Internal Double Doors:";
+	//	string item = "g HB_WC_Cubicle_FrontOnly:";
 
 	//	string item = "g External signage2:External signage:4747993";
 
 	//	string item = "g Basic Roof:20-50-30-180_Reinforced_Bitumen_Membrane_Inverted_Roof_Covering_System (500 x 200mm  Paving):2324097:1";
 
 	int length = (int)item.length();
-
-	string objfile = "Z:\\IFC Data\\InsideURTUV.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\Deleted\\Sliding_Stacking_Panel_Partition.obj";
-	//	string objfile = "Z:\\USB Data\\InsideCompleteRotatedTranslated2.obj";
-	//	string datafile = "Z:\\USB Data\\Inside\\Deleted Objects\\Sliding_Stacking_Panel_Partition.obj";
+	/*
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrdered.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Doors\\gHB_WC_Cubicle_FrontOnly.obj";*/
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterials.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Doors\\gGlazedInternalDoubleDoors.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -145,15 +150,6 @@ void writeIndividualFile() {
 				getline(obj, line);
 				test = line.substr(0, 2);
 				if (test != "g ") {
-					if (test == "v ") {
-						vertex++;
-					}
-					if (test == "vt") {
-						texcoord++;
-					}
-					if (test == "vn") {
-						normal++;
-					}
 					lines.push_back(line);
 				}
 				else
@@ -207,6 +203,9 @@ void writeIndividualFile() {
 				if (test == "vt") {
 					texcoord++;
 				}
+				if (test == "vn") {
+					normal++;
+				}
 				if (test == "g ") {
 					break;
 				}
@@ -217,6 +216,187 @@ void writeIndividualFile() {
 		}
 	}
 	data.close();
+	obj.close();
+}
+
+void MoveObjectToIndividualOBJ() {
+	bool allInstances = false;
+	string item = "g _Timber:";
+
+	int length = (int)item.length();
+
+	string objfile = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrderedOld.obj";
+	string outfile1 = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrderedOldNew.obj";
+	string outfile2 = "Z:\\IFC Data\\InsideSupports\\Timber.obj";
+
+	ifstream obj(objfile);
+	ofstream out1(outfile1);
+	ofstream out2(outfile2);
+
+	string line;
+
+	getline(obj, line);
+	out1 << line << endl;
+	out2 << line << endl;
+	getline(obj, line);
+	out1 << line << endl;
+	out2 << line << endl;
+
+	int vertex = 0;
+	int validVertex = 0;
+	int texcoord = 0;
+	int validTexcoord = 0;
+	int normal = 0;
+	int validNormal = 0;
+
+	int validVertexSource = 0;
+	int validTexcoordSource = 0;
+	int validNormalSource = 0;
+
+	int triangle[9];
+	string a = " ";
+	getline(obj, line);
+	string test;
+	string sub;
+	vector<string> lines;
+	bool finished = false;
+
+	while (!obj.eof()) {
+		vertex = 0;
+		texcoord = 0;
+		normal = 0;
+		lines.clear();
+		lines.push_back(line);
+		bool valid = false;
+		sub = line.substr(0, length);
+		if (sub == item) {
+			valid = true;
+		}
+
+		if (valid && !finished) {
+			while (!obj.eof()) {
+				getline(obj, line);
+				test = line.substr(0, 2);
+				if (test != "g ") {
+					if (test == "v ") {
+						vertex++;
+					}
+					if (test == "vt") {
+						texcoord++;
+					}
+					if (test == "vn") {
+						normal++;
+					}
+					lines.push_back(line);
+				}
+				else
+				{
+					break;
+				}
+			}
+			validVertexSource += vertex;
+			validTexcoordSource += texcoord;
+			validNormalSource += normal;
+
+			for (auto i : lines) {
+				string replace = i.substr(0, 1);
+				if (replace == "f") {
+					string line1 = regex_replace(i, std::regex(R"(\/)"), a);
+					stringstream ss;
+					ss << line1;
+					string temp;
+					int found;
+					int i = 0;
+					while (!ss.eof()) {
+						ss >> temp;
+						if (stringstream(temp) >> found) {
+							if (i == 0 || i == 3 || i == 6) {
+								triangle[i] = found - validVertex;
+							}
+							if (i == 1 || i == 4 || i == 7) {
+								triangle[i] = found - validTexcoord;
+							}
+							if (i == 2 || i == 5 || i == 8) {
+								triangle[i] = found - validNormal;
+							}
+							i++;
+						}
+						temp = "";
+					}
+					out2 << "f " << triangle[0] << '/' << triangle[1] << '/' << triangle[2] << ' '
+						<< triangle[3] << '/' << triangle[4] << '/' << triangle[5] << ' '
+						<< triangle[6] << '/' << triangle[7] << '/' << triangle[8] << endl;
+				}
+				else {
+					if (i != "") {
+						out2 << i << endl;
+					}
+				}
+			}
+			if (!allInstances) {
+				finished = true;
+			}
+		}
+		else {
+			while (!obj.eof()) {
+				getline(obj, line);
+				test = line.substr(0, 2);
+				if (test == "v ") {
+					vertex++;
+				}
+				if (test == "vt") {
+					texcoord++;
+				}
+				if (test == "vn") {
+					normal++;
+				}
+				if (test == "g ") {
+					break;
+				}
+				lines.push_back(line);
+			}
+			for (auto i : lines) {
+				string replace = i.substr(0, 1);
+				if (replace == "f") {
+					string line1 = regex_replace(i, std::regex(R"(\/)"), a);
+					stringstream ss;
+					ss << line1;
+					string temp;
+					int found;
+					int i = 0;
+					while (!ss.eof()) {
+						ss >> temp;
+						if (stringstream(temp) >> found) {
+							if (i == 0 || i == 3 || i == 6) {
+								triangle[i] = found - validVertexSource;
+							}
+							if (i == 1 || i == 4 || i == 7) {
+								triangle[i] = found - validTexcoordSource;
+							}
+							if (i == 2 || i == 5 || i == 8) {
+								triangle[i] = found - validNormalSource;
+							}
+							i++;
+						}
+						temp = "";
+					}
+					out1 << "f " << triangle[0] << '/' << triangle[1] << '/' << triangle[2] << ' '
+						<< triangle[3] << '/' << triangle[4] << '/' << triangle[5] << ' '
+						<< triangle[6] << '/' << triangle[7] << '/' << triangle[8] << endl;
+				}
+				else {
+					if (i != "") {
+						out1 << i << endl;
+					}
+				}
+			}
+			validVertex += vertex;
+			validTexcoord += texcoord;
+			validNormal += normal;
+		}
+	}
+	out1.close();
+	out2.close();
 	obj.close();
 }
 
@@ -856,32 +1036,120 @@ void CheckForErrors() {
 }
 
 void DivideGeometry() {
+	bool writeNotInBoxOBJ = true;
+	string objfile = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrderedBest.obj";
+
+	ifstream obj(objfile);
+
 	vector<float> box;
 	vector<vector<float>> boxes;
 
-	box = { -40.0f, 0.0f, -1.0f, 20.0f, -40.0f, 0.0f };
+	box = { 16.77f, 37.23f, -1.05f, 7.18f, -31.05f, -7.86f };
 	boxes.push_back(box);
 
-	box = { -40.0f, 0.0f, -1.0f, 20.0f, 0.0f, 37.0f };
+	box = { 16.77f, 37.23f, 7.20f, 10.83f, -31.05f, -7.86f };
 	boxes.push_back(box);
 
-	box = { -40.0f, 0.0f, 20.0f, 40.0f, -40.0f, 0.0f };
+	box = { 16.77f, 37.23f, 11.3f, 14.85f, -31.05f, -7.86f };
 	boxes.push_back(box);
 
-	box = { -40.0f, 0.0f, 20.0f, 40.0f, 0.0f, 37.0f };
+	box = { 16.77f, 37.23f, 15.3f, 18.86f, -31.05f, -7.86f };
 	boxes.push_back(box);
 
-	box = { 0.0f, 48.0f, -1.0f, 20.0f, -40.0f, 0.0f };
+	box = { 16.77f, 37.23f, 19.3f, 22.86f, -31.05f, -7.86f };
 	boxes.push_back(box);
 
-	box = { 0.0f, 48.0f, -1.0f, 20.0f, 0.0f, 37.0f };
+	box = { 16.77f, 37.23f, 23.3f, 26.86f, -31.05f, -7.86f };
 	boxes.push_back(box);
 
-	box = { 0.0f, 48.0f, 20.0f, 40.0f, -40.0f, 0.0f };
+	box = { 16.77f, 37.23f, 27.3f, 30.86f, -31.05f, -7.86f };
 	boxes.push_back(box);
 
-	box = { 0.0f, 48.0f, 20.0f, 40.0f, 0.0f, 37.0f };
+
+
+	box = { -7.86f, 15.5f, -1.05f, 7.18f, -33.18f, -15.36f };
 	boxes.push_back(box);
+
+	box = { -7.86f, 15.5f, 7.20f, 10.83f, -33.18f, -15.36f };
+	boxes.push_back(box);
+
+	box = { -7.86f, 15.5f, 11.3f, 14.85f, -33.18f, -15.36f };
+	boxes.push_back(box);
+
+	box = { -7.86f, 15.5f, 15.3f, 18.86f, -33.18f, -15.36f };
+	boxes.push_back(box);
+
+	box = { -7.86f, 15.5f, 19.3f, 22.86f, -33.18f, -15.36f };
+	boxes.push_back(box);
+
+	box = { -7.86f, 15.5f, 23.3f, 26.86f, -33.18f, -15.36f };
+	boxes.push_back(box);
+
+	box = { -7.86f, 15.5f, 27.3f, 30.86f, -33.18f, -15.36f };
+	boxes.push_back(box);
+
+
+
+	box = { -34.32f, -14.95f, -1.05f, 7.18f, -34.36f, -1.09f };
+	boxes.push_back(box);
+
+	box = { -34.32f, -14.95f, 7.20f, 10.83f, -34.36f, -1.09f };
+	boxes.push_back(box);
+
+	box = { -34.32f, -14.95f, 11.3f, 14.85f, -34.36f, -1.09f };
+	boxes.push_back(box);
+
+	box = { -34.32f, -14.95f, 15.3f, 18.86f, -34.36f, -1.09f };
+	boxes.push_back(box);
+
+	box = { -34.32f, -14.95f, 19.3f, 22.86f, -34.36f, -1.09f };
+	boxes.push_back(box);
+
+	box = { -33.59f, -7.9f, 23.3f, 26.86f, -35.2f, -17.37f };
+	boxes.push_back(box);
+
+	box = { -33.59f, -7.9f, 27.3f, 30.86f, -35.2f, -17.37f };
+	boxes.push_back(box);
+
+
+
+	box = { -37.45f, -16.36f, -1.05f, 7.18f, -0.64f, 32.73f };
+	boxes.push_back(box);
+
+	box = { -37.45f, -16.36f, 7.20f, 10.83f, -0.64f, 32.73f };
+	boxes.push_back(box);
+
+	box = { -37.45f, -16.36f, 11.3f, 14.85f, -0.64f, 32.73f };
+	boxes.push_back(box);
+
+	box = { -37.45f, -16.36f, 15.3f, 18.86f, -0.64f, 32.73f };
+	boxes.push_back(box);
+
+	box = { -37.45f, -16.36f, 19.3f, 22.86f, -0.64f, 32.73f };
+	boxes.push_back(box);
+
+
+
+	//box = { -40.0f, 0.0f, -1.0f, 20.0f, 0.0f, 37.0f };
+	//boxes.push_back(box);
+
+	//box = { -40.0f, 0.0f, 20.0f, 40.0f, -40.0f, 0.0f };
+	//boxes.push_back(box);
+
+	//box = { -40.0f, 0.0f, 20.0f, 40.0f, 0.0f, 37.0f };
+	//boxes.push_back(box);
+
+	//box = { 0.0f, 48.0f, -1.0f, 20.0f, -40.0f, 0.0f };
+	//boxes.push_back(box);
+
+	//box = { 0.0f, 48.0f, -1.0f, 20.0f, 0.0f, 37.0f };
+	//boxes.push_back(box);
+
+	//box = { 0.0f, 48.0f, 20.0f, 40.0f, -40.0f, 0.0f };
+	//boxes.push_back(box);
+
+	//box = { 0.0f, 48.0f, 20.0f, 40.0f, 0.0f, 37.0f };
+	//boxes.push_back(box);
 
 
 	float minx = 0, maxx = 0, miny = 0, maxy = 0, minz = 0, maxz = 0;
@@ -889,11 +1157,11 @@ void DivideGeometry() {
 	int loopNum = 0;
 	int loopNumf = 0;
 
-	string objfile = "Z:\\IFC Data\\InsideUltra.obj";
+	int numBoxes = (int)boxes.size();
 
-	ifstream obj(objfile);
-
-	int numBoxes = boxes.size();
+	if (writeNotInBoxOBJ) {
+		numBoxes++;
+	}
 
 	vector<string> currentObject;
 	vector<vector<string>> datafiles;
@@ -908,7 +1176,7 @@ void DivideGeometry() {
 	vector<int> correctBoxes;
 
 	string line;
-	string test = line.substr(0, 2);
+	string test;
 
 	bool repeated = false;
 
@@ -1046,13 +1314,18 @@ void DivideGeometry() {
 		}
 		else {
 			int boxNum = 0;
+			bool inBox = false;
 			for (auto l : boxes) {
 				if (((maxx >= l[0] && maxx < l[1]) || (minx >= l[0] && minx < l[1]) || (minx < l[0] && maxx >= l[1])) &&
 					((maxy >= l[2] && maxy < l[3]) || (miny >= l[2] && miny < l[3]) || (miny < l[2] && maxy >= l[3])) &&
 					((maxz >= l[4] && maxz < l[5]) || (minz >= l[4] && minz < l[5]) || (minz < l[4] && maxz >= l[5]))) {
 					correctBoxes.push_back(boxNum);
+					inBox = true;
 				}
 				boxNum++;
+			}
+			if (writeNotInBoxOBJ && !inBox) {
+				correctBoxes.push_back(numBoxes - 1);
 			}
 			for (int j = 0; j < correctBoxes.size(); j++) {
 				for (auto l : currentObject) {
@@ -1118,7 +1391,13 @@ void DivideGeometry() {
 
 	for (int j = 0; j < numBoxes; j++) {
 		if (datafiles.size() != 0) {
-			string datafile = "Z:\\IFC Data\\InsideRooms\\" + to_string(j + 1) + ".obj";
+			string datafile = "Z:\\IFC Data\\InsideSupports\\Divided\\";
+			if (j != numBoxes - 1 || !writeNotInBoxOBJ) {
+				datafile += to_string(j + 1) + ".obj";
+			}
+			else {
+				datafile += "NotInBox.obj";
+			}
 			ofstream data(datafile);
 			data << line1 << endl;
 			data << line2 << endl;
@@ -1941,8 +2220,8 @@ void CommaDelim() {
 }
 
 void Removeg() {
-	string objfile = "Z:\\IFC Data\\Lighting\\LightingGrouped.obj";
-	string datafile = "Z:\\IFC Data\\Lighting\\LightingGroupedNog.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsReducedMaterials.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsReducedMaterialsNog.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -2023,6 +2302,27 @@ void Removemtl() {
 				data << line << endl;
 				first = false;
 			}
+		}
+	}
+}
+
+void Replacemtl() {
+	string objfile = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrdered.obj";
+	string datafile = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrderedBest.obj";
+
+	ifstream obj(objfile);
+	ofstream data(datafile);
+
+	string line;
+	string test = line.substr(0, 2);
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		if (line != "usemtl surface-style-8092-concrete---cast-in-place-concrete-post-tensioned") {
+			data << line << endl;
+		}
+		else {
+			data << "usemtl surface-style-423-concrete---cast-in-place-concrete" << endl;
 		}
 	}
 }
@@ -2292,10 +2592,161 @@ void SplitFiles() {
 	}
 }
 
+void SplitIntoOneOBJPerObject() {
+	string objfile = "Z:\\IFC Data\\Outside\\Windows\\10 - atrium windows 3.obj";
+
+	ifstream obj(objfile);
+
+	vector<vector<string>> datafiles(2000);
+
+	int gtype = -1;
+
+	string line;
+	string test = line.substr(0, 2);
+	bool repeated = false;
+
+	int vertex = 0;
+	int validVertex = 0;
+	int texcoord = 0;
+	int validTexcoord = 0;
+	int normal = 0;
+	int validNormal = 0;
+	int triangle[9];
+
+	getline(obj, line);
+	string xline1 = line;
+	getline(obj, line);
+	string xline2 = line;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		test = line.substr(0, 2);
+		if (test != "g ") {
+			if (test == "v ") {
+				vertex++;
+			}
+			if (test == "vt") {
+				texcoord++;
+			}
+			if (test == "vn") {
+				normal++;
+			}
+
+			if (test == "f ") {
+				test = line.substr(2);
+				string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
+				stringstream ss;
+				ss << line1;
+				string temp;
+				int found;
+				int i = 0;
+				while (!ss.eof()) {
+					ss >> temp;
+					if (stringstream(temp) >> found) {
+						if (i == 0 || i == 3 || i == 6) {
+							triangle[i] = found - validVertex;
+						}
+						if (i == 1 || i == 4 || i == 7) {
+							triangle[i] = found - validTexcoord;
+						}
+						if (i == 2 || i == 5 || i == 8) {
+							triangle[i] = found - validNormal;
+						}
+						i++;
+					}
+					temp = "";
+				}
+				line = "f " + to_string(triangle[0]) + '/' + to_string(triangle[1]) + '/' + to_string(triangle[2]) + ' ' + to_string(triangle[3]) + '/' + to_string(triangle[4]) + '/' + to_string(triangle[5]) + ' '
+					+ to_string(triangle[6]) + '/' + to_string(triangle[7]) + '/' + to_string(triangle[8]);
+			}
+			datafiles[gtype].push_back(line);
+		}
+		else {
+			validVertex += vertex;
+			vertex = 0;
+			validTexcoord += texcoord;
+			texcoord = 0;
+			validNormal += normal;
+			normal = 0;
+			gtype++;
+			datafiles[gtype].push_back(line);
+		}
+	}
+
+	for (int j = 0; j < datafiles.size(); j++) {
+		if (datafiles[j].size() != 0) {
+			string datafile = "Z:\\IFC Data\\Outside\\Windows\\10\\" + to_string(j + 1) + ".obj";
+			ofstream data(datafile);
+			vertex = 0;
+			validVertex = 0;
+			texcoord = 0;
+			validTexcoord = 0;
+			normal = 0;
+			validNormal = 0;
+			data << xline1 << endl;
+			data << xline2 << endl;
+			for (auto i : datafiles[j]) {
+				test = i.substr(0, 2);
+				if (test != "s ") {
+					if (test == "v ") {
+						vertex++;
+					}
+					if (test == "vt") {
+						texcoord++;
+					}
+					if (test == "vn") {
+						normal++;
+					}
+					if (test == "f ") {
+						test = i.substr(2);
+						string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
+						stringstream ss;
+						ss << line1;
+						string temp;
+						int found;
+						int i = 0;
+						while (!ss.eof()) {
+							ss >> temp;
+							if (stringstream(temp) >> found) {
+								if (i == 0 || i == 3 || i == 6) {
+									triangle[i] = found + validVertex;
+								}
+								if (i == 1 || i == 4 || i == 7) {
+									triangle[i] = found + validTexcoord;
+								}
+								if (i == 2 || i == 5 || i == 8) {
+									triangle[i] = found + validNormal;
+								}
+								i++;
+							}
+							temp = "";
+						}
+						line = "f " + to_string(triangle[0]) + '/' + to_string(triangle[1]) + '/' + to_string(triangle[2]) + ' ' + to_string(triangle[3]) + '/' + to_string(triangle[4]) + '/' + to_string(triangle[5]) + ' '
+							+ to_string(triangle[6]) + '/' + to_string(triangle[7]) + '/' + to_string(triangle[8]);
+						data << line << endl;
+					}
+					else {
+						data << i << endl;
+					}
+				}
+				else {
+					validVertex += vertex;
+					vertex = 0;
+					validTexcoord += texcoord;
+					texcoord = 0;
+					validNormal += normal;
+					normal = 0;
+					data << i << endl;
+				}
+			}
+		}
+	}
+}
+
 void CombineOBJs() {
-	string objfile1 = "Z:\\USB Data\\PathwaysCompleteRotatedTranslated1.obj";
-	string objfile2 = "Z:\\USB Data\\InsideSupportsCompleteRotatedTranslated1.obj";
-	string outfile = "Z:\\USB Data\\CombinedTest.obj";
+	string objfile1 = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrderedOldNew.obj";
+	string objfile2 = "Z:\\IFC Data\\InsideSupports\\Timber.obj";
+	string outfile = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrderedOldNew2.obj";
 
 	ifstream obj1(objfile1);
 	ifstream obj2(objfile2);
@@ -2430,8 +2881,8 @@ void Reconciliation() {
 		//string objdir = "Z:\\USB Data\\Pipework\\Useful\\";
 		//string datafile = "Z:\\USB Data\\Pipework\\Useful\\PipeworkOrdered.obj";
 
-	string objdir = "Z:\\IFC Data\\Lighting\\";
-	string datafile = "Z:\\IFC Data\\Lighting\\LightingGrouped.obj";
+	string objdir = "Z:\\IFC Data\\InsideSupports\\";
+	string datafile = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrdered.obj";
 
 	ofstream data(datafile);
 
@@ -2612,6 +3063,81 @@ void ReconciliationGroupg() {
 			validNormal += normal;
 		}
 	}
+}
+
+void BatchProcessSingleFileGroupg() {
+	string line;
+	string test;
+	string previous;
+
+	string indir = "Z:\\IFC Data\\Inside\\Reconcile\\";
+	string outdir = "Z:\\IFC Data\\Inside\\Reconcile\\Groupedg\\";
+
+	int numFiles = GetNumOfFiles(indir);
+
+	for (int i = 1; i <= numFiles; i++) {
+		previous = "";
+		string infile = indir + to_string(i) + ".obj";
+		if (_access_s(infile.c_str(), 0) == 0) { //True if file exists
+			ifstream in(infile);
+			ofstream out(outdir + to_string(i) + ".obj");
+			getline(in, line);
+			out << line << endl;
+			getline(in, line);
+			out << line << endl;
+
+			while (!in.eof()) {
+				getline(in, line);
+				test = line.substr(0, 2);
+				if (test == "g ") {
+					test = line.substr(0, 20);
+					if (test != previous) {
+						out << line << endl;
+						previous = test;
+					}
+				}
+				else {
+					out << line << endl;
+				}
+			}
+			in.close();
+			out.close();
+		}
+	}
+}
+
+void SingleFileGroupg() {
+	string line;
+	string test;
+	string previous;
+
+	string objfile = "Z:\\IFC Data\\Inside\\Reconcile\\InsideOrderedNoDoors.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Reconcile\\InsideOrderedNoDoorsGroupedg.obj";
+
+	ifstream obj(objfile);
+	ofstream data(datafile);
+
+	getline(obj, line);
+	data << line << endl;
+	getline(obj, line);
+	data << line << endl;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		test = line.substr(0, 2);
+		if (test == "g ") {
+			test = line.substr(0, 20);
+			if (test != previous) {
+				data << line << endl;
+				previous = test;
+			}
+		}
+		else {
+			data << line << endl;
+		}
+	}
+	data.close();
+	obj.close();
 }
 
 void Rotate90() {
@@ -2853,6 +3379,156 @@ void TranslateObject() {
 			data << line << endl;
 		}
 	}
+}
+
+void TranslateObjects() {
+	string objfile = "Z:\\IFC Data\\PathwaysUltra3.obj";
+	string datafile = "Z:\\IFC Data\\PathwaysUltra4.obj";
+
+	vector<string> object;
+	vector<float> translate;
+	vector<vector<float>> translates;
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("");
+	translate = { 0.0f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	ifstream obj(objfile);
+	ofstream data(datafile);
+
+	string line;
+	string test = line.substr(0, 2);
+	string sub;
+
+	float vert[3];
+
+	bool match = false;
+
+	//while (!obj.eof()) {
+	//	getline(obj, line);
+	//	test = line.substr(0, 2);
+	//	if (test == "g ") {
+	//		if (line == object) {
+	//			match = true;
+	//		}
+	//		else {
+	//			match = false;
+	//		}
+	//	}
+	//	if (test == "v " && match) {
+	//		sub = line.substr(2);
+	//		float found;
+	//		int i = 0;
+	//		stringstream ss;
+	//		ss << sub;
+	//		string temp;
+	//		while (!ss.eof()) {
+	//			ss >> temp;
+	//			if (stringstream(temp) >> found) {
+	//				vert[i] = found;
+	//				i++;
+	//			}
+	//			temp = "";
+	//		}
+	//		sub = "v " + to_string(vert[0] - Translate[0]) + " " + to_string(vert[1] + Translate[1]) + " " + to_string(vert[2] + Translate[2]);
+	//		data << sub << endl;
+	//	}
+	//	else {
+	//		data << line << endl;
+	//	}
+	//}
 }
 
 void RotateScaleTranslate() {
@@ -3399,6 +4075,126 @@ void DeleteObjectsOutside() {
 }
 
 void DeleteObjectsInsideExtra() {
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterials.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoors.obj";
+
+	ifstream obj(objfile);
+	ofstream data(datafile);
+
+	vector<string> toDelete;
+
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:2");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:3");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:4");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:5");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:6");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:7");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:8");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:9");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:10");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:11");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:12");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:13");
+	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:14");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:2");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:3");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:4");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:5");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:6");
+	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751795");
+	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752630");
+	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751948");
+	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752250");
+	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752799");
+	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751795");
+	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752630");
+	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751264");
+	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752349");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826308");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826334");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826358");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826382");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826430");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826454");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826477");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826500");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826523");
+	toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:18996844");
+	toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:18996928");
+	toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:18996858");
+	toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:11737316");
+	toDelete.push_back("g Cast-In-Place Stair:Stair:3677855 Stringer 1");
+	toDelete.push_back("g Cast-In-Place Stair:Stair:3677855 Stringer 2");
+	toDelete.push_back("g Square Hollow Sections-Column:SHS140x140x5:11870104");
+	toDelete.push_back("g Basic Wall:HKB_Wall_Structural_225mm:9937258");
+	toDelete.push_back("g Floor:RB_Floor Build Up_07a - RAF medium duty:19011957");
+	toDelete.push_back("g Floor:RB_FloorFinish_FL-02c_Rubber:17538658");
+	toDelete.push_back("g Basic Wall:150 WIDE CONTINUOUS RC UPSTAND:13292395");
+	toDelete.push_back("g Basic Wall:Topakustik Lining:11376217");
+
+	string deleteThis1 = "g Glazed Internal Double Timber Doors:DT-22:";
+	string deleteThis2 = "g Glazed Internal Double Sliding Door:";
+	string deleteThis3 = "g Glazed Internal Single Doors:";
+	string deleteThis4 = "g Glazed Internal Double Doors:";
+	string deleteThis5 = "g HB_WC_Cubicle_FrontOnly:";
+
+	int length1 = (int)deleteThis1.length();
+	int length2 = (int)deleteThis2.length();
+	int length3 = (int)deleteThis3.length();
+	int length4 = (int)deleteThis4.length();
+	int length5 = (int)deleteThis5.length();
+
+	string line;
+
+	getline(obj, line);
+	data << line << endl;
+	getline(obj, line);
+	data << line << endl;
+
+	getline(obj, line);
+
+	string sub1;
+	string sub2;
+	string sub3;
+	string sub4;
+	string sub5;
+
+	vector<string> lines;
+
+	int validVertex = 0;
+	int validTexcoord = 0;
+	int validNormal = 0;
+
+	while (!obj.eof()) {
+		lines.clear();
+		bool valid = false;
+		sub1 = line.substr(0, length1);
+		sub2 = line.substr(0, length2);
+		sub3 = line.substr(0, length3);
+		sub4 = line.substr(0, length4);
+		sub5 = line.substr(0, length5);
+		if (sub1 != deleteThis1 && sub2 != deleteThis2 && sub3 != deleteThis3 && sub4 != deleteThis4 && sub5 != deleteThis5) {
+			valid = true;
+			for (auto l : toDelete) {
+				if (line == l) {
+					valid = false;
+					break;
+				}
+			}
+			if (valid) {
+				lines.push_back(line);
+			}
+		}
+		DeleteObjectsHelperFunction(valid, obj, data, line, validVertex, validTexcoord, validNormal, lines);
+	}
+	data.close();
+	obj.close();
+
+	toDelete.clear();
+}
+
+void DeleteObjectsInsideExtraOld() {
 	//string deleteThis1 = "g Basic Wall:RB-07e- IWL double board-117mm thk-no ins-6000 max ht:11088817";
 	//string deleteThis2 = "g Floor:Trench Heater - 112mm:12598978:12";
 	//string deleteThis3 = "g Floor:Trench Heater - 112mm:12598978:13";
@@ -3419,28 +4215,34 @@ void DeleteObjectsInsideExtra() {
 	//string deleteThis5 = "g Glazed Internal Double Doors:";
 	//string deleteThis6 = "g HB_WC_Cubicle_FrontOnly:3888 Width 900 Door:";
 
-	string deleteThis1 = "g 25-50-20-135 Fire Curtain:Fireguard_SC120:12086224";
-	string deleteThis2 = "g 1499_Furn_Bench_AtriumCanopy_Placeholder:Circle Bench 1000dia x 2000H:8447898";
-	string deleteThis3 = "g 1499_Furn_Bench_AtriumCanopy_Placeholder:Circle Bench 1000dia x 2000H:8447929";
-	string deleteThis4 = "g 1499_Furn_Bench_AtriumCanopy_Placeholder:Circle Bench 1000dia x 2000H:8759571";
-	string deleteThis5 = "g 1499_Furn_CoffeeCart:1499_Furn_CoffeeCart:7432262";
-	string deleteThis6 = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486507";
-	string deleteThis7 = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486818";
-	string deleteThis8 = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486761";
-	string deleteThis9 = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486708";
-	string deleteThis10 = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486599";
-	string deleteThis11 = "g Basic Roof:HKB_Roof__Entrance Canopy:19043512";
-	string deleteThis12 = "g Sliding_Stacking_Panel_Partition:DT-17:8292025";
+	//string deleteThis1 = "g 25-50-20-135 Fire Curtain:Fireguard_SC120:12086224";
+	//string deleteThis2 = "g 1499_Furn_Bench_AtriumCanopy_Placeholder:Circle Bench 1000dia x 2000H:8447898";
+	//string deleteThis3 = "g 1499_Furn_Bench_AtriumCanopy_Placeholder:Circle Bench 1000dia x 2000H:8447929";
+	//string deleteThis4 = "g 1499_Furn_Bench_AtriumCanopy_Placeholder:Circle Bench 1000dia x 2000H:8759571";
+	//string deleteThis5 = "g 1499_Furn_CoffeeCart:1499_Furn_CoffeeCart:7432262";
+	//string deleteThis6 = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486507";
+	//string deleteThis7 = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486818";
+	//string deleteThis8 = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486761";
+	//string deleteThis9 = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486708";
+	//string deleteThis10 = "g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486599";
+	//string deleteThis11 = "g Basic Roof:HKB_Roof__Entrance Canopy:19043512";
+	//string deleteThis12 = "g Sliding_Stacking_Panel_Partition:DT-17:8292025";
+
+
+	string deleteThis1 = "g Glazed Internal Double Timber Doors:DT-22:";
+	string deleteThis2 = "g Glazed Internal Double Sliding Door:";
+	string deleteThis3 = "g Glazed Internal Single Doors:";
+	string deleteThis4 = "g Glazed Internal Double Doors:";
+	string deleteThis5 = "g HB_WC_Cubicle_FrontOnly:";
 
 	int length1 = (int)deleteThis1.length();
 	int length2 = (int)deleteThis2.length();
 	int length3 = (int)deleteThis3.length();
 	int length4 = (int)deleteThis4.length();
 	int length5 = (int)deleteThis5.length();
-	int length6 = (int)deleteThis6.length();
 
-	string objfile = "Z:\\IFC Data\\InsideURTUV.obj";
-	string datafile = "Z:\\IFC Data\\InsideUltra.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrdered.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoors.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -3474,10 +4276,10 @@ void DeleteObjectsInsideExtra() {
 		sub3 = line.substr(0, length3);
 		sub4 = line.substr(0, length4);
 		sub5 = line.substr(0, length5);
-		sub6 = line.substr(0, length6);
-		//		if (sub1 != deleteThis1 && sub2 != deleteThis2 && sub3 != deleteThis3 && sub4 != deleteThis4 && sub5 != deleteThis5 && sub6 != deleteThis6) {
-		if (line != deleteThis1 && line != deleteThis2 && line != deleteThis3 && line != deleteThis4 && line != deleteThis5 && line != deleteThis6 &&
-			line != deleteThis7 && line != deleteThis8 && line != deleteThis9 && line != deleteThis10 && line != deleteThis11 && line != deleteThis12) {
+		//		sub6 = line.substr(0, length6);
+		if (sub1 != deleteThis1 && sub2 != deleteThis2 && sub3 != deleteThis3 && sub4 != deleteThis4 && sub5 != deleteThis5) {
+			/*if (line != deleteThis1 && line != deleteThis2 && line != deleteThis3 && line != deleteThis4 && line != deleteThis5 && line != deleteThis6 &&
+				line != deleteThis7 && line != deleteThis8 && line != deleteThis9 && line != deleteThis10 && line != deleteThis11 && line != deleteThis12) {*/
 			lines.push_back(line);
 			valid = true;
 		}
@@ -3504,6 +4306,8 @@ void Listg() {
 			data << line << endl;
 		}
 	}
+	data.close();
+	obj.close();
 }
 
 void Materialscount() {
@@ -3524,6 +4328,471 @@ void Materialscount() {
 		}
 	}
 	cout << "Number of materials: " << mtlnum << endl;
+	mtl.close();
+}
+
+void ListMaterials() {
+	string mtlfile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsTotallyOrderedMTL.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsTotallyOrderedMTL.txt";
+
+	ifstream mtl(mtlfile);
+	ofstream out(datafile);
+
+	string line;
+	string test;
+
+	int count = 0;
+
+	string previous;
+
+	while (!mtl.eof()) {
+		getline(mtl, line);
+		test = line.substr(0, 6);
+		if (test == "usemtl") {
+			if (previous != line) {
+				count++;
+				previous = line;
+			}
+			out << "mat.push_back(\"" + line.substr(7) + "\");" << endl;
+		}
+	}
+	cout << count << endl;
+	mtl.close();
+	out.close();
+}
+
+void FillMat1Vector(vector<string>& mat) {
+	mat.push_back("IfcBeam");
+	mat.push_back("IfcBuildingElementProxy");
+	mat.push_back("IfcCovering");
+	mat.push_back("IfcFlowTerminal");
+	mat.push_back("IfcFurnishingElement");
+	mat.push_back("IfcPlate");
+	mat.push_back("IfcTransportElement");
+	mat.push_back("surface-style-1054000-aluminium-dorma-metal-anodized-silver");
+	mat.push_back("surface-style-108753-screed");
+	mat.push_back("surface-style-109933-hkb_floor_lino");
+	mat.push_back("surface-style-1130044-orangebox_aluminium_ral-9006");
+	mat.push_back("surface-style-1330249-concrete-masonry,-floor-block");
+	mat.push_back("surface-style-1367305-_wilkhahn-white-varnish");
+	mat.push_back("surface-style-154260-concrete,-cast-in-place-gray");
+	mat.push_back("surface-style-154410-concrete,-precast");
+	mat.push_back("surface-style-1960184-glass-splashback");
+	mat.push_back("surface-style-2153869-dorma---brushed-stainless-steel");
+	mat.push_back("surface-style-2263442-concrete---cast-in-place-concrete");
+	mat.push_back("surface-style-2294322-fermacell_gypsum_fibre_board");
+	mat.push_back("surface-style-2294775-concrete,-cast-in-situ");
+	mat.push_back("surface-style-260120-furniture---helmsman-ice");
+	mat.push_back("surface-style-2611090-chrome---polished-black");
+	mat.push_back("surface-style-27026-metal---steel-galvanised");
+	mat.push_back("surface-style-278030-metal---chrome");
+	mat.push_back("surface-style-2804151-amwell-mercury");
+	mat.push_back("surface-style-3068807-silicon-nitride---polished");
+	mat.push_back("surface-style-523-gypsum-plasterboard---15mm-gyproc-duraline");
+	mat.push_back("surface-style-5539043-chair---chrome");
+	mat.push_back("surface-style-5571425-polished");
+	mat.push_back("surface-style-5589331-stainless-steel-brushed");
+	mat.push_back("surface-style-585793-casework---carcass-finish");
+	mat.push_back("surface-style-6186396-white-plastic");
+	mat.push_back("surface-style-6187127-white-pvc");
+	mat.push_back("surface-style-624444-furniture---metal-racking");
+	mat.push_back("surface-style-6456067-pc-monitor-color-accent");
+	mat.push_back("surface-style-6627-pc---silver");
+	mat.push_back("surface-style-6989062-stainless-steel-baluster");
+	mat.push_back("surface-style-477585-mirror");
+}
+
+void FillMat2Vector(vector<string>& mat) {
+	mat.push_back("surface-style-111619-dulux-ral9010");
+	mat.push_back("IfcRailing");
+	mat.push_back("surface-style-1082063-bedding");
+	mat.push_back("surface-style-1082080-hkb_floor_paving_limestone");
+	mat.push_back("surface-style-1130398-orangebox_plastic_grey");
+	mat.push_back("surface-style-1318490-steel,-paint-finish,-dark-gray,-matte");
+	mat.push_back("surface-style-1338935-orangebox_wood_walnut");
+	mat.push_back("surface-style-1894178-corian-anthracite");
+	mat.push_back("surface-style-2145779-horizontal-lines");
+	mat.push_back("surface-style-2168052-ryderbp-mdf");
+	mat.push_back("surface-style-2330430-stainless-steel");
+	mat.push_back("surface-style-260108-default");
+	mat.push_back("surface-style-2804169-amwell-solid-surface-hurricane");
+	mat.push_back("surface-style-3036151-ceramic-sink");
+	mat.push_back("surface-style-3068825-chrome");
+	mat.push_back("surface-style-3080611-amwell-stainless-steel");
+	mat.push_back("surface-style-42673-abet-1810-sei-laminate");
+	mat.push_back("surface-style-4678673-red-(1)");
+	mat.push_back("surface-style-5167355-rigid-insulation-for-screed");
+	mat.push_back("surface-style-5459834-topakustik-finish");
+	mat.push_back("surface-style-5571407-powder-coated-aluminium-grey-lj");
+	mat.push_back("surface-style-5589695-ceramic");
+	mat.push_back("surface-style-564165-plastic---gray");
+	mat.push_back("surface-style-5642854-metal---paint-finish---dark-gray,-matte");
+	mat.push_back("surface-style-566764-plastic---gray,-dark");
+	mat.push_back("surface-style-6229015-_chs_default_grey");
+	mat.push_back("surface-style-6355752-stainless-steel-polished");
+	mat.push_back("surface-style-6422922-airflake-wall");
+	mat.push_back("surface-style-6798052-render-material-harmaa-128-128-128");
+	mat.push_back("surface-style-6952124-asphalt,-bitumen");
+	mat.push_back("surface-style-6953474-nbs_sikasarnafil_polymericroofingmembranes_sarnafiltcs");
+	mat.push_back("surface-style-6957571-default-roof");
+	mat.push_back("surface-style-6960788-stainless-steel,-brushed");
+	mat.push_back("surface-style-780453-generic");
+	mat.push_back("surface-style-886424-furniture---chrome");
+	mat.push_back("surface-style-586616-default-wall");
+}
+
+void FillMat3Vector(vector<string>& mat) {
+	mat.push_back("surface-style-197828-european-oak");
+	mat.push_back("surface-style-603-nbs_h+huk_autoclavedaeratedconcreteblocks_standardgrade_celconblock");
+	mat.push_back("IfcSlab");
+	mat.push_back("surface-style-1069685-abet-1830-grigio-etna");
+	mat.push_back("surface-style-108480-hkb_floor_carpet");
+	mat.push_back("surface-style-108736-insulation-/-support-frame");
+	mat.push_back("surface-style-110646-concrete-cladding_painted-black-finish");
+	mat.push_back("surface-style-110886-metal---stud-layer");
+	mat.push_back("surface-style-1130218-orangebox_fabric-3_grey");
+	mat.push_back("surface-style-2147767-abet-1830-etna");
+	mat.push_back("surface-style-2846719-amwell-charcoal");
+	mat.push_back("surface-style-3475765-ash_armitageshanks_grabbars_contour21_charcoalrn_render");
+	mat.push_back("surface-style-469785-plastik");
+	mat.push_back("surface-style-5512872-_2-ral---7011-iron-grey");
+	mat.push_back("surface-style-5551090-ral7002");
+	mat.push_back("surface-style-5589343-duco-coated");
+	mat.push_back("surface-style-5621373-noraplan-ultra-grip-6015");
+	mat.push_back("surface-style-5702812-grey-plastic");
+	mat.push_back("surface-style-6220697-_chs_mildsteel");
+	mat.push_back("surface-style-6456056-default-3");
+	mat.push_back("surface-style-6456078-default-2");
+	mat.push_back("surface-style-831040-slate-grey");
+	mat.push_back("surface-style-846327-external-sheathing-board");
+}
+
+void FillMat4Vector(vector<string>& mat) {
+	mat.push_back("surface-style-1614280-fabric-material-1");
+	mat.push_back("surface-style-6543051-site-specified");
+}
+
+void FillMat5Vector(vector<string>& mat) {
+	mat.push_back("surface-style-1161443-wood---birch");
+	mat.push_back("surface-style-2166947-wood---timber");
+	mat.push_back("surface-style-227510-metal---powder-coated-orange");
+	mat.push_back("surface-style-469635-sittepute");
+	mat.push_back("surface-style-5209893-door---frame/mullion");
+	mat.push_back("surface-style-5209902-door---panel");
+}
+
+void FillMat6Vector(vector<string>& mat) {
+	mat.push_back("surface-style-205659-mesh");
+	mat.push_back("surface-style-2285-glazing_internal");
+}
+
+void FillMat7Vector(vector<string>& mat) {
+	mat.push_back("surface-style-57879-rubber");
+	mat.push_back("surface-style-2460-ral-7016-paint");
+	mat.push_back("surface-style-298458-hkb_paint_black");
+	mat.push_back("surface-style-547245-trim");
+	mat.push_back("surface-style-609027-pc---black");
+	mat.push_back("surface-style-615134-chair---dark-grey");
+	mat.push_back("surface-style-615182-chair---black");
+}
+
+void FillMat8Vector(vector<string>& mat) {
+	mat.push_back("surface-style-24662-hkb_floor_timber_03");
+	mat.push_back("surface-style-2846731-amwell-hessian");
+	mat.push_back("surface-style-6364330-lucia-aruba");
+}
+
+void FillMat9Vector(vector<string>& mat) {
+	mat.push_back("surface-style-1130464-orangebox_wood_maple");
+	mat.push_back("surface-style-26946-hkb_floor_timber");
+	mat.push_back("surface-style-57909-wood---maple");
+	mat.push_back("surface-style-782021-hkb_frame_timber");
+	mat.push_back("surface-style-6367549-reef-yb085");
+}
+
+void FillMat10Vector(vector<string>& mat) {
+	mat.push_back("IfcWall");
+	mat.push_back("IfcWallStandardCase");
+	mat.push_back("surface-style-107878-concrete---white");
+	mat.push_back("surface-style-1092406-nbl_conceptsolid");
+	mat.push_back("surface-style-110137-air");
+	mat.push_back("surface-style-110864-ceilings---plasterboard-(perforated)(rigitone)");
+	mat.push_back("surface-style-111078-concrete_ancillary");
+	mat.push_back("surface-style-1246088-material-metal-polished");
+	mat.push_back("surface-style-1246099-material-metal-brushed");
+	mat.push_back("surface-style-1314600-hkb_paint_white");
+	mat.push_back("surface-style-1330880-_1---ral---9010-pure-white");
+	mat.push_back("surface-style-1367323-_wilkhahn-bright-chromed-alloy");
+	mat.push_back("surface-style-1405678-whitegoods");
+	mat.push_back("surface-style-1887331-ceilings---plasterboard-(solid)(services_raft)");
+	mat.push_back("surface-style-1933663-ice-white");
+	mat.push_back("surface-style-1941113-ceiling-tile-600-x-600");
+	mat.push_back("surface-style-205858-aluminium");
+	mat.push_back("surface-style-2084299-metal---white-powder-coated");
+	mat.push_back("surface-style-2155994-furniture---coat-hooks");
+	mat.push_back("surface-style-2194164-metal---stainless-steel");
+	mat.push_back("surface-style-2316927-nbs_concept");
+	mat.push_back("surface-style-24812-metal---steel");
+	mat.push_back("surface-style-2518887-pvc---white");
+	mat.push_back("surface-style-2591647-vc");
+	mat.push_back("surface-style-260096-metal---chrome-polished");
+	mat.push_back("surface-style-260132-furniture---white-paint");
+	mat.push_back("surface-style-277994-metal---paint-finish---ivory,-glossy");
+	mat.push_back("surface-style-281743-metal---aluminium");
+	mat.push_back("surface-style-2829336-ash_armitageshanks-_sanitaryware_white5_render");
+	mat.push_back("surface-style-2829739-ash_armitageshanks-_plastic_white1_render");
+	mat.push_back("surface-style-284035-gypsum-plasterboard---15mm-gyproc-wallboard");
+	mat.push_back("surface-style-2968454-fine-fireclay");
+	mat.push_back("surface-style-3080627-amwell-linen");
+	mat.push_back("surface-style-3475744-ash_armitageshanks_ancillaries_contour21_white_bump");
+	mat.push_back("surface-style-3475776-ash_armitageshanks_grabbars_contour21_whiteac_render");
+	mat.push_back("surface-style-35235-gypsum-plasterboard---6mm-gyproc-multiboard");
+	mat.push_back("surface-style-4306133-disabled-white");
+	mat.push_back("surface-style-4306151-paint---white-disabled");
+	mat.push_back("surface-style-469743-metall");
+	mat.push_back("surface-style-5108425-metal---steel-50-355");
+	mat.push_back("surface-style-5108666-metal---steel-43-275");
+	mat.push_back("surface-style-5421372-nbl_conceptwhite");
+	mat.push_back("surface-style-5537040-concept---white");
+	mat.push_back("surface-style-5571395-chrome---polished");
+	mat.push_back("surface-style-5658917-cabinets");
+	mat.push_back("surface-style-5697654-plasterboard-improved-fire-resistance");
+	mat.push_back("surface-style-5782770-metal---stainless-steel,-polished-plain");
+	mat.push_back("surface-style-57921-table---frame-finish");
+	mat.push_back("surface-style-5793920-ryder_intent_steelwork");
+	mat.push_back("surface-style-585745-casework---cupboard-handle");
+	mat.push_back("surface-style-585757-casework---door-/-drawer-front");
+	mat.push_back("surface-style-620830-plasterboard-monolithic");
+	mat.push_back("surface-style-6218669-_chs_default_white");
+	mat.push_back("surface-style-6571971-void");
+	mat.push_back("surface-style-6954175-paving-450mm-sq");
+	mat.push_back("surface-style-787429-cubicle-finish-1");
+	mat.push_back("surface-style-787438-finishes_paint_sen");
+	mat.push_back("surface-style-974-gypsum-plasterboard---12.5mm-gyproc-wallboard");
+	mat.push_back("surface-style-534738-porcelain");
+}
+
+void FillMat11Vector(vector<string>& mat) {
+	mat.push_back("surface-style-1130416-orangebox_plastic_black");
+	mat.push_back("surface-style-1367251-_wilkhahn-black-plastic");
+	mat.push_back("surface-style-280643-internal-door---architrave");
+	mat.push_back("surface-style-469695-dekk");
+	mat.push_back("surface-style-564177-plastic---black");
+	mat.push_back("surface-style-6229003-_chs_default_black");
+	mat.push_back("surface-style-6456094-pc-monitor-color");
+}
+
+void FillMat12Vector(vector<string>& mat) {
+	mat.push_back("surface-style-6539946");
+	mat.push_back("surface-style-6798004");
+	mat.push_back("surface-style-6798028");
+}
+
+void FillMat13Vector(vector<string>& mat) {
+	mat.push_back("surface-style-6456045-pc-monitor-glass");
+	mat.push_back("surface-style-886442-chair---blue");
+}
+
+void FillMat14Vector(vector<string>& mat) {
+	mat.push_back("surface-style-112875-");
+	mat.push_back("surface-style-2167195");
+	mat.push_back("surface-style-6367417");
+}
+
+void ReplaceMaterials() {
+	string infile = "Z:\\IFC Data\\Inside\\InsideOrdered.obj";
+	string outfile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterials.obj";
+
+	ifstream in(infile);
+	ofstream out(outfile);
+
+	string line;
+	string test;
+
+	vector<string> mat1;
+	vector<string> mat2;
+	vector<string> mat3;
+	vector<string> mat4;
+	vector<string> mat5;
+	vector<string> mat6;
+	vector<string> mat7;
+	vector<string> mat8;
+	vector<string> mat9;
+	vector<string> mat10;
+	vector<string> mat11;
+	vector<string> mat12;
+	vector<string> mat13;
+	vector<string> mat14;
+
+	FillMat1Vector(mat1);
+	FillMat2Vector(mat2);
+	FillMat3Vector(mat3);
+	FillMat4Vector(mat4);
+	FillMat5Vector(mat5);
+	FillMat6Vector(mat6);
+	FillMat7Vector(mat7);
+	FillMat8Vector(mat8);
+	FillMat9Vector(mat9);
+	FillMat10Vector(mat10);
+	FillMat11Vector(mat11);
+	FillMat12Vector(mat12);
+	FillMat13Vector(mat13);
+	FillMat14Vector(mat14);
+
+	bool match;
+
+	while (!in.eof()) {
+		match = false;
+		getline(in, line);
+		test = line.substr(0, 6);
+		if (test == "usemtl") {
+			if (line == "usemtl IfcDoor" || line == "usemtl surface-style-1130206-orangebox_fabric-2_red" || line == "usemtl surface-style-197643-cafe-couch-material" ||
+				line == "usemtl surface-style-2451-door---glazing" || line == "usemtl surface-style-3305054-amwell-heather" ||
+				line == "usemtl surface-style-469833-håndtak" || line == "usemtl surface-style-5537028-event-space-luminaire" || line == "usemtl surface-style-5782782-paint---red" ||
+				line == "usemtl surface-style-5783130-plastic---orange" || line == "usemtl surface-style-615170-chair---fabric---red" || line == "usemtl surface-style-7116102-glass,-clear-glazing" ||
+				line == "usemtl surface-style-778770-arcat---fabric---heavy-duty-exterior-grade" || line == "usemtl surface-style-109430-gypsum-plasterboard---19mm-gyproc-coreboard" ||
+				line == "usemtl surface-style-13775-mastic---clear" || line == "usemtl surface-style-34257-glass" || line == "usemtl surface-style-13775-mastic---clear" ||
+				line == "usemtl surface-style-281761-plastic---white" || line == "usemtl surface-style-217-gypsum-plasterboard---12.5mm-gyproc-soundbloc" ||
+				line == "usemtl surface-style-2264790-vapour-control-layer" || line == "surface-style-197819-analytical-floor-surface") {
+				out << line << endl;
+				match = true;
+			}
+			if (!match) {
+				for (auto lines : mat1) {
+					if (lines == line.substr(7)) {
+						out << "usemtl IfcBeam" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat2) {
+					if (lines == line.substr(7)) {
+						out << "usemtl IfcRailing" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat3) {
+					if (lines == line.substr(7)) {
+						out << "usemtl IfcSlab" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat4) {
+					if (lines == line.substr(7)) {
+						out << "usemtl surface-style-1614280-fabric-material-1" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat5) {
+					if (lines == line.substr(7)) {
+						out << "usemtl surface-style-227510-metal---powder-coated-orange" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat6) {
+					if (lines == line.substr(7)) {
+						out << "usemtl surface-style-2285-glazing_internal" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat7) {
+					if (lines == line.substr(7)) {
+						out << "usemtl surface-style-2460-ral-7016-paint" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat8) {
+					if (lines == line.substr(7)) {
+						out << "usemtl surface-style-24662-hkb_floor_timber_03" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat9) {
+					if (lines == line.substr(7)) {
+						out << "usemtl surface-style-26946-hkb_floor_timber" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat10) {
+					if (lines == line.substr(7)) {
+						out << "usemtl surface-style-35235-gypsum-plasterboard---6mm-gyproc-multiboard" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat11) {
+					if (lines == line.substr(7)) {
+						out << "usemtl surface-style-469695-dekk" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat12) {
+					if (lines == line.substr(7, 21)) {
+						out << "usemtl surface-style-6539946-machine_green" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat13) {
+					if (lines == line.substr(7)) {
+						out << "usemtl surface-style-886442-chair---blue" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				for (auto lines : mat14) {
+					if (lines == line.substr(7, 21)) {
+						out << "usemtl surface-style-2167195-hkb_topakustik_14-2" << endl;
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				out << line << endl;
+			}
+		}
+		else {
+			out << line << endl;
+		}
+	}
+	in.close();
+	out.close();
 }
 
 void Objectscount() {
@@ -3544,6 +4813,342 @@ void Objectscount() {
 		}
 	}
 	cout << "Number of objects: " << objnum << endl;
+}
+
+void DivideMaterials1() {
+	int loopNum = 0;
+	int loopNumf = 0;
+
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsReducedMaterials.obj";
+
+	ifstream obj(objfile);
+
+	vector<string> currentObject;
+	vector<vector<string>> datafiles;
+	vector<int> vertNormUVIndex(3, 0);
+	vector<vector<int>> vertNormUVIndices;
+
+	int mtype = 0;
+	vector<string> preMats;
+	bool repeated = false;
+
+	string line;
+	string test;
+	string material;
+
+	int vertex = 0;
+	int validVertex = 0;
+	int texcoord = 0;
+	int validTexcoord = 0;
+	int normal = 0;
+	int validNormal = 0;
+	int triangle[9];
+	int vertexIndexMin = 0;
+	int normalIndexMin = 0;
+	int UVIndexMin = 0;
+
+	vector<string> lines;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		lines.push_back(line);
+		test = line.substr(0, 2);
+		if (test == "us") {
+			for (auto i : preMats) {
+				if (line == i) {
+					repeated = true;
+					break;
+				}
+			}
+			if (!repeated) {
+				preMats.push_back(line);
+			}
+			else {
+				repeated = false;
+			}
+		}
+	}
+	obj.close();
+
+	for (int i = 0; i < preMats.size(); i++) {
+		datafiles.push_back(currentObject);
+		vertNormUVIndices.push_back(vertNormUVIndex);
+	}
+
+	float progress = 0.0f;
+	float prevProgress = 0.0f;
+	float invSize = 1.0f / lines.size();
+	bool endObject = false;
+	bool endFile = false;
+	bool exit = false;
+	int el = 2;
+
+	do {
+		if (!endObject) {
+			el++;
+			line = lines[el];
+			test = line.substr(0, 2);
+			if (test == "v ") {
+				vertex++;
+			}
+			if (test == "vt") {
+				texcoord++;
+			}
+			if (test == "vn") {
+				normal++;
+			}
+			if (test == "f ") {
+				test = line.substr(2);
+				string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
+				stringstream ss;
+				ss << line1;
+				string temp;
+				int found;
+				int i = 0;
+				while (!ss.eof()) {
+					loopNumf++;
+					ss >> temp;
+					if (stringstream(temp) >> found) {
+						if (i == 0 || i == 3 || i == 6) {
+							if (loopNumf == 1) {
+								vertexIndexMin = found;
+							}
+							else {
+								if (found < vertexIndexMin) {
+									vertexIndexMin = found;
+								}
+							}
+						}
+						if (i == 1 || i == 4 || i == 7) {
+							if (loopNumf == 2) {
+								UVIndexMin = found;
+							}
+							else {
+								if (found < UVIndexMin) {
+									UVIndexMin = found;
+								}
+							}
+						}
+						if (i == 2 || i == 5 || i == 8) {
+							if (loopNumf == 3) {
+								normalIndexMin = found;
+							}
+							else {
+								if (found < normalIndexMin) {
+									normalIndexMin = found;
+								}
+							}
+						}
+						i++;
+					}
+					temp = "";
+				}
+			}
+			if (test == "us") {
+				material = line;
+			}
+
+			currentObject.push_back(line);
+
+			if (el + 1 < lines.size()) {
+				test = lines[el + 1].substr(0, 2);
+				if (test == "g ") {
+					endObject = true;
+				}
+			}
+			else {
+				endObject = true;
+				endFile = true;
+			}
+		}
+		else {
+			mtype = 0;
+			for (auto i : preMats) {
+				if (material == i) {
+					break;
+				}
+				mtype++;
+			}
+
+			for (auto l : currentObject) {
+				string linex = l;
+				test = l.substr(0, 2);
+				if (test == "f ") {
+					test = linex.substr(2);
+					string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
+					stringstream ss;
+					ss << line1;
+					string temp;
+					int found;
+					int i = 0;
+					while (!ss.eof()) {
+						ss >> temp;
+						if (stringstream(temp) >> found) {
+							if (i == 0 || i == 3 || i == 6) {
+								triangle[i] = found + vertNormUVIndices[mtype][0] - vertexIndexMin + 1;
+							}
+							if (i == 1 || i == 4 || i == 7) {
+								triangle[i] = found + vertNormUVIndices[mtype][1] - UVIndexMin + 1;
+							}
+							if (i == 2 || i == 5 || i == 8) {
+								triangle[i] = found + vertNormUVIndices[mtype][2] - normalIndexMin + 1;
+							}
+							i++;
+						}
+						temp = "";
+					}
+					linex = "f " + to_string(triangle[0]) + '/' + to_string(triangle[1]) + '/' + to_string(triangle[2]) + ' ' + to_string(triangle[3]) + '/' + to_string(triangle[4]) + '/' + to_string(triangle[5]) + ' '
+						+ to_string(triangle[6]) + '/' + to_string(triangle[7]) + '/' + to_string(triangle[8]);
+				}
+				datafiles[mtype].push_back(linex);
+			}
+			vertNormUVIndices[mtype][0] += vertex;
+			vertNormUVIndices[mtype][1] += texcoord;
+			vertNormUVIndices[mtype][2] += normal;
+
+			currentObject.clear();
+			vertex = 0;
+			texcoord = 0;
+			normal = 0;
+			loopNum = 0;
+			loopNumf = 0;
+			endObject = false;
+			progress = (float)el * invSize;
+			if (progress >= prevProgress + 0.05f) {
+				cout << "Progress processing file = " + to_string(progress * 100) + "%" << endl;
+				prevProgress = progress;
+			}
+			if (endFile) {
+				exit = true;
+			}
+		}
+	} while (!exit);
+
+	string line1 = lines[0];
+	string line2 = lines[1];
+
+	lines.clear();
+	vertNormUVIndices.clear();
+
+	cout << datafiles.size() << endl;
+
+	for (int j = 0; j < datafiles.size(); j++) {
+		string datafile = "Z:\\IFC Data\\Inside\\SplitByMaterial\\" + to_string(j + 1) + ".obj";
+		ofstream data(datafile);
+		data << line1 << endl;
+		data << line2 << endl;
+		for (auto i : datafiles[j]) {
+			data << i << endl;
+		}
+		data.close();
+	}
+
+	datafiles.clear(); //TODO Make sure all vectors are cleared at the end of all other functions!
+}
+
+void DivideMaterials() {
+	string infile = "Z:\\IFC Data\\Inside\\SplitByMaterial\\InsideOrderedTextures.obj";
+	string outfile = "Z:\\IFC Data\\Inside\\SplitByMaterial\\InsideTotallyOrderedReducedMTLGroupedG.obj";
+
+	ifstream in(infile);
+	ofstream out(outfile);
+
+	vector<string> currentObject;
+	vector<vector<string>> datafiles;
+
+	int mtype = 0;
+	vector<string> preMats;
+	bool repeated = false;
+	bool first = true;
+
+	string line;
+	string test;
+	string previous;
+
+	vector<string> lines;
+
+	while (!in.eof()) {
+		getline(in, line);
+		lines.push_back(line);
+		test = line.substr(0, 2);
+		if (test == "us") {
+			for (auto i : preMats) {
+				if (line == i) {
+					repeated = true;
+					break;
+				}
+			}
+			if (!repeated) {
+				preMats.push_back(line);
+			}
+			else {
+				repeated = false;
+			}
+		}
+	}
+	in.close();
+
+	for (int i = 0; i < preMats.size(); i++) {
+		datafiles.push_back(currentObject);
+	}
+
+	for (auto j : lines) {
+		test = j.substr(0, 2);
+		if (test == "us" || test == "f ") {
+			if (test == "us") {
+				mtype = 0;
+				for (auto i : preMats) {
+					if (j == i) {
+						break;
+					}
+					mtype++;
+				}
+				if (j != previous) {
+					datafiles[mtype].push_back(j);
+					previous = j;
+				}
+			}
+			else {
+				datafiles[mtype].push_back(j);
+			}
+		}
+		else {
+			if (test != "g ") {
+				if (test != "") {
+					out << j << endl;
+				}
+			}
+			else {
+				if (first) {
+					out << j << endl;
+					first = false;
+				}
+			}
+		}
+	}
+
+	for (int j = 0; j < datafiles.size(); j++) {
+		first = true;
+		for (auto i : datafiles[j]) {
+			if (i.substr(0, 2) != "us") {
+				if (i != "") {
+					out << i << endl;
+				}
+			}
+			else {
+				if (first) {
+					if (i != "") {
+						out << "g " + to_string(j) << endl;
+						out << i << endl;
+						first = false;
+					}
+				}
+			}
+		}
+	}
+
+	out.close();
+	datafiles.clear();
 }
 
 int main() {
@@ -3588,10 +5193,17 @@ int main() {
 		cout << "32. Remove g with batch process\n";
 		cout << "33. Count materials\n";
 		cout << "34. Count objects\n";
-		cout << "35. Terminate the program\n";
+		cout << "35. Single file group g \n";
+		cout << "36. Split all objects into individual OBJ's\n";
+		cout << "37. Replace material\n";
+		cout << "38. List materials\n";
+		cout << "39. Replace materials\n";
+		cout << "40. Divide materials\n";
+		cout << "41. Move object to individual OBJ\n";
+		cout << "42. Terminate the program\n";
 		cout << "********************************************************************************************************************\n";
 		cin >> x;
-		fixInput(x, s, 1, 35, "Invalid input! Please enter an integer from the above menu: ");
+		fixInput(x, s, 1, 42, "Invalid input! Please enter an integer from the above menu: ");
 
 		switch (s)
 		{
@@ -3815,8 +5427,50 @@ int main() {
 			system("cls");
 			break;
 		case 35:
+			system("cls");
+			SingleFileGroupg();
+			system("pause");
+			system("cls");
+			break;
+		case 36:
+			system("cls");
+			SplitIntoOneOBJPerObject();
+			system("pause");
+			system("cls");
+			break;
+		case 37:
+			system("cls");
+			Replacemtl();
+			system("pause");
+			system("cls");
+			break;
+		case 38:
+			system("cls");
+			ListMaterials();
+			system("pause");
+			system("cls");
+			break;
+		case 39:
+			system("cls");
+			ReplaceMaterials();
+			system("pause");
+			system("cls");
+			break;
+		case 40:
+			system("cls");
+			DivideMaterials();
+			system("pause");
+			system("cls");
+			break;
+		case 41:
+			system("cls");
+			MoveObjectToIndividualOBJ();
+			system("pause");
+			system("cls");
+			break;
+		case 42:
 			break;
 		}  //No default case is required due to the above fixInput function
-	} while (s != 35);
+	} while (s != 42);
 	return 0;
 }
