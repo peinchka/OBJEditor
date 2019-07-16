@@ -3382,107 +3382,107 @@ void TranslateObject() {
 }
 
 void TranslateObjects() {
-	string objfile = "Z:\\IFC Data\\PathwaysUltra3.obj";
-	string datafile = "Z:\\IFC Data\\PathwaysUltra4.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoors.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoorsNoGlitches.obj";
 
 	vector<string> object;
 	vector<float> translate;
 	vector<vector<float>> translates;
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Floor:RB_FloorFinish_FL-09_LimestonePaving:5880942");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Floor:RB_FloorFinish_FL-01_Timber:2136040");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Basic_Wall:225 THICK:2856563");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Basic_Wall:215 Wide RC upstand:1830590");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Floor:RB_Floor_Build up_05_110mm Screed-260mm total:18996914");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Furn_Fixed_BaseUnit_BlankingPanel_Side:18x500x882mm:6428178");
+	translate = { -0.00001f, 0.0f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Furn_Fixed_Base_Unit_Dbl_Door_and_Drawer:1000mm_Wide for 850 / 900mm Bench Height:6427853");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Furn_Fixed_Base_Unit_Dbl_Door_and_Drawer:1000mm_Wide for 850 / 900mm Bench Height:6427800");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Furn_Fixed_Base_Unit_Dbl_Door_and_Drawer:1000mm_Wide for 850 / 900mm Bench Height:6427749");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Basic_Wall:RB-2f-NBS_H+H_140mm_ConcreteBlock_2_no_42mm_Linings of duraline on gypliner:1672134");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Basic_Wall:RB-3f-sts-149thk-twin-54dB-60FR-5800mh-Sev-no_ins:4628567");
+	translate = { 0.0f, 0.0f, -0.00001f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Compound_Ceiling:CLG-03:17651448");
+	translate = { 0.0f, 0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Compound_Ceiling:CLG-03:7348280");
+	translate = { 0.0f, 0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Compound_Ceiling:CLG-03:7348077");
+	translate = { 0.0f, 0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Rectangular_Mullion:240 x 100mm _Timber:11811679");
+	translate = { 0.00001f, 0.0f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Rectangular_Mullion:120 x 100mm _Timber:11811681");
+	translate = { 0.00001f, 0.0f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Rectangular_Mullion:120 x 100mm _Timber:11811683");
+	translate = { 0.00001f, 0.0f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Furn_Fixed_Base_Unit_Single_Door:500mm_Wide for 850 / 900mm Bench Height:12188757");
+	translate = { 0.00001f, 0.0f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Basic_Wall:150 WIDE CONTINUOUS RC UPSTAND:13284683");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Basic_Wall:150 WIDE CONTINUOUS RC UPSTAND:13286207");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Basic_Wall:RB-3d-sts-122thk-twin-50dB-60FR-4600mh-Sev-50_ins:8485227");
+	translate = { 0.0f, -0.001f, -0.0001f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Basic_Wall:RB-9c-above glazed screens-142thk-twin-50dB-60FR-Sev-no_ins:17059215");
+	translate = { 0.0f, -0.00001f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("");
-	translate = { 0.0f, 0.0f, 0.0f };
+	object.push_back("Basic_Wall:RB-07a- DryLining single board on gypliner 62.5mm no ins:5548762");
+	translate = { 0.0f, 0.0f, -0.00001f };
 	translates.push_back(translate);
 
 	ifstream obj(objfile);
@@ -3496,39 +3496,44 @@ void TranslateObjects() {
 
 	bool match = false;
 
-	//while (!obj.eof()) {
-	//	getline(obj, line);
-	//	test = line.substr(0, 2);
-	//	if (test == "g ") {
-	//		if (line == object) {
-	//			match = true;
-	//		}
-	//		else {
-	//			match = false;
-	//		}
-	//	}
-	//	if (test == "v " && match) {
-	//		sub = line.substr(2);
-	//		float found;
-	//		int i = 0;
-	//		stringstream ss;
-	//		ss << sub;
-	//		string temp;
-	//		while (!ss.eof()) {
-	//			ss >> temp;
-	//			if (stringstream(temp) >> found) {
-	//				vert[i] = found;
-	//				i++;
-	//			}
-	//			temp = "";
-	//		}
-	//		sub = "v " + to_string(vert[0] - Translate[0]) + " " + to_string(vert[1] + Translate[1]) + " " + to_string(vert[2] + Translate[2]);
-	//		data << sub << endl;
-	//	}
-	//	else {
-	//		data << line << endl;
-	//	}
-	//}
+	int loopNum;
+
+	while (!obj.eof()) {
+		match = false;
+		getline(obj, line);
+		test = line.substr(0, 2);
+		if (test == "g ") {
+			loopNum = 0;
+			for (auto l : object) {
+				if (line == l) {
+					match = true;
+					break;
+				}
+				loopNum++;
+			}
+		}
+		if (test == "v " && match) {
+			sub = line.substr(2);
+			float found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					vert[i] = found;
+					i++;
+				}
+				temp = "";
+			}
+			sub = "v " + to_string(vert[0] - translates[loopNum][0]) + " " + to_string(vert[1] + translates[loopNum][1]) + " " + to_string(vert[2] + translates[loopNum][2]);
+			data << sub << endl;
+		}
+		else {
+			data << line << endl;
+		}
+	}
 }
 
 void RotateScaleTranslate() {
@@ -5200,10 +5205,11 @@ int main() {
 		cout << "39. Replace materials\n";
 		cout << "40. Divide materials\n";
 		cout << "41. Move object to individual OBJ\n";
-		cout << "42. Terminate the program\n";
+		cout << "42. Translate objects\n";
+		cout << "43. Terminate the program\n";
 		cout << "********************************************************************************************************************\n";
 		cin >> x;
-		fixInput(x, s, 1, 42, "Invalid input! Please enter an integer from the above menu: ");
+		fixInput(x, s, 1, 43, "Invalid input! Please enter an integer from the above menu: ");
 
 		switch (s)
 		{
@@ -5469,8 +5475,14 @@ int main() {
 			system("cls");
 			break;
 		case 42:
+			system("cls");
+			TranslateObjects();
+			system("pause");
+			system("cls");
+			break;			
+		case 43:
 			break;
 		}  //No default case is required due to the above fixInput function
-	} while (s != 42);
+	} while (s != 43);
 	return 0;
 }
