@@ -13,9 +13,17 @@
 #include <chrono>	  //To enable the calculation of the duration of events
 #include <iomanip>    //To set number of decimal places
 #include <regex>	  //To replace characters in strings
+#include <map>		  //To map new indices to old
 #include <future>     //To enable multi-threading
 
 using namespace std;
+
+void createFolder(string dir) {
+	DWORD x = GetFileAttributesA(dir.c_str());
+	if (x == INVALID_FILE_ATTRIBUTES) { //Determines whether folder already exists
+		_mkdir(dir.c_str());
+	}
+}
 
 void fixInput(string x, int& s, int lower, int upper, string message) {
 	istringstream iss(x);
@@ -97,19 +105,22 @@ void writeIndividualFile() {
 	//	string item = "g Glazed Internal Double Timber Doors:DT-22:";
 	//	string item = "g Glazed Internal Double Sliding Door:";
 	//	string item = "g Glazed Internal Single Doors:";
-	string item = "g Glazed Internal Double Doors:";
+	//  string item = "g Glazed Internal Double Doors:";
 	//	string item = "g HB_WC_Cubicle_FrontOnly:";
 
 	//	string item = "g External signage2:External signage:4747993";
 
 	//	string item = "g Basic Roof:20-50-30-180_Reinforced_Bitumen_Membrane_Inverted_Roof_Covering_System (500 x 200mm  Paving):2324097:1";
 
+	string item = "g HB_Door_Concept_Int_Sgl_Solid_VP - DT-03:1010x2110mm RB DT 03c:9941156";
+
+
 	int length = (int)item.length();
 	/*
 	string objfile = "Z:\\IFC Data\\Inside\\InsideOrdered.obj";
 	string datafile = "Z:\\IFC Data\\Inside\\Doors\\gHB_WC_Cubicle_FrontOnly.obj";*/
-	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterials.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\Doors\\gGlazedInternalDoubleDoors.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\Doors\\gHB_Door_Concept_Int_Dbl_Solid.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Doors\\DiningDoor.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -923,14 +934,13 @@ int div_ceil(int numerator, int denominator)
 }
 
 void GetDimensions() {
-	string objfile1 = "Z:\\IFC Data\\Pathways1Origin.obj";
+	string objfile1 = "Z:\\IFC Data\\Inside\\Doors\\DiningDoorOrigin.obj";
 	ifstream obj(objfile1);
 	string line1;
 	float minx = 0, maxx = 0, miny = 0, maxy = 0, minz = 0, maxz = 0;
 	float vert[3];
 	int loopNum = 0;
 	while (!obj.eof()) {
-
 		getline(obj, line1);
 		string test = line1.substr(0, 2);
 		if (test == "v ") {
@@ -1037,7 +1047,7 @@ void CheckForErrors() {
 
 void DivideGeometry() {
 	bool writeNotInBoxOBJ = true;
-	string objfile = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrderedBest.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\Separated\\RoomContents.obj";
 
 	ifstream obj(objfile);
 
@@ -1391,7 +1401,7 @@ void DivideGeometry() {
 
 	for (int j = 0; j < numBoxes; j++) {
 		if (datafiles.size() != 0) {
-			string datafile = "Z:\\IFC Data\\InsideSupports\\Divided\\";
+			string datafile = "Z:\\IFC Data\\Inside\\Separated\\Rooms\\";;
 			if (j != numBoxes - 1 || !writeNotInBoxOBJ) {
 				datafile += to_string(j + 1) + ".obj";
 			}
@@ -1956,135 +1966,6 @@ void DivideGeometryOld() { //Uses far less RAM than new function, but slower
 	vertNormUVIndices.clear();
 }
 
-void PlaceAtOrigin() {
-	/*string objfile = "Z:\\IFC Data\\InsideBest1.obj";
-	string datafile = "Z:\\IFC Data\\InsideBest1AtOriginn.obj";*/
-
-	/*string objfile = "Z:\\IFC Data\\Pathways.obj";
-	string datafile = "Z:\\IFC Data\\PathwaysOrigin.obj";*/
-
-	string objfile = "Z:\\IFC Data\\InsideUncentred.obj";
-	string datafile = "Z:\\IFC Data\\InsideUncentredOrigin.obj";
-	string transformFile = "Z:\\IFC Data\\InsideUncentredOrigin.txt";
-
-	ifstream obj(objfile);
-	ofstream data(datafile);
-
-	string line;
-
-	int vertex = 0;
-	int validVertex = 0;
-	double triangle[3];
-	string a = " ";
-	string test = line.substr(0, 2);
-	string sub;
-	vector<string> lines;
-
-	double x1 = 0.0f;
-	double x2 = 0.0f;
-
-	double y1 = 0.0f;
-	double y2 = 0.0f;
-
-	double z1 = 0.0f;
-	double z2 = 0.0f;
-
-	bool first = true;
-
-	while (!obj.eof()) {
-		getline(obj, line);
-		lines.push_back(line);
-		test = line.substr(0, 2);
-		if (test == "v ") {
-			sub = line.substr(2);
-			double found;
-			int i = 0;
-			stringstream ss;
-			ss << sub;
-			string temp;
-			while (!ss.eof()) {
-				ss >> temp;
-				if (stringstream(temp) >> found) {
-					triangle[i] = found;
-					i++;
-				}
-				temp = "";
-			}
-			if (first) {
-				x1 = triangle[0];
-				x2 = triangle[0];
-
-				y1 = triangle[1];
-				y2 = triangle[1];
-
-				z1 = triangle[2];
-				z2 = triangle[2];
-				first = false;
-			}
-			else {
-				if (triangle[0] < x1) {
-					x1 = triangle[0];
-				}
-				if (triangle[0] > x2) {
-					x2 = triangle[0];
-				}
-
-				if (triangle[1] < y1) {
-					y1 = triangle[1];
-				}
-				if (triangle[1] > y2) {
-					y2 = triangle[1];
-				}
-
-				if (triangle[2] < z1) {
-					z1 = triangle[2];
-				}
-				if (triangle[2] > z2) {
-					z2 = triangle[2];
-				}
-			}
-		}
-	}
-
-	double midx = (x1 + x2) / 2.0f;
-	double midy = (y1 + y2) / 2.0f;
-	double midz = (z1 + z2) / 2.0f;
-
-	for (auto i : lines) {
-		string replace = i.substr(0, 2);
-		if (replace == "v ") {
-			sub = i.substr(2);
-			double found;
-			int i = 0;
-			stringstream ss;
-			ss << sub;
-			string temp;
-			while (!ss.eof()) {
-				ss >> temp;
-				if (stringstream(temp) >> found) {
-					triangle[i] = found;
-					i++;
-				}
-				temp = "";
-			}
-			sub = "v " + to_string(triangle[0] - midx) + " " + to_string(triangle[1] - midy) + " " + to_string(triangle[2] - midz);
-			data << sub << endl;
-		}
-		else {
-			data << i << endl;
-		}
-	}
-
-	ofstream tran(transformFile);
-	tran << to_string(midx) << endl;
-	tran << to_string(midy) << endl;
-	tran << to_string(midz) << endl;
-
-	tran.close();
-	data.close();
-	obj.close();
-}
-
 void CommaDelim() {
 	string x;
 	string objfile;
@@ -2220,8 +2101,8 @@ void CommaDelim() {
 }
 
 void Removeg() {
-	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsReducedMaterials.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsReducedMaterialsNog.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\Separated\\Rooms\\NotInBox.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Separated\\Rooms\\NotInBoxNog.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -2247,7 +2128,7 @@ void Removeg() {
 }
 
 void RemovegBatchProcess() {
-	string objdir = "Z:\\USB Data\\InsideDivided27\\";
+	string objdir = "Z:\\IFC Data\\Inside\\Separated\\Rooms\\";
 
 	string line;
 	string test;
@@ -2354,8 +2235,8 @@ void FindParticularObject() {
 }
 
 void Removen() {
-	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedNog.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNogNoNormals.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\CashMachineBestEverNoTCs.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\CashMachineBestEverNoTCsNoNormals.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -2373,8 +2254,8 @@ void Removen() {
 }
 
 void Removetc() {
-	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedNogNoNormals.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNogNoNormalsNoTCs.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\CashMachineBestEver.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\CashMachineBestEverNoTCs.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -2426,7 +2307,7 @@ void Replacegwitho() {
 }
 
 void SplitFiles() {
-	string objfile = "Z:\\IFC Data\\InsideUnfurnishedURTUV.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoorsNoGlitches.obj";
 
 	ifstream obj(objfile);
 
@@ -2524,7 +2405,7 @@ void SplitFiles() {
 
 	for (int j = 0; j < datafiles.size(); j++) {
 		if (datafiles[j].size() != 0) {
-			string datafile = "Z:\\IFC Data\\InsideUnfurnished\\" + to_string(j + 1) + ".obj";
+			string datafile = "Z:\\IFC Data\\Inside\\Separated\\" + to_string(j + 1) + ".obj";
 			ofstream data(datafile);
 			vertex = 0;
 			validVertex = 0;
@@ -2593,7 +2474,7 @@ void SplitFiles() {
 }
 
 void SplitIntoOneOBJPerObject() {
-	string objfile = "Z:\\IFC Data\\Outside\\Windows\\10 - atrium windows 3.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\28\\gGlazedInternalSlidingDoor.obj";
 
 	ifstream obj(objfile);
 
@@ -2675,7 +2556,7 @@ void SplitIntoOneOBJPerObject() {
 
 	for (int j = 0; j < datafiles.size(); j++) {
 		if (datafiles[j].size() != 0) {
-			string datafile = "Z:\\IFC Data\\Outside\\Windows\\10\\" + to_string(j + 1) + ".obj";
+			string datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\28\\" + to_string(j + 1) + ".obj";
 			ofstream data(datafile);
 			vertex = 0;
 			validVertex = 0;
@@ -2744,9 +2625,9 @@ void SplitIntoOneOBJPerObject() {
 }
 
 void CombineOBJs() {
-	string objfile1 = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrderedOldNew.obj";
-	string objfile2 = "Z:\\IFC Data\\InsideSupports\\Timber.obj";
-	string outfile = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrderedOldNew2.obj";
+	string objfile1 = "Z:\\IFC Data\\Inside\\InsideBest6.obj";
+	string objfile2 = "Z:\\IFC Data\\Inside\\Frames.obj";
+	string outfile = "Z:\\IFC Data\\Inside\\InsideBest7.obj";
 
 	ifstream obj1(objfile1);
 	ifstream obj2(objfile2);
@@ -2881,8 +2762,8 @@ void Reconciliation() {
 		//string objdir = "Z:\\USB Data\\Pipework\\Useful\\";
 		//string datafile = "Z:\\USB Data\\Pipework\\Useful\\PipeworkOrdered.obj";
 
-	string objdir = "Z:\\IFC Data\\InsideSupports\\";
-	string datafile = "Z:\\IFC Data\\InsideSupports\\InsideSupportsOrdered.obj";
+	string objdir = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\Frames\\";
+	string datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\Frames\\Frames.obj";
 
 	ofstream data(datafile);
 
@@ -2970,8 +2851,8 @@ void ReconciliationGroupg() {
 	string line;
 	string test;
 
-	string objdir = "Z:\\IFC Data\\InsideUnfurnished\\";
-	string datafile = "Z:\\IFC Data\\InsideUnfurnished\\InsideUnfurnishedReconGroupedg.obj";
+	string objdir = "Z:\\IFC Data\\Inside\\Separated\\WallsFloors\\";
+	string datafile = "Z:\\IFC Data\\Inside\\Separated\\WallsFloors\\OccludersGroupedg.obj";
 
 	ofstream data(datafile);
 
@@ -3070,8 +2951,8 @@ void BatchProcessSingleFileGroupg() {
 	string test;
 	string previous;
 
-	string indir = "Z:\\IFC Data\\Inside\\Reconcile\\";
-	string outdir = "Z:\\IFC Data\\Inside\\Reconcile\\Groupedg\\";
+	string indir = "Z:\\IFC Data\\Inside\\Separated\\Rooms\\";
+	string outdir = "Z:\\IFC Data\\Inside\\Separated\\Rooms\\Groupedg\\";
 
 	int numFiles = GetNumOfFiles(indir);
 
@@ -3106,13 +2987,45 @@ void BatchProcessSingleFileGroupg() {
 	}
 }
 
+void FindObjectinOBJList() {
+	string target = "g Cash_Register_10234:Cash_Register_10234:17224173";
+
+	string indir = "Z:\\IFC Data\\Inside\\Separated\\";
+
+	string line;
+
+	bool found = false;
+
+	int numFiles = GetNumOfFiles(indir);
+
+	for (int i = 1; i <= numFiles; i++) {
+		string infile = indir + to_string(i) + ".obj";
+		if (_access_s(infile.c_str(), 0) == 0) { //True if file exists
+			ifstream in(infile);
+			while (!in.eof()) {
+				getline(in, line);
+				if (line == target) {
+					cout << "File number is " << i << endl;
+					found = true;
+					break;
+				}
+			}
+			in.close();
+		}
+		if (found)
+			break;
+	}
+	if (!found)
+		cout << "Object not found!" << endl;
+}
+
 void SingleFileGroupg() {
 	string line;
 	string test;
 	string previous;
 
-	string objfile = "Z:\\IFC Data\\Inside\\Reconcile\\InsideOrderedNoDoors.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\Reconcile\\InsideOrderedNoDoorsGroupedg.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\Separated\\Rooms\\NotInBox.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Separated\\Rooms\\Groupedg\\NotInBoxGroupedg.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -3325,10 +3238,11 @@ void TranslateObject() {
 	//	string object = "g WAR_NewcastleLitterBin:WAR_NewcastleLitterBin:798431";
 	//	string object = "g WAR_NewcastleLitterBin:WAR_NewcastleLitterBin:798581";
 	//	string object = "g WAR_NewcastleLitterBin:WAR_NewcastleLitterBin:798523";
-	string object = "g WAR_NewcastleLitterBin:WAR_NewcastleLitterBin:798611";
+	//  string object = "g WAR_NewcastleLitterBin:WAR_NewcastleLitterBin:798611";
+	string object = "g HB_Door_Concept_Int_Sgl_Solid_VP - DT-03:1010x2110mm RB DT 03c:9941156";
 
-	string objfile = "Z:\\IFC Data\\PathwaysUltra3.obj";
-	string datafile = "Z:\\IFC Data\\PathwaysUltra4.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\Doors\\DiningDoorOrigin.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Doors\\DiningDoorOriginTranslated1.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -3342,7 +3256,8 @@ void TranslateObject() {
 	//	float Translate[3] = { 0.0f, -0.748f, 0.0f };
 	//	float Translate[3] = { 0.0f, -0.3278f, 0.0f };
 	//	float Translate[3] = { 0.0f, -0.2035f, 0.0f };
-	float Translate[3] = { 0.0f, -0.099f, 0.0f };
+	//  float Translate[3] = { 0.0f, -0.099f, 0.0f };
+	float Translate[3] = { -0.554424f, 0.0f, 0.0f };
 
 	bool match = false;
 
@@ -3381,115 +3296,53 @@ void TranslateObject() {
 	}
 }
 
-void TranslateObjects() {
-	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoors.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoorsNoGlitches.obj";
+void TranslateObjectsNew() {
+	/*string objfile = "Z:\\IFC Data\\Inside\\InsideBest.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideBest1.obj";*/
+
+	//string objfile = "Z:\\IFC Data\\Pathways\\PathwaysOrdered.obj";
+	//string datafile = "Z:\\IFC Data\\Pathways\\PathwaysOrdered1.obj";
+
+	string objfile = "Z:\\IFC Data\\Inside\\InsideBest5.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideBest6.obj";
 
 	vector<string> object;
 	vector<float> translate;
 	vector<vector<float>> translates;
 
-	object.push_back("Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495");
-	translate = { 0.0f, -0.00001f, 0.0f };
+	//object.push_back("g Compound Ceiling:CLG-03:17651448");
+	//translate = { 0.0f, 0.001f, 0.0f };
+	//translates.push_back(translate);
+
+	//object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 900mm Bench Height:6413199");
+	//translate = { 0.001f, 0.0f, 0.0f };
+	//translates.push_back(translate);
+
+
+	/*object.push_back("g AR_Plant_Tree1:WAR_LiquidambarStyraciflua:731878");
+	translate = { 0.0f, 0.385f, 0.0f };
+	translates.push_back(translate);*/
+
+
+	//object.push_back("g Floor:475 Thick Post Tension Slab:716246");
+	//translate = { 0.001f, 0.0f, 0.0f };
+	//translates.push_back(translate);
+
+	//object.push_back("g Basic Wall:300 THICK:829989");
+	//translate = { 0.0f, 0.001f, 0.0f };
+	//translates.push_back(translate);
+
+
+	object.push_back("g Basic Wall:HKB_InternalWall_Plaster (IWS08) + Host 200:15208446");
+	translate = { 0.001f, 0.0f, 0.0f };
 	translates.push_back(translate);
 
-	object.push_back("Floor:RB_FloorFinish_FL-09_LimestonePaving:5880942");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Floor:RB_FloorFinish_FL-01_Timber:2136040");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Basic_Wall:225 THICK:2856563");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Basic_Wall:215 Wide RC upstand:1830590");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Floor:RB_Floor_Build up_05_110mm Screed-260mm total:18996914");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Furn_Fixed_BaseUnit_BlankingPanel_Side:18x500x882mm:6428178");
-	translate = { -0.00001f, 0.0f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Furn_Fixed_Base_Unit_Dbl_Door_and_Drawer:1000mm_Wide for 850 / 900mm Bench Height:6427853");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Furn_Fixed_Base_Unit_Dbl_Door_and_Drawer:1000mm_Wide for 850 / 900mm Bench Height:6427800");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Furn_Fixed_Base_Unit_Dbl_Door_and_Drawer:1000mm_Wide for 850 / 900mm Bench Height:6427749");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Basic_Wall:RB-2f-NBS_H+H_140mm_ConcreteBlock_2_no_42mm_Linings of duraline on gypliner:1672134");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Basic_Wall:RB-3f-sts-149thk-twin-54dB-60FR-5800mh-Sev-no_ins:4628567");
-	translate = { 0.0f, 0.0f, -0.00001f };
-	translates.push_back(translate);
-
-	object.push_back("Compound_Ceiling:CLG-03:17651448");
-	translate = { 0.0f, 0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Compound_Ceiling:CLG-03:7348280");
-	translate = { 0.0f, 0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Compound_Ceiling:CLG-03:7348077");
-	translate = { 0.0f, 0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Rectangular_Mullion:240 x 100mm _Timber:11811679");
-	translate = { 0.00001f, 0.0f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Rectangular_Mullion:120 x 100mm _Timber:11811681");
-	translate = { 0.00001f, 0.0f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Rectangular_Mullion:120 x 100mm _Timber:11811683");
-	translate = { 0.00001f, 0.0f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Furn_Fixed_Base_Unit_Single_Door:500mm_Wide for 850 / 900mm Bench Height:12188757");
-	translate = { 0.00001f, 0.0f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Basic_Wall:150 WIDE CONTINUOUS RC UPSTAND:13284683");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Basic_Wall:150 WIDE CONTINUOUS RC UPSTAND:13286207");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Basic_Wall:RB-3d-sts-122thk-twin-50dB-60FR-4600mh-Sev-50_ins:8485227");
-	translate = { 0.0f, -0.001f, -0.0001f };
-	translates.push_back(translate);
-
-	object.push_back("Basic_Wall:RB-9c-above glazed screens-142thk-twin-50dB-60FR-Sev-no_ins:17059215");
-	translate = { 0.0f, -0.00001f, 0.0f };
-	translates.push_back(translate);
-
-	object.push_back("Basic_Wall:RB-07a- DryLining single board on gypliner 62.5mm no ins:5548762");
-	translate = { 0.0f, 0.0f, -0.00001f };
-	translates.push_back(translate);
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
 
 	string line;
-	string test = line.substr(0, 2);
+	string test;
 	string sub;
 
 	float vert[3];
@@ -3499,17 +3352,424 @@ void TranslateObjects() {
 	int loopNum;
 
 	while (!obj.eof()) {
-		match = false;
 		getline(obj, line);
 		test = line.substr(0, 2);
 		if (test == "g ") {
+			match = false;
 			loopNum = 0;
 			for (auto l : object) {
 				if (line == l) {
 					match = true;
 					break;
 				}
-				loopNum++;
+				else {
+					loopNum++;
+				}
+			}
+		}
+		if (test == "v " && match) {
+			sub = line.substr(2);
+			float found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					vert[i] = found;
+					i++;
+				}
+				temp = "";
+			}
+			sub = "v " + to_string(vert[0] - translates[loopNum][0]) + " " + to_string(vert[1] + translates[loopNum][1]) + " " + to_string(vert[2] + translates[loopNum][2]);
+			data << sub << endl;
+		}
+		else {
+			data << line << endl;
+		}
+	}
+}
+
+void TranslateObjects() {
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoors.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoorsNoGlitches.obj";
+
+	vector<string> object;
+	vector<float> translate;
+	vector<vector<float>> translates;
+
+	object.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495");
+	translate = { 0.0f, -0.00012f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:5880942");
+	translate = { 0.0f, -0.00017f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-01_Timber:2136040");
+	translate = { 0.0f, -0.0001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:18996914");
+	translate = { 0.0f, 0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_BaseUnit_BlankingPanel_Side:18x500x882mm:6428178");
+	translate = { 0.0001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door_and_Drawer:1000mm Wide for 850 / 900mm Bench Height:6427853");
+	translate = { 0.0f, -0.00001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door_and_Drawer:1000mm_Wide for 850 / 900mm Bench Height:6427800");
+	translate = { 0.0f, -0.00001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door_and_Drawer:1000mm_Wide for 850 / 900mm Bench Height:6427749");
+	translate = { 0.0f, -0.00001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-2f-NBS_H+H_140mm_ConcreteBlock_2_no_42mm_Linings of duraline on gypliner:1672134");
+	translate = { 0.0f, -0.00003f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-3f-sts-149thk-twin-54dB-60FR-5800mh-Sev-no_ins:4628567");
+	translate = { 0.0f, 0.0f, -0.0001f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:17651448");
+	translate = { 0.0f, 0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:7348280");
+	translate = { 0.0f, 0.00002f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:7348077");
+	translate = { 0.0f, 0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Rectangular Mullion:240 x 100mm _Timber:11811679");
+	translate = { -0.00001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Rectangular Mullion:120 x 100mm _Timber:11811681");
+	translate = { -0.00001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Rectangular Mullion:120 x 100mm _Timber:11811683");
+	translate = { -0.00001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Single_Door:500mm Wide for 850 / 900mm Bench Height:12188757");
+	translate = { 0.0f, 0.0f, 0.00005f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:150 WIDE CONTINUOUS RC UPSTAND:13284683");
+	translate = { 0.0f, -0.00001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:150 WIDE CONTINUOUS RC UPSTAND:13286207");
+	translate = { 0.0f, -0.00001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-3d-sts-122thk-twin-50dB-60FR-4600mh-Sev-50_ins:8485227");
+	translate = { 0.0f, -0.001f, -0.0001f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-9c-above glazed screens-142thk-twin-50dB-60FR-Sev-no_ins:17059215");
+	translate = { 0.0f, -0.0001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-07a- DryLining single board on gypliner 62.5mm no ins:5548762");
+	translate = { 0.0f, 0.0f, -0.00001f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:12186996");
+	translate = { 0.0f, 0.0f, 0.0005f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Single_Door:500mm Wide for 850 / 900mm Bench Height:12186990");
+	translate = { 0.0f, 0.0f, 0.0005f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-3c-sts-127thk-twin-45dB-60FR-4600mh-Sev-no_ins:1640405");
+	translate = { 0.0f, -0.001f, -0.00005f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:17636049");
+	translate = { 0.0f, -0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:17638435");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:11145113");
+	translate = { 0.0f, 0.00002f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:17643632");
+	translate = { 0.0f, 0.00001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_Floor Build Up_07a - RAF medium duty:19015549");
+	translate = { 0.0f, -0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Balustrade Capping GL 3:Balustrade Capping GL 3:12267550");
+	translate = { 0.0f, 0.00001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:Trench Heater - 112mm:12598978:9");
+	translate = { 0.0f, -0.00007f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826382");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826308");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826334");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826358");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826406");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826430");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826454");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826477");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826500");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826523");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826556");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:HKB_InternalWall_Plaster (IWS08) + 47.5 + 15 + Host 200:9989232");
+	translate = { 0.0f, 0.0f, -0.00005f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:HKB_InternalWall_Plaster (IWS08) + 47.5 + 15 + Host 200:15240752");
+	translate = { 0.0f, 0.0f, -0.00005f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:7453376");
+	translate = { -0.001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:7453227");
+	translate = { 0.0f, 0.0f, -0.001f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:10074681");
+	translate = { 0.0f, 0.0f, -0.001f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:10074680");
+	translate = { 0.0f, 0.0f, -0.001f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:10074903");
+	translate = { 0.0f, 0.0f, -0.001f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:6352949");
+	translate = { -0.0001f, 0.0f, -0.00005f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Single_Door:300mm Wide for 850 / 900mm Bench Height:6352951");
+	translate = { -0.0001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-07c-25-85-45-150 ExtWall IWL 70mm Stud 2 boards + ins:9726941");
+	translate = { 0.0f, 0.0f, 0.0001f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-07c-25-85-45-150 ExtWall IWL 70mm Stud 2 boards + ins:9718767");
+	translate = { 0.0f, 0.0f, 0.0001f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-08-plasterboard on thin gypliner 25mm:5601505");
+	translate = { -0.0001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_Floor Build Up_07a - RAF medium duty:19025216");
+	translate = { 0.0f, -0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Balustrade Sweep 05-06:Balustrade Sweep 05-06:12560179");
+	translate = { 0.00001f, 0.0001f, 0.00005f };
+	translates.push_back(translate);
+
+	object.push_back("g Balustrade Sweep:Balustrade Sweep:12512239");
+	translate = { 0.0015f, 0.005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Floor:RB_FloorFinish_FL-03b_Carpet:11669076");
+	translate = { 0.0f, 0.00004f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g 1499_Furn_Sofa_WorkPod_op2:Work Pod (4 Seater) 2630Wx1620Dx1360H:5933223");
+	translate = { 0.0f, -0.198f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g HKB_1499_CoatStand:HKB_1499_CoatStand:8397895");
+	translate = { 0.0f, -0.198f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g HKB_1499_CoatStand:HKB_1499_CoatStand:8397894");
+	translate = { 0.0f, -0.198f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:HKB_InternalWall_Plaster (IWS08) + 47.5 + 15 + Host 200:10246628");
+	translate = { 0.0f, 0.0f, -0.0007f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:12098149");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:17638449");
+	translate = { 0.0f, 0.00005f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-02:11884800");
+	translate = { 0.0f, 0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-02:7347925");
+	translate = { 0.0f, 0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:17643581");
+	translate = { 0.0f, 0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-3c-sts-127thk-twin-45dB-60FR-4600mh-Sev-no_ins:1672807");
+	translate = { 0.0f, 0.0f, 0.00002f };
+	translates.push_back(translate);
+
+	object.push_back("g 1499_Furn_Board_AVScreen:42\":8641171");
+	translate = { 0.0f, 0.176f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g 1499_Furn_Board_AVScreen:42\":8639562");
+	translate = { 0.0f, 0.176f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g 1499_Furn_Board_AVScreen:42\":8639609");
+	translate = { 0.0f, 0.176f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g 1499_Furn_Board_AVScreen:42\":8641026");
+	translate = { 0.0f, 0.176f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-3e-sts-122thk-twin-57dB-120FR-4700mh-Sev-25_ins:1635229");
+	translate = { 0.0f, -0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-3e-sts-122thk-twin-57dB-120FR-4700mh-Sev-25_ins:1634775");
+	translate = { 0.0f, -0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-3c-sts-127thk-twin-45dB-60FR-4600mh-Sev-no_ins:1736305");
+	translate = { 0.0f, -0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-3c-sts-127thk-twin-45dB-60FR-4600mh-Sev-no_ins:1736523");
+	translate = { 0.0f, -0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:RB-3c-sts-127thk-twin-45dB-60FR-4600mh-Sev-no_ins:2290208");
+	translate = { 0.0f, 0.0f, 0.001f };
+	translates.push_back(translate);
+
+	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 900mm Bench Height:16248745");
+	translate = { 0.001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Compound Ceiling:CLG-03:17507319");
+	translate = { 0.0f, 0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Living Stair Balustrade Detail:Living Stair Balustrade Detail:12551245");
+	translate = { 0.001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:HKB_InternalWall_Plaster (IWS08) + 62.5 +  Host 300:9975654");
+	translate = { -0.001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g RYD_Furn_CSReceptionDesk:RYD_Furn_CSReceptionDesk:7813338");
+	translate = { 0.0f, 0.0f, 0.001f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:Topakustik Lining:12558593");
+	translate = { 0.0f, 0.001f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:Topakustik Lining:12548638");
+	translate = { 0.0f, 0.0165f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:Topakustik Lining:12474366");
+	translate = { 0.0f, 0.0099f, 0.0f };
+	translates.push_back(translate);
+
+	ifstream obj(objfile);
+	ofstream data(datafile);
+
+	string line;
+	string test;
+	string sub;
+
+	float vert[3];
+
+	bool match = false;
+
+	int loopNum;
+
+	while (!obj.eof()) {		
+		getline(obj, line);
+		test = line.substr(0, 2);
+		if (test == "g ") {
+			match = false;
+			loopNum = 0;
+			for (auto l : object) {
+				if (line == l) {
+					match = true;
+					break;
+				}
+				else {
+					loopNum++;
+				}				
 			}
 		}
 		if (test == "v " && match) {
@@ -3804,11 +4064,11 @@ void DeleteObjectsHelperFunction(bool valid, ifstream& obj, ofstream& data, stri
 }
 
 void DeleteSingleObject() {
-	string deleteThis = "g ";
-	int length = (int)deleteThis.length();
+	string deleteThis = "g Cash_Register_10234:Cash_Register_10234:17224173";
+//	int length = (int)deleteThis.length();
 
-	string objfile = "Z:\\IFC Data\\PathwaysRotatedTranslated1.obj";
-	string datafile = "Z:\\IFC Data\\PathwaysRotatedTranslated2.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoorsNoGlitches.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoorsNoGlitchesNoCash.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -3832,8 +4092,8 @@ void DeleteSingleObject() {
 	while (!obj.eof()) {
 		lines.clear();
 		bool valid = false;
-		sub1 = line.substr(0, length);
-		if (line.length() > 2 && sub1 == "g ") {
+//		sub1 = line.substr(0, length);
+		if (line != deleteThis) {
 			lines.push_back(line);
 			valid = true;
 		}
@@ -4080,63 +4340,82 @@ void DeleteObjectsOutside() {
 }
 
 void DeleteObjectsInsideExtra() {
-	string objfile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterials.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedReducedMaterialsNoDoors.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\InsideBest3.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\InsideBest4.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
 
 	vector<string> toDelete;
 
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:2");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:3");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:4");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:5");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:6");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:7");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:8");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:9");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:10");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:11");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:12");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:13");
-	toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:14");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:2");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:3");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:4");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:5");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:6");
-	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751795");
-	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752630");
-	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751948");
-	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752250");
-	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752799");
-	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751795");
-	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752630");
-	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751264");
-	toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752349");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826308");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826334");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826358");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826382");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826430");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826454");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826477");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826500");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-08_Carpet:16826523");
-	toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:18996844");
-	toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:18996928");
-	toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:18996858");
-	toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:11737316");
-	toDelete.push_back("g Cast-In-Place Stair:Stair:3677855 Stringer 1");
-	toDelete.push_back("g Cast-In-Place Stair:Stair:3677855 Stringer 2");
-	toDelete.push_back("g Square Hollow Sections-Column:SHS140x140x5:11870104");
-	toDelete.push_back("g Basic Wall:HKB_Wall_Structural_225mm:9937258");
-	toDelete.push_back("g Floor:RB_Floor Build Up_07a - RAF medium duty:19011957");
-	toDelete.push_back("g Floor:RB_FloorFinish_FL-02c_Rubber:17538658");
-	toDelete.push_back("g Basic Wall:150 WIDE CONTINUOUS RC UPSTAND:13292395");
-	toDelete.push_back("g Basic Wall:Topakustik Lining:11376217");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:2");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:3");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:4");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:5");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:6");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:7");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:8");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:10");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:11");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:12");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:13");
+	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:14");
+	//toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:2");
+	//toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:3");
+	//toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:4");
+	//toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:5");
+	//toDelete.push_back("g Floor:RB_FloorFinish_FL-09_LimestonePaving:11850495:6");
+	//toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751795");
+	//toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752630");
+	//toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751948");
+	//toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752250");
+	//toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752799");
+	//toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751795");
+	//toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752630");
+	//toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12751264");
+	//toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752349");
+	//toDelete.push_back("g VWE-Event Space Grille:VWE-Event Space Grille:12752127");
+	//toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:18996844");
+	//toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:18996928");
+	//toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:18996858");
+	//toDelete.push_back("g Floor:RB_Floor Build up_05_110mm Screed-260mm total:11737316");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:3677855 Stringer 1");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:3677855 Stringer 2");
+	//toDelete.push_back("g Square Hollow Sections-Column:SHS140x140x5:11870104");
+	//toDelete.push_back("g Basic Wall:HKB_Wall_Structural_225mm:9937258");
+	//toDelete.push_back("g Floor:RB_Floor Build Up_07a - RAF medium duty:19011957");
+	//toDelete.push_back("g Floor:RB_FloorFinish_FL-02c_Rubber:17538658");
+	//toDelete.push_back("g Basic Wall:150 WIDE CONTINUOUS RC UPSTAND:13292395");
+	//toDelete.push_back("g Basic Wall:Topakustik Lining:11376217");
+	//toDelete.push_back("g Basic Wall:200 Wide continuous RC upstand:11218255");
+	//toDelete.push_back("g Basic Wall:200 Wide continuous RC upstand:11217594");
+	//toDelete.push_back("g Basic Wall:150 WIDE CONTINUOUS RC UPSTAND:11217674");
+	//toDelete.push_back("g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486327");
+	//toDelete.push_back("g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486414");
+	//toDelete.push_back("g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486276");
+	//toDelete.push_back("g Site_Bollard_Steel:150_Diameter-1000mm_Height:8486187");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:12360584 Stringer 1");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:12360584 Stringer 2");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:12360584 Stringer 3");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:12360584 Stringer 4");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:12360584 Stringer 5");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:12360584 Stringer 6");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:12360584 Stringer 9");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:12360584 Stringer 10");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:2086486 Stringer 3");
+	//toDelete.push_back("g Cast-In-Place Stair:Stair:2086486 Stringer 4");
+	//toDelete.push_back("g Floor:RB_Floor Build Up_07a - RAF medium duty:19024639");
+	//toDelete.push_back("g Basic Roof:40-45-45-175_Semi-intensive_Green_Roof_System:19040789");
+	//toDelete.push_back("g Floor:RB_FloorFinish_FL-03b_Carpet:11669076");
+	//toDelete.push_back("g Floor:RB_Floor Build up_07c RAF antistatic bonded vinyl:7613301");
+	//toDelete.push_back("g Floor:RB_Floor Build Up_07a - RAF medium duty:18999082");
+	//toDelete.push_back("g Floor:RB_Floor Build up_08_180mm with 80 screed:18998373");
+	//toDelete.push_back("g Bunn_BrewWISE_Coffee_Maker_11661:Bunn_BrewWISE_Coffee_Maker_11661:14278969");
+	//toDelete.push_back("g Bunn_BrewWISE_Coffee_Maker_11661:Bunn_BrewWISE_Coffee_Maker_11661:14279402");
+
+	toDelete.push_back("g Cash_Register_10234:Cash_Register_10234:17224173");
+
 
 	string deleteThis1 = "g Glazed Internal Double Timber Doors:DT-22:";
 	string deleteThis2 = "g Glazed Internal Double Sliding Door:";
@@ -4295,8 +4574,8 @@ void DeleteObjectsInsideExtraOld() {
 }
 
 void Listg() {
-	string objfile = "Z:\\USB Data\\InsideCompleteRotatedTranslated1.obj";
-	string datafile = "Z:\\USB Data\\InsideCompleteObjects.txt";
+	string objfile = "Z:\\IFC Data\\Inside\\Doors\\gHB_Door_Concept_Int_Dbl_Solid.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Doors\\DoorObjects.txt";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -4801,7 +5080,7 @@ void ReplaceMaterials() {
 }
 
 void Objectscount() {
-	string objfile = "Z:\\IFC Data\\OutsideComplete.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\CashMachineBestEver.obj";
 
 	ifstream obj(objfile);
 
@@ -4809,6 +5088,9 @@ void Objectscount() {
 	string test;
 
 	int objnum = 0;
+	int vertex = 0;
+	int texcoord = 0;
+	int normal = 0;
 
 	while (!obj.eof()) {
 		getline(obj, line);
@@ -4816,8 +5098,20 @@ void Objectscount() {
 		if (test == "g ") {
 			objnum++;
 		}
+		if (test == "v ") {
+			vertex++;
+		}
+		if (test == "vn") {
+			normal++;
+		}
+		if (test == "vt") {
+			texcoord++;
+		}
 	}
 	cout << "Number of objects: " << objnum << endl;
+	cout << "Number of vertices: " << vertex << endl;
+	cout << "Number of texture coordinates: " << texcoord << endl;
+	cout << "Number of normals: " << normal << endl;
 }
 
 void DivideMaterials1() {
@@ -5156,6 +5450,1482 @@ void DivideMaterials() {
 	datafiles.clear();
 }
 
+void FixCoffeeMachineGlitch() {
+	string objfile = "Z:\\IFC Data\\Inside\\CoffeeMachines.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\CoffeeMachinesFixed.obj";
+
+	ifstream obj(objfile);
+	ofstream data(datafile);
+
+	string line;
+	string test;
+	string sub;
+
+	float vert[3];
+
+	float Translate[3] = { 0.001f, 0.0f, 0.001f };
+
+	bool match = false;
+
+	int vertex = 0;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		test = line.substr(0, 2);
+		if (test == "v ") {
+			vertex++;
+			if (vertex >= 7713 && vertex <= 7868 || vertex >= 50835 && vertex <= 50990) {
+				sub = line.substr(2);
+				float found;
+				int i = 0;
+				stringstream ss;
+				ss << sub;
+				string temp;
+				while (!ss.eof()) {
+					ss >> temp;
+					if (stringstream(temp) >> found) {
+						vert[i] = found;
+						i++;
+					}
+					temp = "";
+				}
+				sub = "v " + to_string(vert[0] - Translate[0]) + " " + to_string(vert[1] + Translate[1]) + " " + to_string(vert[2] + Translate[2]);
+				data << sub << endl;
+			}
+			else {
+				data << line << endl;
+			}
+		}
+		else {
+			data << line << endl;
+		}
+	}
+}
+
+void SplitMesh(int fileNum = 0, int folderNum = 0) {
+	string objfile;
+
+	string out1file;
+	string out2file;
+	/*if (folderNum == 0) {
+		if (fileNum == 0) {
+			objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\1.obj";
+			out1file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Frame1.obj";
+			out2file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1.obj";
+		}
+		else {
+			objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\" + to_string(fileNum) + ".obj";
+			out1file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Frame" + to_string(fileNum) + ".obj";
+			out2file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + ".obj";
+		}
+	}
+	else {
+		if (fileNum == 0) {
+			objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\1.obj";
+			out1file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Frame1.obj";
+			out2file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1.obj";
+		}
+		else {
+			objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\" + to_string(fileNum) + ".obj";
+			out1file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Frame" + to_string(fileNum) + ".obj";
+			out2file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + ".obj";
+		}
+	}*/
+
+	if (folderNum == 0) {
+		if (fileNum == 0) {
+			objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\1.obj";
+			out1file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\DoorFrame1.obj";
+			out2file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\DoorFrame2.obj";
+		}
+		else {
+			objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + ".obj";
+			out1file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "a.obj";
+			out2file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "b.obj";
+		}
+	}
+	else {
+		if (fileNum == 0) {
+			objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1.obj";
+			out1file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1a.obj";
+			out2file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1b.obj";
+		}
+		else {
+			objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\" + to_string(fileNum) + ".obj";
+			out1file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "a.obj";
+			out2file = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "b.obj";
+		}
+	}
+
+	if (_access_s(objfile.c_str(), 0) != 0) { //True if file does not exist
+		return;
+	}
+	
+	ifstream obj(objfile);
+	ofstream out1(out1file);
+	ofstream out2(out2file);
+
+	vector<int> vert;
+
+	//vert.push_back(121); // 1, 2
+	//vert.push_back(167);
+
+	//vert.push_back(289);
+	//vert.push_back(383);
+
+
+	//vert.push_back(1); // 3, 8 and 11
+	//vert.push_back(48);
+	//
+	//vert.push_back(169);
+	//vert.push_back(262);
+
+
+	//vert.push_back(1); // 4
+	//vert.push_back(48);
+
+	//vert.push_back(73);
+	//vert.push_back(168);
+
+	//vert.push_back(169);
+	//vert.push_back(262);
+
+
+	//vert.push_back(25); // 5
+	//vert.push_back(72);
+
+	//vert.push_back(97);
+	//vert.push_back(192);
+
+
+	//vert.push_back(121); // 6, 7
+	//vert.push_back(168);
+
+	//vert.push_back(289);
+	//vert.push_back(384);
+
+
+	//vert.push_back(1); // 9
+	//vert.push_back(48);
+
+	//vert.push_back(73);
+	//vert.push_back(168);
+
+	//vert.push_back(1); // 10
+	//vert.push_back(144);
+
+	//vert.push_back(1); // DoorA
+	//vert.push_back(120);
+
+	//vert.push_back(1); // 13
+	//vert.push_back(24);
+
+	//vert.push_back(1); // 17, 18
+	//vert.push_back(120);
+
+	//vert.push_back(241);
+	//vert.push_back(264);
+
+	//vert.push_back(1); // 22
+	//vert.push_back(24);
+
+	vert.push_back(1); // 23, 24, 25 - 27
+	vert.push_back(24);
+
+	vert.push_back(49);
+	vert.push_back(96);
+
+
+	//vert.push_back(289); // DoorFrame1
+	//vert.push_back(384);
+
+	int firstVertexIndex = 0;
+	int firstUVIndex = 0;
+	int firstNormalIndex = 0;
+	int loopNum = 0;
+
+	bool firstVertex = true;
+	bool firstUV = true;
+	bool firstNormal = true;
+
+	int triangle[9];
+
+	string line;
+	string test;
+
+	vector<string> data;
+	vector<string> doorData;
+	vector<string> frameData;
+
+	vector<int> doorVertexIndices;
+	vector<int> doorUVIndices;
+	vector<int> doorNormalIndices;
+	vector<int> frameVertexIndices;
+	vector<int> frameUVIndices;
+	vector<int> frameNormalIndices;
+
+	map<int, int> doorVertexIndicesMap;
+	map<int, int> doorUVIndicesMap;
+	map<int, int> doorNormalIndicesMap;
+	map<int, int> frameVertexIndicesMap;
+	map<int, int> frameUVIndicesMap;
+	map<int, int> frameNormalIndicesMap;
+
+	bool frame;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		test = line.substr(0, 2);
+		if (test != "  ") {
+			if (test == "v " || test == "vt" || test == "vn") {
+				data.push_back(line);
+				if (test == "v " && firstVertex) {
+					firstVertexIndex = loopNum;
+					firstVertex = false;
+				}
+				if (test == "vt" && firstUV) {
+					firstUVIndex = loopNum;
+					firstUV = false;
+				}
+				if (test == "vn" && firstNormal) {
+					firstNormalIndex = loopNum;
+					firstNormal = false;
+				}
+				loopNum++;
+			}
+			else {
+				if (test == "# " || test == "mt" || test == "g " || test == "s ") {
+					if (test == "g ") {
+						out1 << line + " frame" << endl;
+						out2 << line + " door" << endl;
+					}
+					else {
+						out1 << line << endl;
+						out2 << line << endl;
+					}
+				}
+				if (test == "f ") {
+					test = line.substr(2);
+					string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
+					stringstream ss;
+					ss << line1;
+					string temp;
+					int found;
+					int j = 0;
+					frame = false;
+					while (!ss.eof()) {
+						ss >> temp;
+						if (stringstream(temp) >> found) {
+							for (int i = 0; i < vert.size(); ) {
+								if (found >= vert[i] && found <= vert[i + 1]) {
+									frame = true;
+									break;
+								}
+								i += 2;
+							}
+							triangle[j] = found;
+						}
+						temp = "";
+						j++;
+					}
+					
+					if (frame) {
+						frameData.push_back(line);
+						for (int l = 0; l < 9; l++) {
+							if (l == 0 || l == 3 || l == 6) {
+								frameVertexIndices.push_back(triangle[l]);
+							}
+							if (l == 1 || l == 4 || l == 7) {
+								frameUVIndices.push_back(triangle[l]);
+							}
+							if (l == 2 || l == 5 || l == 8) {
+								frameNormalIndices.push_back(triangle[l]);
+							}
+						}
+					}
+					else {
+						doorData.push_back(line);
+						for (int k = 0; k < 9; k++) {
+							if (k == 0 || k == 3 || k == 6) {
+								doorVertexIndices.push_back(triangle[k]);
+							}
+							if (k == 1 || k == 4 || k == 7) {
+								doorUVIndices.push_back(triangle[k]);
+							}
+							if (k == 2 || k == 5 || k == 8) {
+								doorNormalIndices.push_back(triangle[k]);
+							}
+						}		
+					}
+				}
+				if (test == "us") {
+					frameData.push_back(line);
+					doorData.push_back(line);
+				}
+			}
+		}
+	}
+
+	sort(frameVertexIndices.begin(), frameVertexIndices.end());
+	frameVertexIndices.erase(unique(frameVertexIndices.begin(), frameVertexIndices.end()), frameVertexIndices.end());
+	loopNum = 0;
+	for (auto i : frameVertexIndices) {
+		loopNum++;
+		frameVertexIndicesMap[i] = loopNum;
+		out1 << data[i + firstVertexIndex - 1] << endl;
+	}
+
+	sort(frameUVIndices.begin(), frameUVIndices.end());
+	frameUVIndices.erase(unique(frameUVIndices.begin(), frameUVIndices.end()), frameUVIndices.end());
+	loopNum = 0;
+	for (auto i : frameUVIndices) {
+		loopNum++;
+		frameUVIndicesMap[i] = loopNum;
+		out1 << data[i + firstUVIndex - 1] << endl;
+	}
+
+	sort(frameNormalIndices.begin(), frameNormalIndices.end());
+	frameNormalIndices.erase(unique(frameNormalIndices.begin(), frameNormalIndices.end()), frameNormalIndices.end());
+	loopNum = 0;
+	for (auto i : frameNormalIndices) {
+		loopNum++;
+		frameNormalIndicesMap[i] = loopNum;
+		out1 << data[i + firstNormalIndex - 1] << endl;
+	}
+
+	sort(doorVertexIndices.begin(), doorVertexIndices.end());
+	doorVertexIndices.erase(unique(doorVertexIndices.begin(), doorVertexIndices.end()), doorVertexIndices.end());
+	loopNum = 0;
+	for (auto i : doorVertexIndices) {
+		loopNum++;
+		doorVertexIndicesMap[i] = loopNum;
+		out2 << data[i + firstVertexIndex - 1] << endl;
+	}
+
+	sort(doorUVIndices.begin(), doorUVIndices.end());
+	doorUVIndices.erase(unique(doorUVIndices.begin(), doorUVIndices.end()), doorUVIndices.end());
+	loopNum = 0;
+	for (auto i : doorUVIndices) {
+		loopNum++;
+		doorUVIndicesMap[i] = loopNum;
+		out2 << data[i + firstUVIndex - 1] << endl;
+	}
+
+	sort(doorNormalIndices.begin(), doorNormalIndices.end());
+	doorNormalIndices.erase(unique(doorNormalIndices.begin(), doorNormalIndices.end()), doorNormalIndices.end());
+	loopNum = 0;
+	for (auto i : doorNormalIndices) {
+		loopNum++;
+		doorNormalIndicesMap[i] = loopNum;
+		out2 << data[i + firstNormalIndex - 1] << endl;
+	}
+
+	for (int i = 0; i < frameData.size(); i++) {
+		test = frameData[i].substr(0, 2);
+		if (test == "us") {
+			if (i + 1 < frameData.size()) {
+				if (frameData[i + 1].substr(0, 2) != "us") {
+					out1 << frameData[i] << endl;
+				}
+			}	
+		}
+		if (test == "f ") {
+			test = frameData[i].substr(2);
+			string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
+			stringstream ss;
+			ss << line1;
+			string temp;
+			int found;
+			int i = 0;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					if (i == 0 || i == 3 || i == 6) {
+						triangle[i] = found;
+					}
+					if (i == 1 || i == 4 || i == 7) {
+						triangle[i] = found;
+					}
+					if (i == 2 || i == 5 || i == 8) {
+						triangle[i] = found;
+					}
+					i++;
+				}
+				temp = "";
+			}
+			line = "f " + to_string(frameVertexIndicesMap[triangle[0]]) + '/' + to_string(frameUVIndicesMap[triangle[1]]) + '/' + to_string(frameNormalIndicesMap[triangle[2]]) + ' '
+						+ to_string(frameVertexIndicesMap[triangle[3]]) + '/' + to_string(frameUVIndicesMap[triangle[4]]) + '/' + to_string(frameNormalIndicesMap[triangle[5]]) + ' '
+						+ to_string(frameVertexIndicesMap[triangle[6]]) + '/' + to_string(frameUVIndicesMap[triangle[7]]) + '/' + to_string(frameNormalIndicesMap[triangle[8]]);
+			out1 << line << endl;
+		}
+	}
+
+	for (int i = 0; i < doorData.size(); i++) {
+		test = doorData[i].substr(0, 2);
+		if (test == "us") {
+			if (i + 1 < doorData.size()) {
+				if (doorData[i + 1].substr(0, 2) != "us") {
+					out2 << doorData[i] << endl;
+				}
+			}
+		}
+		if (test == "f ") {
+			test = doorData[i].substr(2);
+			string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
+			stringstream ss;
+			ss << line1;
+			string temp;
+			int found;
+			int i = 0;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					if (i == 0 || i == 3 || i == 6) {
+						triangle[i] = found;
+					}
+					if (i == 1 || i == 4 || i == 7) {
+						triangle[i] = found;
+					}
+					if (i == 2 || i == 5 || i == 8) {
+						triangle[i] = found;
+					}
+					i++;
+				}
+				temp = "";
+			}
+			line = "f " + to_string(doorVertexIndicesMap[triangle[0]]) + '/' + to_string(doorUVIndicesMap[triangle[1]]) + '/' + to_string(doorNormalIndicesMap[triangle[2]]) + ' '
+				+ to_string(doorVertexIndicesMap[triangle[3]]) + '/' + to_string(doorUVIndicesMap[triangle[4]]) + '/' + to_string(doorNormalIndicesMap[triangle[5]]) + ' '
+				+ to_string(doorVertexIndicesMap[triangle[6]]) + '/' + to_string(doorUVIndicesMap[triangle[7]]) + '/' + to_string(doorNormalIndicesMap[triangle[8]]);
+			out2 << line << endl;
+		}
+	}
+
+	data.clear();
+	doorData.clear();
+	frameData.clear();
+
+	doorVertexIndices.clear();
+	doorUVIndices.clear();
+	doorNormalIndices.clear();
+	frameVertexIndices.clear();
+	frameUVIndices.clear();
+	frameNormalIndices.clear();
+
+	doorVertexIndicesMap.clear();
+	doorUVIndicesMap.clear();
+	doorNormalIndicesMap.clear();
+	frameVertexIndicesMap.clear();
+	frameUVIndicesMap.clear();
+	frameNormalIndicesMap.clear();
+
+	obj.close();
+	out1.close();
+	out2.close();
+}
+
+void BatchSplitMesh() {
+	int numFiles = 200;
+	int numFolders = 26;
+
+	for (int j = 26; j <= numFolders; j++) {
+		for (int i = 1; i <= numFiles; i++) {
+			SplitMesh(i, j);
+		}
+	}
+}
+
+void GroupFilesIntoFolders() {
+	string objdir = "Z:\\IFC Data\\Inside\\Doors\\Split\\";
+
+	createFolder(objdir + "Groups");
+
+	string line;
+	string test;
+	string objfile;
+	string outfile;
+	string typefile = objdir + "Groups\\Types.txt";
+
+	ofstream type(typefile);
+
+	vector<string> data;
+	vector<string> preGs;
+
+	bool repeated = false;
+	bool first = true;
+
+	int gtype;
+	int numFiles = GetNumOfFiles(objdir);
+	int numFilesNewDir;
+
+	for (int i = 1; i <= numFiles; i++) {
+		objfile = objdir + to_string(i) + ".obj";
+		if (_access_s(objfile.c_str(), 0) == 0) { //True if file exists
+			ifstream obj(objfile);
+			while (!obj.eof()) {
+				getline(obj, line);
+				data.push_back(line);
+				test = line.substr(0, 2);
+				if (test == "g ") {
+					string object(line.begin(), find(line.begin(), line.end(), ':'));
+					gtype = 1;
+					if (first) {
+						repeated = false;
+						first = false;
+					}
+					else {
+						for (auto i : preGs) {
+							if (object == i) {
+								repeated = true;
+								break;
+							}
+							gtype++;
+						}
+					}					
+					if (!repeated) {
+						preGs.push_back(object);
+						type << gtype << ' ' << object << endl;
+						createFolder(objdir + "Groups\\" + to_string(gtype));
+						outfile = objdir + "Groups\\" + to_string(gtype) + "\\1.obj";
+					}
+					else {
+						numFilesNewDir = GetNumOfFiles(objdir + "Groups\\" + to_string(gtype) + "\\") + 1;
+						outfile = objdir + "Groups\\" + to_string(gtype) + "\\" + to_string(numFilesNewDir) + ".obj";
+						repeated = false;
+					}
+				}
+			}
+			ofstream out(outfile);
+			for (auto j : data) {
+				out << j << endl;
+			}
+			data.clear();
+			out.close();
+			obj.close();
+		}
+	}
+	type.close();
+}
+
+float GetxExtent(const vector<vector<float>>& vertices) {
+	float minx = 0, maxx = 0;
+	int loopNum = 0;
+	for (auto i : vertices) {
+		loopNum++;
+		if (loopNum == 1) {
+			minx = i[0], maxx = i[0];
+		}
+		else {
+			if (i[0] > maxx) {
+				maxx = i[0];
+			}
+			if (i[0] < minx) {
+				minx = i[0];
+			}
+		}
+	}
+	return maxx - minx;
+}
+
+void PlaceAtOrigin(int fileNum = 0, int folderNum = 0, bool doorA = true, bool singleDoor = false) {
+	string objfile;
+	string datafile;
+	string transformFile;
+
+	if (!singleDoor) {
+		if (doorA) {
+			if (folderNum == 0) {
+				if (fileNum == 0) {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1a.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1aOrigin.obj";
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1aTransform.txt";
+				}
+				else {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "a.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "aOrigin.obj";
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "aTransform.txt";
+				}
+			}
+			else {
+				if (fileNum == 0) {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1a.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1aOrigin.obj";
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1aTransform.txt";
+				}
+				else {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "a.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "aOrigin.obj";
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "aTransform.txt";
+				}
+			}
+		}
+		else {
+			if (folderNum == 0) {
+				if (fileNum == 0) {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1b.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1bOrigin.obj";
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1bTransform.txt";
+				}
+				else {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "b.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "bOrigin.obj";
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "bTransform.txt";
+				}
+			}
+			else {
+				if (fileNum == 0) {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1b.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1bOrigin.obj";
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1bTransform.txt";
+				}
+				else {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "b.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "bOrigin.obj";
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "bTransform.txt";
+				}
+			}
+		}
+	}
+	else {
+		if (folderNum == 0) {
+			if (fileNum == 0) {
+				objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1.obj";
+				datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1Origin.obj";
+				transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1Transform.txt";
+			}
+			else {
+				objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + ".obj";
+				datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "Origin.obj";
+				transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "Transform.txt";
+			}
+		}
+		else {
+			if (fileNum == 0) {
+				objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1.obj";
+				datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1Origin.obj";
+				transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1Transform.txt";
+			}
+			else {
+				objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + ".obj";
+				datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "Origin.obj";
+				transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "Transform.txt";
+			}
+		}
+	}
+	
+
+	if (_access_s(objfile.c_str(), 0) != 0) { //True if file does not exist
+		return;
+	}
+
+	ifstream obj(objfile);
+	ofstream data(datafile);
+	ofstream tran(transformFile);
+
+	string line;
+
+	int vertex = 0;
+	int validVertex = 0;
+	double triangle[3];
+	string a = " ";
+	string test = line.substr(0, 2);
+	string sub;
+	vector<string> lines;
+
+	double x1 = 0.0f;
+	double x2 = 0.0f;
+
+	double y1 = 0.0f;
+	double y2 = 0.0f;
+
+	double z1 = 0.0f;
+	double z2 = 0.0f;
+
+	bool first = true;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		lines.push_back(line);
+		test = line.substr(0, 2);
+		if (test == "v ") {
+			sub = line.substr(2);
+			double found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					triangle[i] = found;
+					i++;
+				}
+				temp = "";
+			}
+			if (first) {
+				x1 = triangle[0];
+				x2 = triangle[0];
+
+				y1 = triangle[1];
+				y2 = triangle[1];
+
+				z1 = triangle[2];
+				z2 = triangle[2];
+				first = false;
+			}
+			else {
+				if (triangle[0] < x1) {
+					x1 = triangle[0];
+				}
+				if (triangle[0] > x2) {
+					x2 = triangle[0];
+				}
+
+				if (triangle[1] < y1) {
+					y1 = triangle[1];
+				}
+				if (triangle[1] > y2) {
+					y2 = triangle[1];
+				}
+
+				if (triangle[2] < z1) {
+					z1 = triangle[2];
+				}
+				if (triangle[2] > z2) {
+					z2 = triangle[2];
+				}
+			}
+		}
+	}
+
+	double midx = (x1 + x2) / 2.0f;
+	double midy = (y1 + y2) / 2.0f;
+	double midz = (z1 + z2) / 2.0f;
+
+	for (auto i : lines) {
+		string replace = i.substr(0, 2);
+		if (replace == "v ") {
+			sub = i.substr(2);
+			double found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					triangle[i] = found;
+					i++;
+				}
+				temp = "";
+			}
+			sub = "v " + to_string(triangle[0] - midx) + " " + to_string(triangle[1] - midy) + " " + to_string(triangle[2] - midz);
+			data << sub << endl;
+		}
+		else {
+			data << i << endl;
+		}
+	}
+
+	tran << to_string(midx * -1.1f) << endl;
+	tran << to_string(midy * 1.1f) << endl;
+	tran << to_string(midz * 1.1f) << endl;
+
+	tran.close();
+	data.close();
+	obj.close();
+}
+
+void FindTransformAngle(int fileNum = 0, int folderNum = 0, bool doorA = true, bool singleDoor = false) {
+	string objfile;
+	string datafile;
+	string transformFile1;
+	string transformFile2;
+
+	if (!singleDoor) {
+		if (doorA) {
+			if (folderNum == 0) {
+				if (fileNum == 0) {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1aOrigin.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor1aTransformed.obj";
+					transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1aTransform.txt";
+					transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1aTransform1.txt";
+				}
+				else {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "aOrigin.obj";
+					if (fileNum == 1) {
+						datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor" + to_string(fileNum) + "aTransformed.obj";
+					}
+					else {
+						datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "aTransformed.obj";
+					}
+					transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "aTransform.txt";
+					transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "aTransform1.txt";
+				}
+			}
+			else {
+				if (fileNum == 0) {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1aOrigin.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1aTransformed.obj";
+					transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1aTransform.txt";
+					transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1aTransform1.txt";
+				}
+				else {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "aOrigin.obj";
+					if (fileNum == 1) {
+						datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor" + to_string(fileNum) + "aTransformed.obj";
+					}
+					else {
+						datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "aTransformed.obj";
+					}
+					transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "aTransform.txt";
+					transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "aTransform1.txt";
+				}
+			}
+		}
+		else {
+			if (folderNum == 0) {
+				if (fileNum == 0) {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1bOrigin.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor1bTransformed.obj";
+					transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1bTransform.txt";
+					transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1bTransform1.txt";
+				}
+				else {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "bOrigin.obj";
+					if (fileNum == 1) {
+						datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor" + to_string(fileNum) + "bTransformed.obj";
+					}
+					else {
+						datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "bTransformed.obj";
+					}
+					transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "bTransform.txt";
+					transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "bTransform1.txt";
+				}
+			}
+			else {
+				if (fileNum == 0) {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1bOrigin.obj";
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1bTransformed.obj";
+					transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1bTransform.txt";
+					transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1bTransform1.txt";
+				}
+				else {
+					objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "bOrigin.obj";
+					if (fileNum == 1) {
+						datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor" + to_string(fileNum) + "bTransformed.obj";
+					}
+					else {
+						datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "bTransformed.obj";
+					}
+					transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "bTransform.txt";
+					transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "bTransform1.txt";
+				}
+			}
+		}
+	}
+	else{
+		if (folderNum == 0) {
+			if (fileNum == 0) {
+				objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1Origin.obj";
+				datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor1Transformed.obj";
+				transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1Transform.txt";
+				transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door1Transform1.txt";
+			}
+			else {
+				objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "Origin.obj";
+				if (fileNum == 1) {
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor" + to_string(fileNum) + "Transformed.obj";
+				}
+				else {
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "Transformed.obj";
+				}
+				transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "Transform.txt";
+				transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "Transform1.txt";
+			}
+		}
+		else {
+			if (fileNum == 0) {
+				objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1Origin.obj";
+				datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1Transformed.obj";
+				transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1Transform.txt";
+				transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door1Transform1.txt";
+			}
+			else {
+				objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "Origin.obj";
+				if (fileNum == 1) {
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor" + to_string(fileNum) + "Transformed.obj";
+				}
+				else {
+					datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "Transformed.obj";
+				}
+				transformFile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "Transform.txt";
+				transformFile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "Transform1.txt";
+			}
+		}
+	}
+	
+	if (_access_s(objfile.c_str(), 0) != 0 || _access_s(transformFile1.c_str(), 0) != 0) { //True if file does not exist
+		return;
+	}
+
+	ifstream transin(transformFile1);
+
+	string transform[3];
+	string line;
+
+	int loopNum = 0;
+	do {
+		getline(transin, line);
+		transform[loopNum] = line;
+		loopNum++;
+	} while (loopNum < 3);
+
+	transin.close();
+
+	ifstream obj(objfile);
+	ofstream data(datafile);
+	ofstream transout(transformFile2);
+
+	vector<string> lines;
+	vector<float> vertex;
+	vector<float> rotVertex;
+	vector<float> normal;
+	vector<vector<float>> vertices;
+	vector<vector<float>> rotVertices;
+	vector<vector<float>> normals;
+		
+	string test;
+	string sub;
+
+	float theta;
+	float bestTheta;
+	float bestTheta2;
+	float xExtent;
+	float minxExtent = 9999999.9f;
+
+	bool match = false;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		lines.push_back(line);
+		test = line.substr(0, 2);
+		if (test == "v ") {
+			sub = line.substr(2);
+			float found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					vertex.push_back(found);	
+					rotVertex.push_back(found);
+				}
+				temp = "";
+			}
+			vertices.push_back(vertex);
+			rotVertices.push_back(rotVertex);
+			vertex.clear();
+			rotVertex.clear();
+		}
+		if (test == "vn") {
+			sub = line.substr(2);
+			float found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					normal.push_back(found);
+				}
+				temp = "";
+			}
+			normals.push_back(normal);
+			normal.clear();
+		}
+	}
+
+	for (int a = 0; a <= 180; a++) {
+		int j = 0;
+		theta = a * 0.017453292f;
+		for (auto i : vertices) {
+			rotVertices[j][0] = cos(theta) * i[0] + sin(theta) * i[2];
+			rotVertices[j][2] = -sin(theta) * i[0] + cos(theta) * i[2];
+			j++;
+		}
+		xExtent = GetxExtent(rotVertices);
+
+		if (xExtent < minxExtent) {
+			minxExtent = xExtent;
+			bestTheta = theta;
+		}
+	}
+
+	for (int a = 0; a <= 2000; a++) {
+		int j = 0;
+		theta = bestTheta + (a - 1000) * 0.0000017453292f;
+		for (auto i : vertices) {
+			rotVertices[j][0] = cos(theta) * i[0] + sin(theta) * i[2];			
+			rotVertices[j][2] = -sin(theta) * i[0] + cos(theta) * i[2];
+			j++;
+		}
+		xExtent = GetxExtent(rotVertices);
+
+		if (xExtent < minxExtent) {
+			minxExtent = xExtent;
+			bestTheta2 = theta;
+		}
+	}
+
+	for (auto i : transform) {
+		transout << i << endl;
+	}
+	transout << to_string(bestTheta2 * 57.2957795f) << endl;
+
+	float x, z;
+	for (auto& i : vertices) {
+		x = cos(bestTheta2) * i[0] + sin(bestTheta2) * i[2];		
+		z = -sin(bestTheta2) * i[0] + cos(bestTheta2) * i[2];
+		i[0] = x;
+		i[2] = z;
+	}
+	for (auto& i : normals) {
+		x = cos(bestTheta2) * i[0] + sin(bestTheta2) * i[2];
+		z = -sin(bestTheta2) * i[0] + cos(bestTheta2) * i[2];
+		i[0] = x;
+		i[2] = z;
+	}
+
+	int j = 0;
+	int k = 0;
+	for (auto i : lines) {
+		test = i.substr(0, 2);
+		if (test == "v ") {
+			line = "v " + to_string(vertices[j][0]) + ' ' + to_string(vertices[j][1]) + ' ' + to_string(vertices[j][2]);
+			data << line << endl;
+			j++;
+		}
+		else if (test == "vn") {
+			line = "vn " + to_string(normals[k][0]) + ' ' + to_string(normals[k][1]) + ' ' + to_string(normals[k][2]);
+			data << line << endl;
+			k++;
+		}
+		else {
+			data << i << endl;
+		}
+	}
+
+	lines.clear();
+	vertex.clear();
+	rotVertex.clear();
+	normal.clear();
+	vertices.clear();
+	rotVertices.clear();
+	normals.clear();
+
+	transout.close();
+	obj.close();
+	data.close();
+}
+
+void MakePrefabs(int fileNum = 0, int folderNum = 0, bool doorA = true, bool singleDoor = false) {
+	string infile1;
+	string infile2;
+	string outfile;
+
+	if (!singleDoor) {
+		if (doorA) {
+			if (folderNum == 0) {
+				createFolder("Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Prefabs");
+				if (fileNum == 0) {
+					infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor1aTransformed1.PREFAB";
+					infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door2aTransform2.txt";
+					outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Prefabs\\Door2aTransformed1.PREFAB";
+				}
+				else {
+					infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor1aTransformed1.PREFAB";
+					infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "aTransform2.txt";
+					outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Prefabs\\Door" + to_string(fileNum) + "aTransformed1.PREFAB";
+				}
+			}
+			else {
+				createFolder("Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Prefabs");
+				if (fileNum == 0) {
+					infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1aTransformed1.PREFAB";
+					infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door2aTransform2.txt";
+					outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Prefabs\\Door2aTransformed1.PREFAB";
+				}
+				else {
+					infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1aTransformed1.PREFAB";
+					infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "aTransform2.txt";
+					outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Prefabs\\Door" + to_string(fileNum) + "aTransformed1.PREFAB";
+				}
+			}
+		}
+		else {
+			if (folderNum == 0) {
+				createFolder("Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Prefabs");
+				if (fileNum == 0) {
+					infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor1bTransformed1.PREFAB";
+					infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door2bTransform2.txt";
+					outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Prefabs\\Door2bTransformed1.PREFAB";
+				}
+				else {
+					infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor1bTransformed1.PREFAB";
+					infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "bTransform2.txt";
+					outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Prefabs\\Door" + to_string(fileNum) + "bTransformed1.PREFAB";
+				}
+			}
+			else {
+				createFolder("Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Prefabs");
+				if (fileNum == 0) {
+					infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1bTransformed1.PREFAB";
+					infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door2bTransform2.txt";
+					outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Prefabs\\Door2bTransformed1.PREFAB";
+				}
+				else {
+					infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1bTransformed1.PREFAB";
+					infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "bTransform2.txt";
+					outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Prefabs\\Door" + to_string(fileNum) + "bTransformed1.PREFAB";
+				}
+			}
+		}
+	}
+	else {
+		if (folderNum == 0) {
+			createFolder("Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Prefabs");
+			if (fileNum == 0) {
+				infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor1Transformed1.PREFAB";
+				infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door2Transform2.txt";
+				outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Prefabs\\Door2Transformed1.PREFAB";
+			}
+			else {
+				infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\MainDoor1Transformed1.PREFAB";
+				infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Door" + to_string(fileNum) + "Transform2.txt";
+				outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\1\\Prefabs\\Door" + to_string(fileNum) + "Transformed1.PREFAB";
+			}
+		}
+		else {
+			createFolder("Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Prefabs");
+			if (fileNum == 0) {
+				infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1Transformed1.PREFAB";
+				infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door2Transform2.txt";
+				outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Prefabs\\Door2Transformed1.PREFAB";
+			}
+			else {
+				infile1 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1Transformed1.PREFAB";
+				infile2 = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(fileNum) + "Transform2.txt";
+				outfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Prefabs\\Door" + to_string(fileNum) + "Transformed1.PREFAB";
+			}
+		}
+	}
+
+	if (_access_s(infile1.c_str(), 0) != 0 || _access_s(infile2.c_str(), 0) != 0) { //True if file does not exist
+		return;
+	}
+
+	ifstream in2(infile2);
+	ofstream out(outfile);
+
+	string line;
+	string test;
+
+	string transform[4];
+
+	int loopNum = 0;
+	do {
+		getline(in2, line);
+		transform[loopNum] = line;
+		loopNum++;
+	} while (loopNum < 4);
+
+	float angle;
+	stringstream(transform[3]) >> angle;
+	float halfangle = 0.00872665f * angle;
+	in2.close();
+
+	ifstream in1(infile1);
+
+	bool first = true;
+	while (!in1.eof()) {
+		getline(in1, line);
+		test = line.substr(0, 15);
+		if (test == "  m_LocalRotati" && first) {
+			out << "  m_LocalRotation: {x: 0, y: " + to_string(sin(halfangle)) + ", z: 0, w: " + to_string(cos(halfangle)) + "}" << endl;
+		}
+		else if (test == "  m_LocalPositi" && first) {
+			out << "  m_LocalPosition: {x: " + transform[0] + ", y: " + transform[1] + ", z: " + transform[2] + "}" << endl;
+		}
+		else if (test == "  m_LocalScale:" && first) {
+			out << "  m_LocalScale: {x: 110, y: 110, z: 110}" << endl;
+			first = false;
+		}
+		else {
+			out << line << endl;
+		}
+	}
+
+	in1.close();
+	out.close();
+}
+
+void ListginFileList() {
+	string line;
+	string test;
+
+	string objdir = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\28\\";
+	string datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\28\\Listg.txt";
+
+	ofstream data(datafile);
+
+	int numFiles = GetNumOfFiles(objdir);	
+
+	int objNum = 0;
+
+	for (int i = 1; i <= numFiles; i++) {
+		string objfile = objdir + to_string(i) + ".obj";
+		if (_access_s(objfile.c_str(), 0) == 0) { //True if file exists
+			ifstream obj(objfile);
+			while (!obj.eof()) {
+				getline(obj, line);
+				test = line.substr(0, 2);
+				if (test == "g ") {
+					objNum++;
+					data << objNum << ", " << line << endl;
+					break;
+				}			
+			}
+			obj.close();
+		}
+	}
+	data.close();
+}
+
+void BatchFindTransform(int folderNum = 28, bool doorA = 0, bool singleDoor = 1) {
+	int numFiles = 200;
+	int numFolders = folderNum;
+
+	for (int j = folderNum; j <= numFolders; j++) {
+		for (int i = 1; i <= numFiles; i++) {
+			PlaceAtOrigin(i, j, doorA, singleDoor);
+			FindTransformAngle(i, j, doorA, singleDoor);
+		}
+	}
+}
+
+void BatchMakePrefabs(int folderNum = 28, bool doorA = 0, bool singleDoor = 1) {
+	int numFiles = 200;
+	int numFolders = folderNum;
+
+	for (int j = folderNum; j <= numFolders; j++) {
+		for (int i = 1; i <= numFiles; i++) {
+			MakePrefabs(i, j, doorA, singleDoor);
+		}
+	}
+}
+
+void FixDoorHinges(int folderNum = 28, bool doorA = 0, bool alt = 0, bool singleDoor = 1) {
+	int fileNum = 150;
+	string objfile;
+	string datafile;
+	string transformFile;
+
+	if (!singleDoor) {
+		if (doorA) {
+			objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1aTransformed.obj";
+			datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1aTransformed1.obj";
+		}
+		else {
+			objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1bTransformed.obj";
+			datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1bTransformed1.obj";
+		}
+	}
+	else {
+		objfile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1Transformed.obj";
+		datafile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\MainDoor1Transformed1.obj";
+	}
+
+	if (_access_s(objfile.c_str(), 0) != 0) { //True if file does not exist
+		return;
+	}
+
+	ifstream obj(objfile);
+	ofstream data(datafile);
+
+	string line;
+	string test;
+	string sub;
+
+	double vertex[3];
+	double vertexZ = 0.0f;;
+	double maxZ = 0.0f;
+	vector<string> lines;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		lines.push_back(line);
+		test = line.substr(0, 2);
+		if (test == "v ") {
+			sub = line.substr(2);
+			double found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					if (i == 2) {
+						vertexZ = found;
+					}
+					i++;
+				}
+				temp = "";
+			}
+			if (vertexZ > maxZ) {
+				maxZ = vertexZ;
+			}
+		}
+	}
+
+	for (auto i : lines) {
+		string replace = i.substr(0, 2);
+		if (replace == "v ") {
+			sub = i.substr(2);
+			double found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					vertex[i] = found;
+					i++;
+				}
+				temp = "";
+			}
+			if (!alt) {
+				if (!singleDoor) {
+					if (doorA) {
+						sub = "v " + to_string(vertex[0]) + " " + to_string(vertex[1]) + " " + to_string(vertex[2] - maxZ);
+					}
+					else {
+						sub = "v " + to_string(vertex[0]) + " " + to_string(vertex[1]) + " " + to_string(vertex[2] + maxZ);
+					}
+				}
+				else {
+					sub = "v " + to_string(vertex[0]) + " " + to_string(vertex[1]) + " " + to_string(vertex[2] - maxZ);
+				}			
+			}
+			else {
+				if (!singleDoor) {
+					if (doorA) {
+						sub = "v " + to_string(vertex[0]) + " " + to_string(vertex[1]) + " " + to_string(vertex[2] + maxZ);
+					}
+					else {
+						sub = "v " + to_string(vertex[0]) + " " + to_string(vertex[1]) + " " + to_string(vertex[2] - maxZ);
+					}
+				}
+				else {
+					sub = "v " + to_string(vertex[0]) + " " + to_string(vertex[1]) + " " + to_string(vertex[2] + maxZ);
+				}
+			}			
+			data << sub << endl;
+		}
+		else {
+			data << i << endl;
+		}
+	}
+
+	lines.clear();
+
+	data.close();
+	obj.close();
+
+	string transform[4];
+
+	for (int i = 1; i < fileNum; i++) {
+		if (!singleDoor) {
+			if (doorA) {
+				transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(i) + "aTransform1.txt";
+			}
+			else {
+				transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(i) + "bTransform1.txt";
+			}
+		}
+		else {
+			transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(i) + "Transform1.txt";
+		}
+		
+		if (_access_s(transformFile.c_str(), 0) != 0) { //True if file does not exist
+			continue;
+		}
+		ifstream tran(transformFile);
+		for (auto& j : transform) {
+			getline(tran, line);
+			j = line;
+		}
+		tran.close();
+
+		double fixedX;
+		double fixedZ;
+		float angle;
+		stringstream(transform[0]) >> fixedX;
+		stringstream(transform[2]) >> fixedZ;
+		stringstream(transform[3]) >> angle;
+
+		if (!alt) {
+			if (!singleDoor) {
+				if (doorA) {
+					fixedX += maxZ * 1.1f * sin(angle * 0.017453292f);
+					fixedZ += maxZ * 1.1f * cos(angle * 0.017453292f);
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(i) + "aTransform2.txt";
+				}
+				else {
+					fixedX -= maxZ * 1.1f * sin(angle * 0.017453292f);
+					fixedZ -= maxZ * 1.1f * cos(angle * 0.017453292f);
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(i) + "bTransform2.txt";
+				}
+			}
+			else {
+				fixedX += maxZ * 1.1f * sin(angle * 0.017453292f);
+				fixedZ += maxZ * 1.1f * cos(angle * 0.017453292f);
+				transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(i) + "Transform2.txt";
+			}			
+		}
+		else {
+			if (!singleDoor) {
+				if (doorA) {
+					fixedX -= maxZ * 1.1f * sin(angle * 0.017453292f);
+					fixedZ -= maxZ * 1.1f * cos(angle * 0.017453292f);
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(i) + "aTransform2.txt";
+				}
+				else {
+					fixedX += maxZ * 1.1f * sin(angle * 0.017453292f);
+					fixedZ += maxZ * 1.1f * cos(angle * 0.017453292f);
+					transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(i) + "bTransform2.txt";
+				}
+			}
+			else {
+				fixedX -= maxZ * 1.1f * sin(angle * 0.017453292f);
+				fixedZ -= maxZ * 1.1f * cos(angle * 0.017453292f);
+				transformFile = "Z:\\IFC Data\\Inside\\Doors\\Split\\Groups\\" + to_string(folderNum) + "\\Door" + to_string(i) + "Transform2.txt";
+			}			
+		}
+
+		ofstream fixedtran(transformFile);
+		fixedtran << to_string(fixedX) << endl;
+		fixedtran << transform[1] << endl;
+		fixedtran << to_string(fixedZ) << endl;
+		fixedtran << transform[3] << endl;
+		fixedtran.close();
+	}
+}
+
 int main() {
 	string x;
 	int s;
@@ -5206,10 +6976,22 @@ int main() {
 		cout << "40. Divide materials\n";
 		cout << "41. Move object to individual OBJ\n";
 		cout << "42. Translate objects\n";
-		cout << "43. Terminate the program\n";
+		cout << "43. Fix coffee machine glitch\n";
+		cout << "44. Group g with batch process\n";
+		cout << "45. Find object in list of OBJ files\n";
+		cout << "46. Split mesh into separate obj files\n";
+		cout << "47. Batch process splitting mesh into separate obj files\n";
+		cout << "48. Group files into folders\n";
+		cout << "49. Find transform angle\n";
+		cout << "50. Batch process finding transform\n";
+		cout << "51. Make prefabs\n";
+		cout << "52. Batch process making prefabs\n";
+		cout << "53. Fix hinges\n";
+		cout << "54. List g in list of files\n";
+		cout << "55. Terminate the program\n";
 		cout << "********************************************************************************************************************\n";
 		cin >> x;
-		fixInput(x, s, 1, 43, "Invalid input! Please enter an integer from the above menu: ");
+		fixInput(x, s, 1, 55, "Invalid input! Please enter an integer from the above menu: ");
 
 		switch (s)
 		{
@@ -5476,13 +7258,85 @@ int main() {
 			break;
 		case 42:
 			system("cls");
-			TranslateObjects();
+			TranslateObjectsNew();
+			system("pause");
+			system("cls");
+			break;
+		case 43:
+			system("cls");
+			FixCoffeeMachineGlitch();
+			system("pause");
+			system("cls");
+			break;
+		case 44:
+			system("cls");
+			BatchProcessSingleFileGroupg();
+			system("pause");
+			system("cls");
+			break;		
+		case 45:
+			system("cls");
+			FindObjectinOBJList();
+			system("pause");
+			system("cls");
+			break;	
+		case 46:
+			system("cls");
+			SplitMesh();
+			system("pause");
+			system("cls");
+			break;	
+		case 47:
+			system("cls");
+			BatchSplitMesh();
+			system("pause");
+			system("cls");
+			break;
+		case 48:
+			system("cls");
+			GroupFilesIntoFolders();
+			system("pause");
+			system("cls");
+			break;		
+		case 49:
+			system("cls");
+			FindTransformAngle();
+			system("pause");
+			system("cls");
+			break;	
+		case 50:
+			system("cls");
+			BatchFindTransform();
+			system("pause");
+			system("cls");
+			break;	
+		case 51:
+			system("cls");
+			MakePrefabs();
+			system("pause");
+			system("cls");
+			break;	
+		case 52:
+			system("cls");
+			BatchMakePrefabs();
+			system("pause");
+			system("cls");
+			break;	
+		case 53:
+			system("cls");
+			FixDoorHinges();
+			system("pause");
+			system("cls");
+			break;		
+		case 54:
+			system("cls");
+			ListginFileList();
 			system("pause");
 			system("cls");
 			break;			
-		case 43:
+		case 55:
 			break;
 		}  //No default case is required due to the above fixInput function
-	} while (s != 43);
+	} while (s != 55);
 	return 0;
 }
