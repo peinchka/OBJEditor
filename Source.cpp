@@ -1145,14 +1145,39 @@ void DivideGeometry() {
 	bool writeToNearestBox = true;
 	string dir = "Z:\\IFC Data\\Inside\\Separated2\\";
 	//string dir = "Z:\\IFC Data\\Outside\\";
-	string objfile = dir + "Rooms13Expensive.obj";
+	string objfile = dir + "Rooms20.obj";
+
+	//string dir = "Z:\\IFC Data\\Lighting\\Separated\\Game\\";
+	//string objfile = dir + "Game.obj";
 
 	ifstream obj(objfile);
 
 	vector<float> box;
 	vector<vector<float>> boxes;
 
-	box = { 16.77f, 37.23f, -1.05f, 7.18f, -31.05f, -7.86f };
+	//box = { -30.0f, 30.0f, -1.05f, 7.18f, -40.0f, 40.0f }; //Lights
+	//boxes.push_back(box);
+
+	//box = { -30.0f, 30.0f, 7.20f, 10.83f, -40.0f, 40.0f };
+	//boxes.push_back(box);
+
+	//box = { -30.0f, 30.0f, 11.3f, 14.85f, -40.0f, 40.0f };
+	//boxes.push_back(box);
+
+	//box = { -30.0f, 30.0f, 15.3f, 18.86f, -40.0f, 40.0f };
+	//boxes.push_back(box);
+
+	//box = { -30.0f, 30.0f, 19.3f, 22.86f, -40.0f, 40.0f };
+	//boxes.push_back(box);
+
+	//box = { -30.0f, 30.0f, 27.3f, 30.86f, -40.0f, 40.0f };
+	//boxes.push_back(box);
+
+	//box = { -30.0f, 30.0f, 30.87f, 40.0f, -40.0f, 40.0f };
+	//boxes.push_back(box);
+
+
+	box = { 16.77f, 37.23f, -1.05f, 7.18f, -31.05f, -7.86f }; // Inside
 	boxes.push_back(box);
 
 	box = { 16.77f, 37.23f, 7.20f, 10.83f, -31.05f, -7.86f };
@@ -1171,6 +1196,9 @@ void DivideGeometry() {
 	boxes.push_back(box);
 
 	box = { 16.77f, 37.23f, 27.3f, 30.86f, -31.05f, -7.86f };
+	boxes.push_back(box);
+
+	box = { 16.77f, 37.23f, 30.87f, 40.0f, -31.05f, -7.86f };
 	boxes.push_back(box);
 
 
@@ -1199,6 +1227,9 @@ void DivideGeometry() {
 	box = { -7.86f, 15.5f, 27.3f, 30.86f, -33.18f, -15.36f };
 	boxes.push_back(box);
 
+	box = { -7.86f, 15.5f, 30.87f, 40.0f, -33.18f, -15.36f };
+	boxes.push_back(box);
+
 
 
 	box = { -34.32f, -14.95f, -1.05f, 7.18f, -34.36f, -1.09f };
@@ -1222,6 +1253,9 @@ void DivideGeometry() {
 	box = { -33.59f, -7.9f, 27.3f, 30.86f, -35.2f, -17.37f };
 	boxes.push_back(box);
 
+	box = { -33.59f, -7.9f, 30.87f, 40.0f, -35.2f, -17.37f };
+	boxes.push_back(box);
+
 
 
 	box = { -37.45f, -16.36f, -1.05f, 7.18f, -0.64f, 32.73f };
@@ -1240,6 +1274,7 @@ void DivideGeometry() {
 	boxes.push_back(box);
 
 
+
 	box = { -12.0f, 12.0f, -1.0f, 20.0f, -1.0f, 18.0f };
 	boxes.push_back(box);
 
@@ -1254,9 +1289,106 @@ void DivideGeometry() {
 
 
 
+		//box = { 16.77f, 37.23f, -1.05f, 7.18f, -31.05f, -7.86f }; //Expensive objects - 1
+		//boxes.push_back(box);
+
+		//box = { 16.77f, 37.23f, 7.20f, 10.83f, -31.05f, -7.86f }; //2
+		//boxes.push_back(box);
+
+		//box = { 16.77f, 37.23f, 11.3f, 14.85f, -31.05f, -7.86f }; //3
+		//boxes.push_back(box);
+
+		//box = { 16.77f, 37.23f, 15.3f, 18.86f, -31.05f, -7.86f }; //4
+		//boxes.push_back(box);
+
+		//box = { 16.77f, 37.23f, 19.3f, 22.86f, -31.05f, -7.86f }; //5
+		//boxes.push_back(box);
+
+		//box = { 16.77f, 37.23f, 23.3f, 26.86f, -31.05f, -7.86f }; //6
+		//boxes.push_back(box);
+
+		//box = { 16.77f, 37.23f, 27.3f, 30.86f, -31.05f, -7.86f }; //7
+		//boxes.push_back(box);
+
+		//box = { -7.86f, 15.5f, -1.05f, 7.18f, -33.18f, -23.36f }; //8
+		//boxes.push_back(box);
+
+		//box = { -7.86f, 15.5f, -1.05f, 7.18f, -23.35f, -15.36f }; //9
+		//boxes.push_back(box);
+
+		//box = { -7.86f, 15.5f, 7.20f, 10.83f, -33.18f, -15.36f }; //10
+		//boxes.push_back(box);
+
+		//box = { -7.86f, 15.5f, 11.3f, 14.85f, -33.18f, -15.36f }; //11
+		//boxes.push_back(box);
+
+		//box = { -7.86f, 15.5f, 15.3f, 18.86f, -33.18f, -15.36f }; //12
+		//boxes.push_back(box);
+
+		//box = { -7.86f, 15.5f, 19.3f, 22.86f, -33.18f, -15.36f }; //13
+		//boxes.push_back(box);
+
+		//box = { -7.86f, 15.5f, 23.3f, 26.86f, -33.18f, -15.36f }; //14
+		//boxes.push_back(box);
+
+		//box = { -7.86f, 15.5f, 27.3f, 30.86f, -33.18f, -15.36f }; //15
+		//boxes.push_back(box);
+
+		//box = { -34.32f, -14.95f, -1.05f, 7.18f, -34.36f, -1.09f }; //16
+		//boxes.push_back(box);
+
+		//box = { -34.32f, -14.95f, 7.20f, 10.83f, -34.36f, -1.09f }; //17
+		//boxes.push_back(box);
+
+		////box = { -34.32f, -14.95f, 11.3f, 14.85f, -34.36f, -1.09f }; //18
+		////boxes.push_back(box);
+
+		//box = { -34.32f, -14.95f, 11.3f, 14.85f, -34.36f, -25.34f }; //18a
+		//boxes.push_back(box);
+
+		//box = { -34.32f, -14.95f, 11.3f, 14.85f, -25.36f, -1.09f }; //18b
+		//boxes.push_back(box);
 
 
+		//box = { -34.32f, -14.95f, 15.3f, 18.86f, -34.36f, -1.09f }; //19
+		//boxes.push_back(box);
 
+		//box = { -34.32f, -14.95f, 19.3f, 22.86f, -34.36f, -1.09f }; //20
+		//boxes.push_back(box);
+
+		//box = { -33.59f, -7.9f, 23.3f, 26.86f, -35.2f, -17.37f }; //21
+		//boxes.push_back(box);
+
+		//box = { -33.59f, -7.9f, 27.3f, 30.86f, -35.2f, -17.37f }; //22
+		//boxes.push_back(box);
+
+		//box = { -37.45f, -16.36f, -1.05f, 7.18f, -0.64f, 32.73f }; //23
+		//boxes.push_back(box);
+
+		//box = { -37.45f, -16.36f, 7.20f, 10.83f, -0.64f, 32.73f }; //24
+		//boxes.push_back(box);
+
+		//box = { -37.45f, -16.36f, 11.3f, 14.85f, -0.64f, 32.73f }; //25
+		//boxes.push_back(box);
+
+		//box = { -37.45f, -16.36f, 15.3f, 18.86f, -0.64f, 32.73f }; //26
+		//boxes.push_back(box);
+
+		//box = { -37.45f, -16.36f, 19.3f, 22.86f, -0.64f, 32.73f }; //27
+		//boxes.push_back(box);
+
+		//box = { -12.0f, 12.0f, -1.0f, 20.0f, -1.0f, 18.0f }; //28
+		//boxes.push_back(box);
+
+		//box = { -12.0f, 12.0f, -1.0f, 5.0f, -15.36f, 32.0f }; //29
+		//boxes.push_back(box);
+
+		//box = { -12.0f, 12.0f, 5.0f, 25.0f, -15.36f, 32.0f }; //30
+		//boxes.push_back(box);
+
+		//box = { 12.0f, 24.0f, -1.0f, 20.0f, -15.36f, 32.0f }; //31
+		//boxes.push_back(box);
+	
 
 
 	//box = { -37.45f, 0.36f, -1.0f, 40.0f, -15.36f, 32.0f }; //Divide building in two
@@ -1573,7 +1705,7 @@ void DivideGeometry() {
 
 	for (int j = 0; j < numBoxes; j++) {
 		if (datafiles.size() != 0) {
-			string datafile = dir + "NewSplit\\";
+			string datafile = dir + "NewSplit3\\";
 			if (j != numBoxes - 1 || !writeNotInBoxOBJ) {
 				datafile += to_string(j + 1) + ".obj";
 			}
@@ -2476,8 +2608,8 @@ void FindParticularObject() {
 }
 
 void Removen() {
-	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Sink.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\SinkNoNormals.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\Copies\\GroupedByMaterial\\ExpensiveDecimatedDividedNoNNoTC.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\Copies\\GroupedByMaterial\\ExpensiveDecimatedDividedNoNNoTC1.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -2495,8 +2627,8 @@ void Removen() {
 }
 
 void Removetc() {
-	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\SinkNoNormals.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\SinkNoNormalsNoTCs.obj";
+	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\Copies\\GroupedByMaterial\\ExpensiveDecimatedDividedNoNNoTC1.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\Copies\\GroupedByMaterial\\ExpensiveDecimatedDividedNoNNoTC2.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -2548,11 +2680,11 @@ void Replacegwitho() {
 }
 
 void SplitFiles() {
-	string objfile = "Z:\\IFC Data\\Inside\\InsideBest11.obj";
+	string objfile = "Z:\\IFC Data\\Lighting\\Separated\\1.obj";
 
 	ifstream obj(objfile);
 
-	vector<vector<string>> datafiles(500);
+	vector<vector<string>> datafiles(50000);
 
 	int gtype = 0;
 
@@ -2637,7 +2769,7 @@ void SplitFiles() {
 			validNormal += normal;
 			normal = 0;
 			gtype = 0;
-			test = line.substr(0, 20);
+			test = line.substr(0, 50);
 			for (auto i : preGs) {
 				if (test == i) {
 					repeated = true;
@@ -2658,7 +2790,7 @@ void SplitFiles() {
 
 	for (int j = 0; j < datafiles.size(); j++) {
 		if (datafiles[j].size() != 0) {
-			string datafile = "Z:\\IFC Data\\Inside\\Separated2\\" + to_string(j + 1) + ".obj";
+			string datafile = "Z:\\IFC Data\\Lighting\\Separated\\Split\\" + to_string(j + 1) + ".obj";
 			ofstream data(datafile);
 			vertex = 0;
 			validVertex = 0;
@@ -2740,11 +2872,12 @@ void SplitFiles() {
 }
 
 void SplitIntoOneOBJPerObject() {
-	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms13NoCashSplitMat.obj";
+	string objdir = "Z:\\IFC Data\\Lighting\\Separated\\Wall2Mat\\";
+	string objfile = objdir + "24Split.obj";
 
 	ifstream obj(objfile);
 
-	vector<vector<string>> datafiles(100000);
+	vector<vector<string>> datafiles(20000);
 
 	int gtype = -1;
 
@@ -2835,7 +2968,7 @@ void SplitIntoOneOBJPerObject() {
 
 	for (int j = 0; j < datafiles.size(); j++) {
 		if (datafiles[j].size() != 0) {
-			string datafile = "Z:\\IFC Data\\Inside\\Separated2\\SingleItems\\" + to_string(j + 1) + ".obj";
+			string datafile = objdir + "Separated\\" + to_string(j + 1) + ".obj";
 			ofstream data(datafile);
 			vertex = 0;
 			validVertex = 0;
@@ -2929,9 +3062,13 @@ void CombineOBJs() {
 	//string objfile2 = "Z:\\IFC Data\\Inside\\Separated2\\Frame1.obj";
 	//string outfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms5.obj";
 
-	string objfile1 = "Z:\\IFC Data\\Inside\\Separated2\\Rooms13.obj";
-	string objfile2 = "Z:\\IFC Data\\Inside\\Separated2\\Expensive.obj";
-	string outfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms13Expensive.obj";
+	//string objfile1 = "Z:\\IFC Data\\Inside\\Separated2\\Rooms16.obj";
+	//string objfile2 = "Z:\\IFC Data\\Inside\\Separated2\\InsideSupportsRooms.obj";
+	//string outfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms17.obj";
+
+	string objfile1 = "Z:\\IFC Data\\Inside\\Separated2\\Rooms19.obj";
+	string objfile2 = "Z:\\IFC Data\\Inside\\Separated2\\StaticLights.obj";
+	string outfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms20.obj";
 
 	//string objfile1 = "Z:\\IFC Data\\InsideSupports\\InsideSupportsBest8.obj";
 	//string objfile2 = "Z:\\IFC Data\\InsideSupports\\Column.obj";
@@ -3083,8 +3220,12 @@ void Reconciliation() {
 		//string objdir = "Z:\\USB Data\\Pipework\\Useful\\";
 		//string datafile = "Z:\\USB Data\\Pipework\\Useful\\PipeworkOrdered.obj";
 
-	string objdir = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\";
-	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\Expensive.obj";
+	/*string objdir = "Z:\\IFC Data\\InsideSupports\\Separated\\Rooms\\";
+	string datafile = "Z:\\IFC Data\\InsideSupports\\Separated\\Rooms\\InsideSupportsRooms.obj";*/
+
+
+	string objdir = "Z:\\IFC Data\\Lighting\\StaticLights\\"; 
+	string datafile = "Z:\\IFC Data\\Lighting\\StaticLights\\StaticLights.obj";
 
 	//string objdir = "Z:\\IFC Data\\Outside\\SplitMaterials\\";
 	//string datafile = objdir + "OutsideSplitMat.obj";
@@ -3105,7 +3246,7 @@ void Reconciliation() {
 		vertex = 0;
 		texcoord = 0;
 		normal = 0;
-		string objfile = objdir + to_string(i) + "a.obj";
+		string objfile = objdir + to_string(i) + ".obj";
 		if (_access_s(objfile.c_str(), 0) == 0) { //True if file exists
 			ifstream obj(objfile);
 			if (first) {
@@ -3764,8 +3905,11 @@ void TranslateObjectsNew() {
 	//string objfile = "Z:\\IFC Data\\Pathways\\PathwaysOrdered.obj";
 	//string datafile = "Z:\\IFC Data\\Pathways\\PathwaysOrdered1.obj";
 
-	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms11.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms12.obj";
+/*	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms14.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms15.obj"*/;
+
+	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\WallFloors\\Occluders6.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\WallFloors\\Occluders7.obj";
 
 	//string objfile = "Z:\\ElevatorFrontRotated.obj";
 	//string datafile = "Z:\\ElevatorFrontRotatedTranslated.obj";
@@ -3773,6 +3917,22 @@ void TranslateObjectsNew() {
 	vector<string> object;
 	vector<float> translate;
 	vector<vector<float>> translates;
+
+	object.push_back("g Basic Wall:RB-3d-sts-122thk-twin-50dB-60FR-4600mh-Sev-50_ins:934488");
+	translate = { -0.001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Ceiling:Ceilings to U/S of Stair 1:7842033");
+	translate = { -0.005f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	object.push_back("g Basic Wall:HKB_InternalWall_Plaster (IWS08) + Host 300:9991171");
+	translate = { -0.001f, 0.0f, 0.0f };
+	translates.push_back(translate);
+
+	//object.push_back("g 1499_Furn_ReceptionDesk_01:Reception Desk:7557947");
+	//translate = { 0.0f, 0.002f, 0.0f };
+	//translates.push_back(translate);
 
 	//object.push_back("g front");
 	//translate = { 0.0f, 0.0f, -201.0f };
@@ -3782,17 +3942,21 @@ void TranslateObjectsNew() {
 	//translate = { -0.0001f, 0.0f, 0.0f };
 	//translates.push_back(translate);
 
-	object.push_back("g Furn_Fixed_Base_Unit_Single_Door:500mm Wide for 850 / 900mm Bench Height:7652761");
-	translate = { 0.001f, 0.0f, 0.0f };
-	translates.push_back(translate);
+	//object.push_back("g Window Reveal 02:Type 2:14025034");
+	//translate = { 0.01f, 0.0f, 0.0f };
+	//translates.push_back(translate);
 
-	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:7652760");
-	translate = { 0.001f, 0.0f, 0.0f };
-	translates.push_back(translate);
+	//object.push_back("g Furn_Fixed_Base_Unit_Single_Door:500mm Wide for 850 / 900mm Bench Height:7652761");
+	//translate = { 0.001f, 0.0f, 0.0f };
+	//translates.push_back(translate);
 
-	object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:7652759");
-	translate = { 0.001f, 0.0f, 0.0f };
-	translates.push_back(translate);
+	//object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:7652760");
+	//translate = { 0.001f, 0.0f, 0.0f };
+	//translates.push_back(translate);
+
+	//object.push_back("g Furn_Fixed_Base_Unit_Dbl_Door:1000mm Wide for 850 / 900mm Bench Height:7652759");
+	//translate = { 0.001f, 0.0f, 0.0f };
+	//translates.push_back(translate);
 
 	//object.push_back("g Compound Ceiling:CLG-03:17651448");
 	//translate = { 0.0f, 0.001f, 0.0f };
@@ -5100,8 +5264,11 @@ void DeleteObjectsOutside() {
 }
 
 void DeleteObjectsInsideExtra() {
-	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms12.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms13.obj";
+
+	string objfile = "Z:\\IFC Data\\Lighting\\Lights.obj";
+	string datafile = "Z:\\IFC Data\\Lighting\\LightsFixed.obj";
+	//string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms18.obj";
+	//string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms19.obj";
 
 	//string objfile = "Z:\\IFC Data\\Inside\\Separated2\\WallFloors\\Occluders5.obj";
 	//string datafile = "Z:\\IFC Data\\Inside\\Separated2\\WallFloors\\Occluders6.obj";
@@ -5110,6 +5277,8 @@ void DeleteObjectsInsideExtra() {
 	ofstream data(datafile);
 
 	vector<string> toDelete;
+
+	toDelete.push_back("g NGB_LightingFixtures_LampPost-Alya:Cone 680mm:17426284");
 
 	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978");
 	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:2");
@@ -5177,7 +5346,7 @@ void DeleteObjectsInsideExtra() {
 	//toDelete.push_back("g Bunn_BrewWISE_Coffee_Maker_11661:Bunn_BrewWISE_Coffee_Maker_11661:14278969");
 	//toDelete.push_back("g Bunn_BrewWISE_Coffee_Maker_11661:Bunn_BrewWISE_Coffee_Maker_11661:14279402");
 
-	/*toDelete.push_back("g Cash_Register_10234:Cash_Register_10234:17224173");*/
+	//toDelete.push_back("g Cash_Register_10234:Cash_Register_10234:17224173");
 
 	//toDelete.push_back("g Basic Wall:150 WIDE CONTINUOUS RC UPSTAND:13286207");
 	//toDelete.push_back("g Floor:RB_Floor Build Up_07a - RAF medium duty:19010167");
@@ -5198,10 +5367,14 @@ void DeleteObjectsInsideExtra() {
 	//toDelete.push_back("g 1499_Furn_Board_Artwork:1000x1500:7356505");
 	//toDelete.push_back("g 1499_Furn_Board_Artwork:1000x1500:7356519");
 
-	/*toDelete.push_back("g System Panel:Single Glazing 12mm:11637849");*/
-//	toDelete.push_back("g Floor:RB_FloorFinish_FL-02c_Rubber:17540224");
+	//toDelete.push_back("g System Panel:Single Glazing 12mm:11637849");
+	//toDelete.push_back("g Floor:RB_FloorFinish_FL-02c_Rubber:17540224");
 
-	toDelete.push_back("g porcelain");
+	//toDelete.push_back("g porcelain");
+
+	/*toDelete.push_back("g Rectangular Mullion:25 x 25mm Metal Glazed Partition:13702748");
+	toDelete.push_back("g Rectangular Mullion:25 x 25mm Metal Glazed Partition:13702655");
+	toDelete.push_back("g System Panel:Glazed:13702922");*/
 
 	string line;
 
@@ -5380,8 +5553,14 @@ void Materialscount() {
 }
 
 void ListMaterials() {
-	string mtlfile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsTotallyOrderedMTL.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsTotallyOrderedMTL.txt";
+	//string mtlfile = "Z:\\IFC Data\\Inside\\Separated2\\NewSplit2\\GroupedByMaterial\\29.obj";
+	//string datafile = "Z:\\IFC Data\\Inside\\Separated2\\NewSplit2\\GroupedByMaterial\\29MTL.txt";
+
+	//string mtlfile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsTotallyOrderedMTL.obj";
+	//string datafile = "Z:\\IFC Data\\Inside\\InsideOrderedNoDoorsTotallyOrderedMTL.txt";
+
+	string mtlfile = "Z:\\IFC Data\\Lighting\\Lights.obj";
+	string datafile = "Z:\\IFC Data\\Lighting\\LightsMTL.txt";
 
 	ifstream mtl(mtlfile);
 	ofstream out(datafile);
@@ -5401,7 +5580,8 @@ void ListMaterials() {
 				count++;
 				previous = line;
 			}
-			out << "mat.push_back(\"" + line.substr(7) + "\");" << endl;
+			out << line.substr(7) << endl;
+			/*out << "mat.push_back(\"" + line.substr(7) + "\");" << endl;*/
 		}
 	}
 	cout << count << endl;
@@ -5846,7 +6026,7 @@ void ReplaceMaterials() {
 void Objectscount() {
 	//string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Sinks\\gBack\\PorcelainDecimated.obj";
 
-	string objfile = "Z:\\IFC Data\\Outside\\OutsideSeparateTextures30.obj";
+	string objfile = "Z:\\IFC Data\\Lighting\\Separated\\Long\\LongSplitMat.obj";
 
 	ifstream obj(objfile);
 
@@ -6151,8 +6331,10 @@ void DivideMaterials1() {
 	datafiles.clear(); //TODO Make sure all vectors are cleared at the end of all other functions!
 }
 
-void DivideMaterials(int fileNum = 1) {
-	string objdir = "Z:\\IFC Data\\Inside\\Separated2\\NewSplit\\";
+void DivideMaterials(int fileNum = 74) {
+	string objdir = "Z:\\IFC Data\\Inside\\Separated2\\NewSplit3\\";
+//	string objdir = "Z:\\IFC Data\\Outside\\Rooms\\";
+//	string objdir = "Z:\\IFC Data\\Pathways\\";
 	string infile = objdir + to_string(fileNum) + ".obj";
 
 	string folder = objdir + "GroupedByMaterial";
@@ -6183,8 +6365,11 @@ void DivideMaterials(int fileNum = 1) {
 
 	while (!in.eof()) {
 		getline(in, line);
-		lines.push_back(line);
 		test = line.substr(0, 2);
+		/*if (test != "vn" && test != "vt") {
+			lines.push_back(line);
+		}*/
+		lines.push_back(line);
 		if (test == "us") {
 			for (auto i : preMats) {
 				if (line == i) {
@@ -6397,42 +6582,25 @@ void SplitMesh(int fileNum = 0, int folderNum = 0) {
 	//	}
 	//}
 
-	objfile = "Z:\\IFC Data\\InsideSupports\\Column.obj";
-	out1file = "Z:\\IFC Data\\InsideSupports\\ColumnFixed.obj";
-	out2file = "Z:\\IFC Data\\InsideSupports\\ColumnUselessBits.obj";
+	objfile = "Z:\\IFC Data\\Lighting\\Separated\\Cylinder1Mat\\Separated\\" + to_string(fileNum) + ".obj";
+	out1file = "Z:\\IFC Data\\Lighting\\Separated\\Cylinder1Mat\\Separated\\Emissive\\" + to_string(fileNum) + ".obj";
+	out2file = "Z:\\IFC Data\\Lighting\\Separated\\Cylinder1Mat\\Separated\\Chassis\\" + to_string(fileNum) + ".obj";
 
 	if (_access_s(objfile.c_str(), 0) != 0) { //True if file does not exist
 		return;
 	}
-	
+
 	ifstream obj(objfile);
 	ofstream out1(out1file);
 	ofstream out2(out2file);
 
 	vector<int> vert;
 
-	//vert.push_back(7); //Lift fascia
-	//vert.push_back(14);
+	/*vert.push_back(227);
+	vert.push_back(468);*/
 
-	//vert.push_back(89); //Lift wall
-	//vert.push_back(216);
-
-
-	//vert.push_back(10); //Column
-	//vert.push_back(13);
-
-	//vert.push_back(31); 
-	//vert.push_back(48);
-
-	vert.push_back(46); 
-	vert.push_back(48);
-
-	vert.push_back(57);
-	vert.push_back(60);
-
-	vert.push_back(73);
-	vert.push_back(80);
-
+	vert.push_back(227);
+	vert.push_back(468);
 
 	//vert.push_back(121); // 1, 2
 	//vert.push_back(167);
@@ -6583,7 +6751,7 @@ void SplitMesh(int fileNum = 0, int folderNum = 0) {
 	while (!obj.eof()) {
 		getline(obj, line);
 		test = line.substr(0, 2);
-		if (test != "") {
+		if (test != "  ") {
 			if (test == "v " || test == "vt" || test == "vn") {
 				data.push_back(line);
 				if (test == "v " && firstVertex) {
@@ -6620,79 +6788,47 @@ void SplitMesh(int fileNum = 0, int folderNum = 0) {
 					int found;
 					int j = 0;
 					frame = false;
-					if (line.find("/") != string::npos) {
-						while (!ss.eof()) {
-							ss >> temp;
-							if (stringstream(temp) >> found) {
-								if (j == 0 || j == 3 || j == 6) {
-									for (int i = 0; i < vert.size(); ) {
-										if (found >= vert[i] && found <= vert[i + 1]) {
-											frame = true;
-											break;
-										}
-										i += 2;
-									}
+					while (!ss.eof()) {
+						ss >> temp;
+						if (stringstream(temp) >> found) {
+							for (int i = 0; i < vert.size(); ) {
+								if (found >= vert[i] && found <= vert[i + 1]) {
+									frame = true;
+									break;
 								}
-								triangle[j] = found;
+								i += 2;
 							}
-							temp = "";
-							j++;
+							triangle[j] = found;
 						}
-						if (frame) {
-							frameData.push_back(line);
-							for (int l = 0; l < 9; l++) {
-								if (l == 0 || l == 3 || l == 6) {
-									frameVertexIndices.push_back(triangle[l]);
-								}
-								if (l == 1 || l == 4 || l == 7) {
-									frameUVIndices.push_back(triangle[l]);
-								}
-								if (l == 2 || l == 5 || l == 8) {
-									frameNormalIndices.push_back(triangle[l]);
-								}
+						temp = "";
+						j++;
+					}
+
+					if (frame) {
+						frameData.push_back(line);
+						for (int l = 0; l < 9; l++) {
+							if (l == 0 || l == 3 || l == 6) {
+								frameVertexIndices.push_back(triangle[l]);
 							}
-						}
-						else {
-							doorData.push_back(line);
-							for (int k = 0; k < 9; k++) {
-								if (k == 0 || k == 3 || k == 6) {
-									doorVertexIndices.push_back(triangle[k]);
-								}
-								if (k == 1 || k == 4 || k == 7) {
-									doorUVIndices.push_back(triangle[k]);
-								}
-								if (k == 2 || k == 5 || k == 8) {
-									doorNormalIndices.push_back(triangle[k]);
-								}
+							if (l == 1 || l == 4 || l == 7) {
+								frameUVIndices.push_back(triangle[l]);
+							}
+							if (l == 2 || l == 5 || l == 8) {
+								frameNormalIndices.push_back(triangle[l]);
 							}
 						}
 					}
 					else {
-						while (!ss.eof()) {
-							ss >> temp;
-							if (stringstream(temp) >> found) {
-								for (int i = 0; i < vert.size(); ) {
-									if (found >= vert[i] && found <= vert[i + 1]) {
-										frame = true;
-										break;
-									}
-									i += 2;
-								}
-								triangle[j] = found;
+						doorData.push_back(line);
+						for (int k = 0; k < 9; k++) {
+							if (k == 0 || k == 3 || k == 6) {
+								doorVertexIndices.push_back(triangle[k]);
 							}
-							temp = "";
-							j++;
-						}
-						if (frame) {
-							frameData.push_back(line);
-							for (int l = 0; l < 3; l++) {
-								frameVertexIndices.push_back(triangle[l]);
+							if (k == 1 || k == 4 || k == 7) {
+								doorUVIndices.push_back(triangle[k]);
 							}
-						}
-						else {
-							doorData.push_back(line);
-							for (int k = 0; k < 3; k++) {						
-								doorVertexIndices.push_back(triangle[k]);							
+							if (k == 2 || k == 5 || k == 8) {
+								doorNormalIndices.push_back(triangle[k]);
 							}
 						}
 					}
@@ -6766,7 +6902,7 @@ void SplitMesh(int fileNum = 0, int folderNum = 0) {
 				if (frameData[i + 1].substr(0, 2) != "us") {
 					out1 << frameData[i] << endl;
 				}
-			}	
+			}
 		}
 		if (test == "f ") {
 			test = frameData[i].substr(2);
@@ -6776,30 +6912,25 @@ void SplitMesh(int fileNum = 0, int folderNum = 0) {
 			string temp;
 			int found;
 			int i = 0;
-			if (frameData[i].find("/") != string::npos) {
-				while (!ss.eof()) {
-					ss >> temp;
-					if (stringstream(temp) >> found) {
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					if (i == 0 || i == 3 || i == 6) {
 						triangle[i] = found;
-						i++;
 					}
-					temp = "";
-				}
-				line = "f " + to_string(frameVertexIndicesMap[triangle[0]]) + '/' + to_string(frameUVIndicesMap[triangle[1]]) + '/' + to_string(frameNormalIndicesMap[triangle[2]]) + ' '
-					+ to_string(frameVertexIndicesMap[triangle[3]]) + '/' + to_string(frameUVIndicesMap[triangle[4]]) + '/' + to_string(frameNormalIndicesMap[triangle[5]]) + ' '
-					+ to_string(frameVertexIndicesMap[triangle[6]]) + '/' + to_string(frameUVIndicesMap[triangle[7]]) + '/' + to_string(frameNormalIndicesMap[triangle[8]]);
-			}
-			else {
-				while (!ss.eof()) {
-					ss >> temp;
-					if (stringstream(temp) >> found) {
+					if (i == 1 || i == 4 || i == 7) {
 						triangle[i] = found;
-						i++;
 					}
-					temp = "";
+					if (i == 2 || i == 5 || i == 8) {
+						triangle[i] = found;
+					}
+					i++;
 				}
-				line = "f " + to_string(frameVertexIndicesMap[triangle[0]]) + ' ' + to_string(frameVertexIndicesMap[triangle[1]]) + ' ' + to_string(frameVertexIndicesMap[triangle[2]]);
+				temp = "";
 			}
+			line = "f " + to_string(frameVertexIndicesMap[triangle[0]]) + '/' + to_string(frameUVIndicesMap[triangle[1]]) + '/' + to_string(frameNormalIndicesMap[triangle[2]]) + ' '
+				+ to_string(frameVertexIndicesMap[triangle[3]]) + '/' + to_string(frameUVIndicesMap[triangle[4]]) + '/' + to_string(frameNormalIndicesMap[triangle[5]]) + ' '
+				+ to_string(frameVertexIndicesMap[triangle[6]]) + '/' + to_string(frameUVIndicesMap[triangle[7]]) + '/' + to_string(frameNormalIndicesMap[triangle[8]]);
 			out1 << line << endl;
 		}
 	}
@@ -6821,30 +6952,25 @@ void SplitMesh(int fileNum = 0, int folderNum = 0) {
 			string temp;
 			int found;
 			int i = 0;
-			if (doorData[i].find("/") != string::npos) {
-				while (!ss.eof()) {
-					ss >> temp;
-					if (stringstream(temp) >> found) {
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					if (i == 0 || i == 3 || i == 6) {
 						triangle[i] = found;
-						i++;
 					}
-					temp = "";
-				}
-				line = "f " + to_string(doorVertexIndicesMap[triangle[0]]) + '/' + to_string(doorUVIndicesMap[triangle[1]]) + '/' + to_string(doorNormalIndicesMap[triangle[2]]) + ' '
-					+ to_string(doorVertexIndicesMap[triangle[3]]) + '/' + to_string(doorUVIndicesMap[triangle[4]]) + '/' + to_string(doorNormalIndicesMap[triangle[5]]) + ' '
-					+ to_string(doorVertexIndicesMap[triangle[6]]) + '/' + to_string(doorUVIndicesMap[triangle[7]]) + '/' + to_string(doorNormalIndicesMap[triangle[8]]);
-			}
-			else {
-				while (!ss.eof()) {
-					ss >> temp;
-					if (stringstream(temp) >> found) {
+					if (i == 1 || i == 4 || i == 7) {
 						triangle[i] = found;
-						i++;
 					}
-					temp = "";
+					if (i == 2 || i == 5 || i == 8) {
+						triangle[i] = found;
+					}
+					i++;
 				}
-				line = "f " + to_string(doorVertexIndicesMap[triangle[0]]) + ' ' + to_string(doorVertexIndicesMap[triangle[1]]) + ' ' + to_string(doorVertexIndicesMap[triangle[2]]);
+				temp = "";
 			}
+			line = "f " + to_string(doorVertexIndicesMap[triangle[0]]) + '/' + to_string(doorUVIndicesMap[triangle[1]]) + '/' + to_string(doorNormalIndicesMap[triangle[2]]) + ' '
+				+ to_string(doorVertexIndicesMap[triangle[3]]) + '/' + to_string(doorUVIndicesMap[triangle[4]]) + '/' + to_string(doorNormalIndicesMap[triangle[5]]) + ' '
+				+ to_string(doorVertexIndicesMap[triangle[6]]) + '/' + to_string(doorUVIndicesMap[triangle[7]]) + '/' + to_string(doorNormalIndicesMap[triangle[8]]);
 			out2 << line << endl;
 		}
 	}
@@ -6874,9 +7000,9 @@ void SplitMesh(int fileNum = 0, int folderNum = 0) {
 
 void BatchSplitMesh() {
 	int numFiles = 200;
-	int numFolders = 4;
+	int numFolders = 1;
 
-	for (int j = 4; j <= numFolders; j++) {
+	for (int j = 1; j <= numFolders; j++) {
 		for (int i = 1; i <= numFiles; i++) {
 			SplitMesh(i, j);
 		}
@@ -7875,9 +8001,9 @@ void FixDoorHinges(int folderNum = 27, bool doorA = 0, bool alt = 1, bool single
 	}
 }
 
-void FixLights(int fileNum = 1) {
-	string objfile = "Z:\\IFC Data\\Lighting\\15-7641- 59 L6\\" + to_string(fileNum) + ".obj";
-	string outfile = "Z:\\IFC Data\\Lighting\\15-7641- 59 L6\\Fixed\\" + to_string(fileNum) + ".obj";
+void FixLights(int fileNum = 2) {
+	string objfile = "Z:\\IFC Data\\Lighting\\Separated\\OutsideBlue\\23.obj"; //" + to_string(fileNum) + ".obj";
+	string outfile = "Z:\\IFC Data\\Lighting\\Separated\\OutsideBlue\\23SplitMat.obj"; // + to_string(fileNum) + "SplitMat.obj";
 
 	if (_access_s(objfile.c_str(), 0) != 0) { //True if file does not exist
 		return;
@@ -7892,6 +8018,45 @@ void FixLights(int fileNum = 1) {
 
 	float vert[3];
 	int triangle[9];
+	vector<string> data;
+	vector<float> lowestVertices;
+
+	float lowestVertex = 1000000.0f;
+
+	bool first = true;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		data.push_back(line);
+		test = line.substr(0, 2);
+		if (test == "g ") {
+			if (!first) {
+				lowestVertices.push_back(lowestVertex);
+			}
+			lowestVertex = 1000000.0f;
+			first = false;
+		}
+		if (test == "v ") {
+			sub = line.substr(2);
+			float found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					vert[i] = found;
+					i++;
+				}
+				temp = "";
+			}
+			if (vert[1] < lowestVertex) {
+				lowestVertex = vert[1];
+			}
+		}
+	}
+	lowestVertices.push_back(lowestVertex);
 
 	vector<int> validVertices;
 	vector<string> otherTriangles;
@@ -7902,9 +8067,14 @@ void FixLights(int fileNum = 1) {
 
 	int vertices = 0;
 
-	while (!obj.eof()) {
-		getline(obj, line);
+	int gNum = -1;
+
+	for (auto line : data) {
 		test = line.substr(0, 2);
+
+		if (test == "g ") {
+			gNum++;
+		}
 		if (test == "v ") {
 			vertices++;
 			sub = line.substr(2);
@@ -7921,7 +8091,7 @@ void FixLights(int fileNum = 1) {
 				}
 				temp = "";
 			}
-			if (vert[1] < 22.24f) {
+			if (vert[1] < lowestVertices[gNum] + 0.0054f) {
 				validVertices.push_back(vertices);
 			}			
 		}
@@ -7995,19 +8165,19 @@ void FixLights(int fileNum = 1) {
 			}
 		}
 		else {
-			if (test == "us") {
+			/*if (test == "us") {
 				out << "usemtl surface-style-281761-plastic---white" << endl;
 			}
-			else {
+			else {*/
 				out << line << endl;
-			}			
+			//}			
 		}
 	}
 
-	out << "usemtl IfcBeam" << endl;
-	for (auto i : otherTriangles) {
-		out << i << endl;
-	}
+	//out << "usemtl IfcBeam" << endl;
+	//for (auto i : otherTriangles) {
+	//	out << i << endl;
+	//}
 
 	validVertices.clear();
 	otherTriangles.clear();
@@ -8017,9 +8187,9 @@ void FixLights(int fileNum = 1) {
 }
 
 void BatchFixLights() {
-	int numFiles = 2008;
+	int numFiles = 150;
 
-	for (int i = 2008; i <= numFiles; i++) {
+	for (int i = 1; i <= numFiles; i++) {
 		FixLights(i);
 	}	
 }
@@ -8137,7 +8307,7 @@ void AddgBackInFileList() {
 }
 
 void BatchDivideMaterials() {
-	int numFiles = 50;
+	int numFiles = 40;
 
 	for (int i = 1; i <= numFiles; i++) {
 		DivideMaterials(i);
@@ -8145,8 +8315,11 @@ void BatchDivideMaterials() {
 }
 
 void SplitObjectsIntoSingleMaterials() {
-	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms13NoCash.obj";
-	string outfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms13NoCashSplitMat.obj";
+	string objfile = "Z:\\IFC Data\\Lighting\\Separated\\Wall2Mat\\24.obj";
+	string outfile = "Z:\\IFC Data\\Lighting\\Separated\\Wall2Mat\\24Split.obj";
+
+	//string objfile = "Z:\\IFC Data\\Lighting\\Separated\\Emissive2Mat\\59.obj";
+	//string outfile = "Z:\\IFC Data\\Lighting\\Separated\\Emissive2Mat\\59split.obj";
 
 	/*string objfile = "Z:\\IFC Data\\Outside\\OutsideSeparateTextures30NoSign.obj";
 	string outfile = "Z:\\IFC Data\\Outside\\OutsideSeparateTextures30NoSignSplitMat.obj";*/
@@ -8396,6 +8569,179 @@ void SplitObjectsIntoSingleMaterials() {
 	out.close();
 }
 
+void ReplaceMatNew() {
+	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms15.obj";
+	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms16.obj";
+
+	vector<string> object;
+	vector<string> newMat;
+
+	object.push_back("g Walls 2:Walls 2:12431400");
+	newMat.push_back("usemtl Wood");
+
+	object.push_back("g Walls 4:Walls 4:12543036");
+	newMat.push_back("usemtl Wood");
+
+	object.push_back("g Balustrade Capping GL 1:Balustrade Capping GL 3:12364439");
+	newMat.push_back("usemtl Wood");
+
+	object.push_back("g Living Stair Balustrade Detail:Living Stair Balustrade Detail:12551245");
+	newMat.push_back("usemtl Wood");
+
+	object.push_back("g Walls 3:Walls 3:12433708");
+	newMat.push_back("usemtl Wood");
+
+	object.push_back("g Basic Wall:RB-BAL-03c-HKB_Balustrade_Timber_200 2:8632905");
+	newMat.push_back("usemtl Wood");
+
+	object.push_back("g Basic Wall:RB-BAL-03c-HKB_Balustrade_Timber_200 2:8632685");
+	newMat.push_back("usemtl Wood");
+
+	object.push_back("g Balustrade Capping - Stair 02 - 03:Balustrade Capping - Stair 02 - 03:12337870");
+	newMat.push_back("usemtl Wood");
+
+	object.push_back("g Rectangular Mullion:120 x 100mm _Timber:");
+	newMat.push_back("usemtl Wood");
+
+	object.push_back("g Rectangular Mullion:240 x 100mm _Timber:");
+	newMat.push_back("usemtl Wood");
+
+	ifstream obj(objfile);
+	ofstream out(datafile);
+
+	string line;
+	string test;
+
+	int length;
+	int loopNum;
+
+	bool match = false;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		test = line.substr(0, 2);
+		if (test == "g ") {			
+			match = false;
+			loopNum = 0;
+			for (auto l : object) {
+				length = (int)l.length();
+				if (line.substr(0, length) == l) {
+					match = true;
+					break;
+				}
+				loopNum++;
+			}
+		}
+		if (match && test == "us") {
+			out << newMat[loopNum] << endl;
+			match = false;
+		}
+		else {
+			out << line << endl;
+		}
+	}
+
+	obj.close();
+	out.close();
+}
+
+void WebAPILayout() {
+	string infile = "Z:\\Data.txt";
+	string outfile = "Z:\\DataLayout.txt";
+
+	ifstream in(infile);
+	ofstream out(outfile);
+
+	string line;
+
+	int found = 0;
+	int found1;
+	int found2;
+	int found3;
+	int found4;
+	int foundnext;
+
+	bool allow = false;
+
+	string beginParameterString = "\"metric\":";
+	string endParameterString = "\",\"";
+
+	string beginString = "value\":";
+	string endString = "}";
+
+	getline(in, line);
+
+	int i = 0;
+	do
+	{	
+		found1 = (int)line.find(beginParameterString, found);	
+		found2 = (int)line.find(endParameterString, found1 + 1);
+		
+		found3 = (int)line.find(beginString, found2 + 1);
+		found4 = (int)line.find(endString, found3 + 1);
+		
+		found = found1 + 1;
+
+		foundnext = (int)line.find(beginParameterString, found);
+
+		if (foundnext == std::string::npos)
+			allow = true;
+		
+		if (found1 != std::string::npos && (found3 < foundnext || allow)) {
+			out << to_string(i) + ' ' + line.substr(found1 + 10, found2 - found1 - 10) + ": " + line.substr(found3 + 7, found4 - found3 - 7) << endl;
+			i++;
+		}
+		allow = false;
+	} while (found1 != std::string::npos);
+
+	in.close();
+	out.close();
+}
+
+void FindLowestVertex() {
+	string objfile = "Z:\\IFC Data\\Lighting\\Separated\\Game\\Newsplit\\Separated\\3.obj";
+
+	if (_access_s(objfile.c_str(), 0) != 0) { //True if file does not exist
+		return;
+	}
+
+	ifstream obj(objfile);
+
+	string line;
+	string test = line.substr(0, 2);
+	string sub;
+
+	float vert[3];
+	float lowestVertex = 1000000.0f;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		test = line.substr(0, 2);
+		if (test == "v ") {
+			sub = line.substr(2);
+			float found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					vert[i] = found;
+					i++;
+				}
+				temp = "";
+			}
+			if (vert[1] < lowestVertex) {
+				lowestVertex = vert[1];
+			}
+		}
+	}
+	cout << lowestVertex << endl;
+
+	obj.close();
+}
+
 int main() {
 	string x;
 	int s;
@@ -8463,11 +8809,14 @@ int main() {
 		cout << "57. Rotate 90 degrees\n";
 		cout << "58. Add g back in list of files\n";
 		cout << "59. Batch dividing materials\n";
-		cout << "60. Split objects into single materials\n";		
-		cout << "61. Terminate the program\n";
+		cout << "60. Split objects into single materials\n";	
+		cout << "61. Replace materials (alternative version)\n";
+		cout << "62. Get layout of webAPI from data in text file\n";
+		cout << "63. Find lowest vertex\n";
+		cout << "64. Terminate the program\n";
 		cout << "********************************************************************************************************************\n";
 		cin >> x;
-		fixInput(x, s, 1, 61, "Invalid input! Please enter an integer from the above menu: ");
+		fixInput(x, s, 1, 64, "Invalid input! Please enter an integer from the above menu: ");
 
 		switch (s)
 		{
@@ -8845,10 +9194,28 @@ int main() {
 			SplitObjectsIntoSingleMaterials();
 			system("pause");
 			system("cls");
-			break;			
+			break;		
 		case 61:
+			system("cls");
+			ReplaceMatNew();
+			system("pause");
+			system("cls");
+			break;
+		case 62:
+			system("cls");
+			WebAPILayout();
+			system("pause");
+			system("cls");
+			break;	
+		case 63:
+			system("cls");
+			FindLowestVertex();
+			system("pause");
+			system("cls");
+			break;			
+		case 64:
 			break;
 		}  //No default case is required due to the above fixInput function
-	} while (s != 60);
+	} while (s != 64);
 	return 0;
 }
