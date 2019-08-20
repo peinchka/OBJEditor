@@ -127,14 +127,21 @@ void writeIndividualFile() {
 	//string item = "g Living Stair Railing 2:Living Stair Railing 2:12412176";
 	//string item = "g 1499_Furn_Sofa_Lounge:Lounge Sofa 1600Wx670Dx820H:5401805";
 
-	string item = "g RBA_Furn_Desk_10p:10 Person Desk 5000x1600mm:";
+	string item = "g NGB_LightingFixtures_PHILIPSSmartBalance";
 	int length = (int)item.length();
 	
 	//string objfile = "Z:\\IFC Data\\Inside\\InsideOrdered.obj";
 	//string datafile = "Z:\\IFC Data\\Inside\\Doors\\gHB_WC_Cubicle_FrontOnly.obj";
 
-	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms13.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\21MaterialsGroup.obj";
+	//string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms13.obj";
+	//string datafile = "Z:\\IFC Data\\Inside\\Separated2\\21MaterialsGroup.obj";
+
+
+	/*string objfile = "Z:\\IFC Data\\Newcastle\\Newcastle3.obj";
+	string datafile = "Z:\\IFC Data\\Newcastle\\Grass.obj";*/
+
+	string objfile = "Z:\\IFC Data\\Lighting\\Lights.obj";
+	string datafile = "Z:\\IFC Data\\Lighting\\MissingLights.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -1143,9 +1150,9 @@ void CheckForErrors() {
 void DivideGeometry() {
 	bool writeNotInBoxOBJ = true;
 	bool writeToNearestBox = true;
-	string dir = "Z:\\IFC Data\\Inside\\Separated2\\";
+	string dir = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\";
 	//string dir = "Z:\\IFC Data\\Outside\\";
-	string objfile = dir + "Rooms20.obj";
+	string objfile = dir + "ExpensiveLights.obj";
 
 	//string dir = "Z:\\IFC Data\\Lighting\\Separated\\Game\\";
 	//string objfile = dir + "Game.obj";
@@ -1705,7 +1712,7 @@ void DivideGeometry() {
 
 	for (int j = 0; j < numBoxes; j++) {
 		if (datafiles.size() != 0) {
-			string datafile = dir + "NewSplit3\\";
+			string datafile = dir + "NewSplit2\\";
 			if (j != numBoxes - 1 || !writeNotInBoxOBJ) {
 				datafile += to_string(j + 1) + ".obj";
 			}
@@ -2608,8 +2615,11 @@ void FindParticularObject() {
 }
 
 void Removen() {
-	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\Copies\\GroupedByMaterial\\ExpensiveDecimatedDividedNoNNoTC.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\Copies\\GroupedByMaterial\\ExpensiveDecimatedDividedNoNNoTC1.obj";
+	//string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\Copies\\GroupedByMaterial\\ExpensiveDecimatedDividedNoNNoTC.obj";
+	//string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\Copies\\GroupedByMaterial\\ExpensiveDecimatedDividedNoNNoTC1.obj";
+
+	string objfile = "Z:\\IFC Data\\Newcastle\\Newcastle4.obj";
+	string datafile = "Z:\\IFC Data\\Newcastle\\Newcastle4NoNormals.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -2645,36 +2655,28 @@ void Removetc() {
 	}
 }
 
-void Replacegwitho() {
+void AddDummyTextureCoords() {
 	string x;
 	string objfile;
 	string line;
 
-	objfile = "Z:\\IFC Data\\Structure.obj";
-	string datafile = "Z:\\IFC Data\\StructureChild.obj";
+	objfile = "Z:\\IFC Data\\Newcastle\\Newcastle.obj";
+	string datafile = "Z:\\IFC Data\\Newcastle\\Newcastle1.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
 
 	string test = line.substr(0, 2);
 
-	bool first = true;
-
 	while (!obj.eof()) {
 		getline(obj, line);
 		test = line.substr(0, 2);
-		if (test != "g ") {
+		if (test != "f ") {
 			data << line << endl;
 		}
 		else {
-			if (first) {
-				data << line << endl;
-				first = false;
-			}
-			else {
-				line = "o " + line.substr(2);
-				data << line << endl;
-			}
+			string line1 = regex_replace(line, std::regex(R"(\/\/)"), "\/0\/");
+			data << line1 << endl;			
 		}
 	}
 }
@@ -3066,9 +3068,9 @@ void CombineOBJs() {
 	//string objfile2 = "Z:\\IFC Data\\Inside\\Separated2\\InsideSupportsRooms.obj";
 	//string outfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms17.obj";
 
-	string objfile1 = "Z:\\IFC Data\\Inside\\Separated2\\Rooms19.obj";
-	string objfile2 = "Z:\\IFC Data\\Inside\\Separated2\\StaticLights.obj";
-	string outfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms20.obj";
+	string objfile1 = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\ExpensiveIntact.obj";
+	string objfile2 = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\StaticLights.obj";
+	string outfile = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\ExpensiveLights.obj";
 
 	//string objfile1 = "Z:\\IFC Data\\InsideSupports\\InsideSupportsBest8.obj";
 	//string objfile2 = "Z:\\IFC Data\\InsideSupports\\Column.obj";
@@ -3223,6 +3225,8 @@ void Reconciliation() {
 	/*string objdir = "Z:\\IFC Data\\InsideSupports\\Separated\\Rooms\\";
 	string datafile = "Z:\\IFC Data\\InsideSupports\\Separated\\Rooms\\InsideSupportsRooms.obj";*/
 
+	//string objdir = "Z:\\IFC Data\\Lighting\\Separated\\AllSame2Mat\\Separated\\Chassis\\";
+	//string datafile = "Z:\\IFC Data\\Lighting\\Separated\\AllSame2Mat\\Separated\\Chassis\\Chassis2.obj";
 
 	string objdir = "Z:\\IFC Data\\Lighting\\StaticLights\\"; 
 	string datafile = "Z:\\IFC Data\\Lighting\\StaticLights\\StaticLights.obj";
@@ -3232,7 +3236,7 @@ void Reconciliation() {
 
 	ofstream data(datafile);
 
-	int numFiles = 200;// GetNumOfFiles(objdir);
+	int numFiles = 2000;// GetNumOfFiles(objdir);
 	bool first = true;
 	int triangle[9];
 	int vertex = 0;
@@ -4943,12 +4947,14 @@ void DeleteObjectsHelperFunction(bool valid, ifstream& obj, ofstream& data, stri
 }
 
 void DeleteSingleObject() {
-	string deleteThis = "g HB_Door_Concept_Int_Dbl_Solid_VP - DT-04 (Overswing):1810x2410mm RB DT 04g:1656317 frame";
+//	string deleteThis = "g HB_Door_Concept_Int_Dbl_Solid_VP - DT-04 (Overswing):1810x2410mm RB DT 04g:1656317 frame";
 //	string deleteThis = "g System Panel:SG Panel Sloped:";
+
+	string deleteThis = "g inner";
 	int length = (int)deleteThis.length();
 
-	string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms3.obj";
-	string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms4.obj";
+	string objfile = "Z:\\IFC Data\\Newcastle\\Newcastle1.obj";
+	string datafile = "Z:\\IFC Data\\Newcastle\\Newcastle2.obj";
 
 	ifstream obj(objfile);
 	ofstream data(datafile);
@@ -5265,20 +5271,28 @@ void DeleteObjectsOutside() {
 
 void DeleteObjectsInsideExtra() {
 
-	string objfile = "Z:\\IFC Data\\Lighting\\Lights.obj";
-	string datafile = "Z:\\IFC Data\\Lighting\\LightsFixed.obj";
+	//string objfile = "Z:\\IFC Data\\Lighting\\Lights.obj";
+	//string datafile = "Z:\\IFC Data\\Lighting\\LightsFixed.obj";
 	//string objfile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms18.obj";
 	//string datafile = "Z:\\IFC Data\\Inside\\Separated2\\Rooms19.obj";
 
 	//string objfile = "Z:\\IFC Data\\Inside\\Separated2\\WallFloors\\Occluders5.obj";
 	//string datafile = "Z:\\IFC Data\\Inside\\Separated2\\WallFloors\\Occluders6.obj";
 
+	string objfile = "Z:\\IFC Data\\Newcastle\\Newcastle2.obj";
+	string datafile = "Z:\\IFC Data\\Newcastle\\Newcastle3.obj";
+
 	ifstream obj(objfile);
 	ofstream data(datafile);
 
 	vector<string> toDelete;
 
-	toDelete.push_back("g NGB_LightingFixtures_LampPost-Alya:Cone 680mm:17426284");
+	toDelete.push_back("g inner");
+	toDelete.push_back("g outer");
+	toDelete.push_back("g Glyph");
+	toDelete.push_back("g The");
+	toDelete.push_back("g Walls");
+	toDelete.push_back("g Fences");
 
 	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978");
 	//toDelete.push_back("g Floor:Trench Heater - 112mm:12598978:2");
@@ -6332,7 +6346,7 @@ void DivideMaterials1() {
 }
 
 void DivideMaterials(int fileNum = 74) {
-	string objdir = "Z:\\IFC Data\\Inside\\Separated2\\NewSplit3\\";
+	string objdir = "Z:\\IFC Data\\Inside\\Separated2\\Expensive\\NewSplit2\\";
 //	string objdir = "Z:\\IFC Data\\Outside\\Rooms\\";
 //	string objdir = "Z:\\IFC Data\\Pathways\\";
 	string infile = objdir + to_string(fileNum) + ".obj";
@@ -6582,9 +6596,14 @@ void SplitMesh(int fileNum = 0, int folderNum = 0) {
 	//	}
 	//}
 
-	objfile = "Z:\\IFC Data\\Lighting\\Separated\\Cylinder1Mat\\Separated\\" + to_string(fileNum) + ".obj";
-	out1file = "Z:\\IFC Data\\Lighting\\Separated\\Cylinder1Mat\\Separated\\Emissive\\" + to_string(fileNum) + ".obj";
-	out2file = "Z:\\IFC Data\\Lighting\\Separated\\Cylinder1Mat\\Separated\\Chassis\\" + to_string(fileNum) + ".obj";
+	//objfile = "Z:\\IFC Data\\Lighting\\Separated\\Cylinder1Mat\\Separated\\" + to_string(fileNum) + ".obj";
+	//out1file = "Z:\\IFC Data\\Lighting\\Separated\\Cylinder1Mat\\Separated\\Emissive\\" + to_string(fileNum) + ".obj";
+	//out2file = "Z:\\IFC Data\\Lighting\\Separated\\Cylinder1Mat\\Separated\\Chassis\\" + to_string(fileNum) + ".obj";
+
+
+	objfile = "Z:\\IFC Data\\Newcastle\\Newcastle1.obj";
+	out1file = "Z:\\IFC Data\\Newcastle\\NewcastleSplit1.obj";
+	out2file = "Z:\\IFC Data\\Newcastle\\NewcastleSplit2.obj";
 
 	if (_access_s(objfile.c_str(), 0) != 0) { //True if file does not exist
 		return;
@@ -6599,8 +6618,11 @@ void SplitMesh(int fileNum = 0, int folderNum = 0) {
 	/*vert.push_back(227);
 	vert.push_back(468);*/
 
-	vert.push_back(227);
-	vert.push_back(468);
+	vert.push_back(1);
+	vert.push_back(200);
+
+	//vert.push_back(227);
+	//vert.push_back(468);
 
 	//vert.push_back(121); // 1, 2
 	//vert.push_back(167);
@@ -7802,7 +7824,7 @@ void BatchMakePrefabs(int folderNum = 27, bool doorA = 1, bool singleDoor = 1) {
 	}
 }
 
-void FixDoorHinges(int folderNum = 27, bool doorA = 0, bool alt = 1, bool singleDoor = 1) {
+void FixDoorHinges(int folderNum = 10, bool doorA = 0, bool alt = 0, bool singleDoor = 1) {
 	int fileNum = 150;
 	string objfile;
 	string datafile;
@@ -8091,7 +8113,7 @@ void FixLights(int fileNum = 2) {
 				}
 				temp = "";
 			}
-			if (vert[1] < lowestVertices[gNum] + 0.0054f) {
+			if (vert[1] < lowestVertices[gNum] + 0.0054f) {		
 				validVertices.push_back(vertices);
 			}			
 		}
@@ -8165,19 +8187,19 @@ void FixLights(int fileNum = 2) {
 			}
 		}
 		else {
-			/*if (test == "us") {
+			if (test == "us") {
 				out << "usemtl surface-style-281761-plastic---white" << endl;
 			}
-			else {*/
+			else {
 				out << line << endl;
-			//}			
+			}			
 		}
 	}
 
-	//out << "usemtl IfcBeam" << endl;
-	//for (auto i : otherTriangles) {
-	//	out << i << endl;
-	//}
+	out << "usemtl IfcBeam" << endl;
+	for (auto i : otherTriangles) {
+		out << i << endl;
+	}
 
 	validVertices.clear();
 	otherTriangles.clear();
@@ -8742,6 +8764,230 @@ void FindLowestVertex() {
 	obj.close();
 }
 
+void ReverseTriangleWinding() {
+	string infile = "Z:\\IFC Data\\Newcastle\\Newcastle3.obj";
+	string outfile = "Z:\\IFC Data\\Newcastle\\NewcastleReverseWinding.obj";
+
+	ifstream in(infile);
+	ofstream out(outfile);
+
+	string line;
+	string test;
+
+	int triangle[9];
+
+	bool changef = false;
+
+	while(!in.eof()) {
+		getline(in, line);
+		test = line.substr(0, 2);
+		if (test == "g ") {
+			test = line.substr(0, 6);
+			if (test == "g Gras" || test == "g Road" || test == "g Terr" || test == "g Park" || test == "g Pave") {
+				changef = true;
+			}
+			else {
+				changef = false;
+			}
+		}		
+		if (test == "f " && changef) {
+			test = line.substr(2);
+			string line1 = regex_replace(test, std::regex(R"(\/)"), " ");
+			stringstream ss;
+			ss << line1;
+			string temp;
+			int found;
+			int i = 0;
+			if (test.find("/") != string::npos) {
+				while (!ss.eof()) {
+					ss >> temp;
+					if (stringstream(temp) >> found) {
+						if (i == 0 || i == 3 || i == 6) {
+							triangle[i] = found;
+						}
+						if (i == 1 || i == 4 || i == 7) {
+							triangle[i] = found;
+						}
+						if (i == 2 || i == 5 || i == 8) {
+							triangle[i] = found;
+						}
+						i++;
+					}
+					temp = "";
+				}
+				out << "f " << triangle[0] << '/' << triangle[1] << '/' << triangle[2] << ' '
+					<< triangle[6] << '/' << triangle[7] << '/' << triangle[8] << ' '
+					<< triangle[3] << '/' << triangle[4] << '/' << triangle[5] << endl;
+			}
+			else {
+				while (!ss.eof()) {
+					ss >> temp;
+					if (stringstream(temp) >> found) {
+						triangle[i] = found;
+						i++;
+					}
+					temp = "";
+				}
+				out << "f " << triangle[0] << ' ' << triangle[2] << ' ' << triangle[1] << endl;
+			}
+		}
+		else {
+			out << line << endl;
+		}
+	}
+}
+
+void FixNewcastleMesh(int fileNum = 2) {
+	string objfile = "Z:\\IFC Data\\Newcastle\\NewcastleBest1.obj";
+	string outfile = "Z:\\IFC Data\\Newcastle\\NewcastleBest4.obj";
+
+	if (_access_s(objfile.c_str(), 0) != 0) { //True if file does not exist
+		return;
+	}
+
+	ifstream obj(objfile);
+	ofstream out(outfile);
+
+	string line;
+	string test = line.substr(0, 2);
+	string sub;
+
+	float vert[3];
+	int triangle[9];
+	vector<string> data;
+	vector<float> lowestVertices;
+
+	float lowestVertex = 1000000.0f;
+
+	bool first = true;
+
+	while (!obj.eof()) {
+		getline(obj, line);
+		data.push_back(line);
+	}
+
+	vector<int> validVertices;
+
+	bool validVertex1;
+	bool validVertex2;
+	bool validVertex3;
+
+	int vertices = 0;
+
+	int gNum = -1;
+
+	for (auto line : data) {
+		test = line.substr(0, 2);
+
+		if (test == "g ") {
+			gNum++;
+		}
+		if (test == "v ") {
+			vertices++;
+			sub = line.substr(2);
+			float found;
+			int i = 0;
+			stringstream ss;
+			ss << sub;
+			string temp;
+			while (!ss.eof()) {
+				ss >> temp;
+				if (stringstream(temp) >> found) {
+					vert[i] = found;
+					i++;
+				}
+				temp = "";
+			}
+
+			//if (vert[0] < -174.0f || vert[0] > -74.4f || vert[2] < -316.0f || vert[2] > -173.4f) {
+			//if (vert[0] < -83.0f || vert[0] > -4.3f || vert[2] < -231.0f || vert[2] > -185.4f) {
+			//	if (vert[0] < -14.5f || vert[0] > 5.0f || vert[2] < -221.0f || vert[2] > -201.4f) {
+
+
+			if (vert[0] < -85.0f || vert[0] > -38.4f || vert[2] < -262.0f || vert[2] > -173.4f) {
+				if (vert[0] < -83.0f || vert[0] > -3.3f || vert[2] < -231.0f || vert[2] > -185.4f) {
+					if (vert[0] < -14.5f || vert[0] > 6.0f || vert[2] < -221.0f || vert[2] > -201.4f) {
+						if (vert[0] < -0.25f || vert[0] > 4.2f || vert[2] < -195.0f || vert[2] > -187.5f) {
+							validVertices.push_back(vertices);
+						}
+					}
+				}				
+			}
+		}
+		if (test == "f ") {
+			sub = line.substr(2);
+			string line1 = regex_replace(sub, std::regex(R"(\/)"), " ");
+			stringstream ss;
+			ss << line1;
+			string temp;
+			int found;
+			int i = 0;
+			if (line.find("/") != string::npos) {
+				while (!ss.eof()) {
+					ss >> temp;
+					if (stringstream(temp) >> found) {
+						triangle[i] = found;
+						i++;
+					}
+					temp = "";
+				}
+				validVertex1 = false;
+				validVertex2 = false;
+				validVertex3 = false;
+				for (auto i : validVertices) {
+					if (i == triangle[0]) {
+						validVertex1 = true;
+					}
+					if (i == triangle[3]) {
+						validVertex2 = true;
+					}
+					if (i == triangle[6]) {
+						validVertex3 = true;
+					}
+				}
+				if (validVertex1 && validVertex2 && validVertex3) {
+					out << line << endl;
+				}
+			}
+			else {
+				while (!ss.eof()) {
+					ss >> temp;
+					if (stringstream(temp) >> found) {
+						triangle[i] = found;
+						i++;
+					}
+					temp = "";
+				}
+				validVertex1 = false;
+				validVertex2 = false;
+				validVertex3 = false;
+				for (auto i : validVertices) {
+					if (i == triangle[0]) {
+						validVertex1 = true;
+					}
+					if (i == triangle[1]) {
+						validVertex2 = true;
+					}
+					if (i == triangle[2]) {
+						validVertex3 = true;
+					}
+				}
+				if (validVertex1 && validVertex2 && validVertex3) {
+					out << line << endl;
+				}
+			}
+		}
+		else {
+			out << line << endl;			
+		}
+	}
+
+	validVertices.clear();
+
+	obj.close();
+	out.close();
+}
+
 int main() {
 	string x;
 	int s;
@@ -8763,7 +9009,7 @@ int main() {
 		cout << "11. Reconciliation\n";
 		cout << "12. Fix texture coordinates\n";
 		cout << "13. Test normals\n";
-		cout << "14. Replace g with o\n";
+		cout << "14. Add dummy texture coordinate index to triangles\n";
 		cout << "15. Remove normals\n";
 		cout << "16. Remove texture coordinates\n";
 		cout << "17. Get dimensions\n";
@@ -8813,10 +9059,12 @@ int main() {
 		cout << "61. Replace materials (alternative version)\n";
 		cout << "62. Get layout of webAPI from data in text file\n";
 		cout << "63. Find lowest vertex\n";
-		cout << "64. Terminate the program\n";
+		cout << "64. Reverse triangle winding\n";
+		cout << "65. Fix Newcastle mesh\n";
+		cout << "66. Terminate the program\n";
 		cout << "********************************************************************************************************************\n";
 		cin >> x;
-		fixInput(x, s, 1, 64, "Invalid input! Please enter an integer from the above menu: ");
+		fixInput(x, s, 1, 66, "Invalid input! Please enter an integer from the above menu: ");
 
 		switch (s)
 		{
@@ -8915,7 +9163,7 @@ int main() {
 			break;
 		case 14:
 			system("cls");
-			Replacegwitho();
+			AddDummyTextureCoords();
 			system("pause");
 			system("cls");
 			break;
@@ -9212,10 +9460,22 @@ int main() {
 			FindLowestVertex();
 			system("pause");
 			system("cls");
-			break;			
+			break;	
 		case 64:
+			system("cls");
+			ReverseTriangleWinding();
+			system("pause");
+			system("cls");
+			break;
+		case 65:
+			system("cls");
+			FixNewcastleMesh();
+			system("pause");
+			system("cls");
+			break;
+		case 66:
 			break;
 		}  //No default case is required due to the above fixInput function
-	} while (s != 64);
+	} while (s != 66);
 	return 0;
 }
